@@ -1,0 +1,380 @@
+<div class="position " id="containerPatient" *ngIf="roleUserLogin=='ROLE_MEDECIN' ">
+
+    <div class="container-fluid ">
+        <nav class="navbar" aria-label=" navbar" style="justify-content: center;">
+            <div class="container-fluid">
+                <!-- Nav Header -->
+                <div class="navbar-header justify-content-center">
+                    <div class="row justify-content-md-center ">
+                        <span class="ml-auto"></span>
+                        <span>
+                            <a class=" navbar-brand " (click)=" prints()" title="imprimer">
+                                <button class="fa fa-print fa-2x btn-success"></button>
+                            </a>
+                        </span>
+                        <div class="form-group has-search ml-auto">
+                            <span class=" form-control-static"></span>
+                            <a class="navbar-brand">
+                                <input type="search" class="form-control" placeholder="Search...." [(ngModel)]="term">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Nav Collapse -->
+            </div>
+        </nav>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+        <div id="pdf" #pdf>
+            &nbsp;
+            <div class="row row-cols-1 row-cols-md" *ngFor=" let ordonnance of ordonnanceMedecin | filter:term | paginate: { itemsPerPage:1, currentPage: p }" [@slideOut]>
+                <div class=" col mb-2" align="center">
+                    <div class=" row bord">
+                        <div class="col "><img src="/assets/logo_ordo.png" height="49" alt="MIN.SANTE"> <br>
+                            <p>Ministere de la Sante</p>
+                        </div>
+
+                        <div class="col ">Ordonnance
+                            <p>Votre partenaire medicale <br>tel: 334332122
+                                <br>
+                                N° <mark>{{ordonnance.ordonnance.numero}} </mark></p>
+                        </div>
+
+                        <div class="col "><img src="/assets/logo_kidscare.svg" height="44" alt="">
+                            <p>KIDSCARE</p>
+                        </div>
+                        <div class="w-100"></div>
+                    </div>
+                </div>
+
+                <div class="container" align="center">
+                    <div class="row bord">
+                        <div class="col bord">
+                            <h6>
+                                <strong>Coordonnées du Medecin</strong>
+                            </h6>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Nom</div>
+                        <div class="col bord">{{ordonnance.patient.medecin.nom}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Prenom</div>
+                        <div class="col bord">{{ordonnance.patient.medecin.prenom}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Email</div>
+                        <div class="col bord">{{ordonnance.patient.medecin.email}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Specialite</div>
+                        <div class="col bord">{{ordonnance.patient.medecin.specialite}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Telephone</div>
+                        <div class="col bord">{{ordonnance.patient.medecin.tel}}</div>
+                    </div>
+                    <br>
+                    <div class="row bord">
+                        <div class="col bord">
+                            <h6>
+                                <strong>Données du Patient</strong>
+                            </h6>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Nom</div>
+                        <div class="col bord">{{ordonnance.patient.nom}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Prenom</div>
+                        <div class="col bord">{{ordonnance.patient.prenom}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Adresse</div>
+                        <div class="col bord">{{ordonnance.patient.adresse}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Sexe</div>
+                        <div class="col bord">{{ordonnance.patient.sexe}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Poids (kg)</div>
+                        <div class="col bord">{{ordonnance.poids}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Symptome</div>
+                        <div class="col bord">{{ordonnance.symptome}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Taille (m)</div>
+                        <div class="col bord">{{ordonnance.taille}}</div>
+                    </div>
+                    <br>
+                    <div class="row bord">
+                        <div class="col bord">
+                            <h6>
+                                <strong>Médicaments</strong>
+                            </h6>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Medicament</div>
+                        <div class="col bord">{{ordonnance.ordonnance.medicament}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Dosage (jour/repas)</div>
+                        <div class="col bord">{{ordonnance.ordonnance.dosage}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Quantite (nombre)</div>
+                        <div class="col bord">{{ordonnance.ordonnance.quantite}}</div>
+
+                    </div>
+                    <br>
+                    <div class="row bord">
+                        <div class="col bord">
+                            <h6>
+                                <strong>Validité</strong>
+                            </h6>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col bord">
+                            <strong>Validité de l'ordonnace</strong>
+                        </div>
+                        <div class="col bord">
+                            <div class="form-group">
+                                <input class="form-check-input float-left" type="checkbox" name="flexRadioDefault">
+                                <label class="form-check-label " for="flexCheckChecked">
+                                    Ordonnance ponctuelle
+                                </label>
+                                <br>
+                                <input class="form-check-input float-left" type="checkbox" name="flexRadioDefault">
+                                <label class="form-check-label " for="flexCheckChecked">
+                                    Renouvelable<mark><span>____</span></mark>mois
+                                </label>
+                                <br>
+                                <input class="form-check-input float-left" type="checkbox" name="flexRadioDefault">
+                                <label class="form-check-label " for="flexCheckChecked">
+                                    Renouvelable<mark><span>____</span></mark>fois
+                                </label>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <br>
+                    <div class="row bord ">
+                        <div class="col"></div>
+                        <div class="w-100"></div>
+                        <div class="col ">
+                            <h4>
+                                <strong>Important</strong>
+                            </h4>
+                        </div>
+                        <div class="col ">
+
+                            <em>Cette ordonnance est delivré par <strong>{{ordonnance.patient.medecin.prenom}}
+                                    {{ordonnance.patient.medecin.nom}}</strong> specialiste en <strong>{{ordonnance.patient.medecin.specialite}}</strong> officient au cabinet medicale <b>KIDSCARE</b>. Cette ordonnance est sous la responsabilité
+                                du medecin chargé du patient
+                                <br>
+                                <strong class="cacher"><u>Signature</u></strong>
+                                <strong class="float-right"><u>Cacher</u></strong>
+                                <br><br><br>
+                            </em>
+
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col"></div>
+                        <div class="w-100"></div>
+                        <div class="col"><strong>Date: {{today}}</strong></div>
+
+                    </div>
+                    &nbsp;
+                    <!-- <hr style="color: brown;" /> -->
+                </div>
+
+            </div>
+
+        </div>
+        &nbsp;
+    </div>
+</div>
+
+<div class="position " id="containerPatient" *ngIf="roleUserLogin=='ROLE_ADMIN'">
+
+    <div class="container-fluid">
+        <nav class="navbar" aria-label=" navbar" style="justify-content: center;">
+            <div class="container-fluid">
+                <!-- Nav Header -->
+                <div class="navbar-header justify-content-center">
+                    <div class="row justify-content-md-center ">
+                        <span class="ml-auto"></span>
+                        <span>
+                            <a class="navbar-brand " (click)="prints()" title="imprimer">
+                                <button class="fa fa-print fa-2x btn-success"></button>
+                            </a>
+                        </span>
+                        <div class="form-group has-search ml-auto">
+                            <span class=" form-control-static"></span>
+                            <a class="navbar-brand">
+                                <input type="search" class="form-control" placeholder="Search...." [(ngModel)]="term">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Nav Collapse -->
+            </div>
+        </nav>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+        <div id="pdf" #pdf>
+            &nbsp;
+            <div class="row row-cols-1 row-cols-md" *ngFor=" let ordonnance of ordonnances | filter:term | paginate: { itemsPerPage:1, currentPage: p }" [@slideOut]>
+                &nbsp;
+                <div class=" col mb-2" align="center">
+                    <div class=" row bord">
+                        <div class="col "><img src="/assets/logo_ordo.png" height="49" alt="MIN.SANTE"> <br>
+                            <p>Ministere de la Sante</p>
+                        </div>
+
+                        <div class="col ">Ordonnance
+                            <p>Votre partenaire medicale <br>tel: 334332122
+                                <br>
+                                N° <mark>{{ordonnance.ordonnance.numero}} </mark></p>
+                        </div>
+
+                        <div class="col "><img src="/assets/logo_kidscare.svg" height="44" alt="">
+                            <p>KIDSCARE</p>
+                        </div>
+                        <div class="w-100"></div>
+                    </div>
+                </div>
+
+                <div class="container" align="center">
+                    <div class="row bord">
+                        <div class="col bord">
+                            <h6>
+                                <strong>Coordonnées du Medecin</strong>
+                            </h6>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Nom</div>
+                        <div class="col bord">{{ordonnance.patient.medecin.nom}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Prenom</div>
+                        <div class="col bord">{{ordonnance.patient.medecin.prenom}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Email</div>
+                        <div class="col bord">{{ordonnance.patient.medecin.email}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Specialite</div>
+                        <div class="col bord">{{ordonnance.patient.medecin.specialite}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Telephone</div>
+                        <div class="col bord">{{ordonnance.patient.medecin.tel}}</div>
+                    </div>
+                    <br>
+                    <div class="row bord">
+                        <div class="col bord">
+                            <h6>
+                                <strong>Données du Patient</strong>
+                            </h6>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Nom</div>
+                        <div class="col bord">{{ordonnance.patient.nom}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Prenom</div>
+                        <div class="col bord">{{ordonnance.patient.prenom}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Adresse</div>
+                        <div class="col bord">{{ordonnance.patient.adresse}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Sexe</div>
+                        <div class="col bord">{{ordonnance.patient.sexe}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Poids (kg)</div>
+                        <div class="col bord">{{ordonnance.poids}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Symptome</div>
+                        <div class="col bord">{{ordonnance.symptome}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Taille (m)</div>
+                        <div class="col bord">{{ordonnance.taille}}</div>
+                    </div>
+                    <br>
+                    <div class="row bord">
+                        <div class="col bord">
+                            <h6>
+                                <strong>Médicaments</strong>
+                            </h6>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Medicament</div>
+                        <div class="col bord">{{ordonnance.ordonnance.medicament}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Dosage(jour/repas)</div>
+                        <div class="col bord">{{ordonnance.ordonnance.dosage}}</div>
+                        <div class="w-100"></div>
+                        <div class="col bord">Quantite(nombre)</div>
+                        <div class="col bord">{{ordonnance.ordonnance.quantite}}</div>
+
+                    </div>
+                    <br>
+                    <div class="row bord">
+                        <div class="col bord">
+                            <h6>
+                                <strong>Validité</strong>
+                            </h6>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col bord">
+                            Validité de l'ordonnace
+                        </div>
+                        <div class="col bord">
+                            <div class="form-group">
+                                <input class="form-check-input float-left" type="checkbox" name="flexRadioDefault">
+                                <label class="form-check-label " for="flexCheckChecked">
+                                    Ordonnance ponctuelle
+                                </label>
+                                <br>
+                                <input class="form-check-input float-left" type="checkbox" name="flexRadioDefault">
+                                <label class="form-check-label " for="flexCheckChecked">
+                                    Renouvelable<mark><span>____</span></mark>mois
+                                </label>
+                                <br>
+                                <input class="form-check-input float-left" type="checkbox" name="flexRadioDefault">
+                                <label class="form-check-label " for="flexCheckChecked">
+                                    Renouvelable<mark><span>____</span></mark>fois
+                                </label>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <br>
+                    <div class="row bord ">
+                        <div class="col"></div>
+                        <div class="w-100"></div>
+                        <div class="col ">
+                            <h4>
+                                <strong>Important</strong>
+                            </h4>
+                        </div>
+                        <div class="col ">
+
+                            <em>Cette ordonnance est delivré par
+                                <strong>{{ordonnance.patient.medecin.prenom}} {{ordonnance.patient.medecin.nom}}</strong>
+                                specialiste en <strong>{{ordonnance.patient.medecin.specialite}}</strong> officient au cabinet medicale <b>KIDSCARE</b>. Cette ordonnance est sous la responsabilité
+                                du medecin chargé du patient
+                                <br>
+                                <strong class="cacher"><u>Signature</u></strong>
+                                <strong class="float-right"><u>Cacher</u></strong>
+                                <br><br><br>
+                            </em>
+
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col"></div>
+                        <div class="w-100"></div>
+                        <div class="col"><strong>Date: {{today}}</strong></div>
+
+                    </div>
+                    <hr style="color: brown;" />
+                </div>
+
+            </div>
+            &nbsp; &nbsp;&nbsp;
+        </div>
+        &nbsp;
+    </div>
+</div>

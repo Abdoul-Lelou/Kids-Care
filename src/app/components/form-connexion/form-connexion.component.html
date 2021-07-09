@@ -1,0 +1,81 @@
+<span>
+    <header class="top-header">
+    </header>
+
+    <!--dust particel-->
+    <div>
+        <div class="starsec"></div>
+        <div class="starthird"></div>
+        <div class="starfourth"></div>
+        <div class="starfifth"></div>
+    </div>
+    <!--Dust particle end-->
+
+    <div class="lamp__wrap">
+        <div class="lamp">
+            <div class="cable"></div>
+            <div class="cover"></div>
+            <div class="in-cover">
+                <div class="bulb"></div>
+            </div>
+            <div class="light"></div>
+        </div>
+    </div>
+
+
+    &nbsp; &nbsp; &nbsp;<br><br>&nbsp; &nbsp; &nbsp;<br><br>&nbsp; &nbsp; &nbsp;<br><br>
+    <div class="container ">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" align="center" class="formBloc border shadow  bg-light">
+            <div>
+                <h4 align="center"><strong><em>AUTHENTIFICATION</em></strong></h4>
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <mat-error *ngIf="registerForm.controls['username'].invalid && registerForm.controls['username'].touched">
+                                <strong class="text-danger"><em>USERNAME INVALID</em></strong>
+                            </mat-error>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Username</mat-label>
+                                <input matInput placeholder="Username" class="input" formControlName="username">
+                                <mat-icon matSuffix class="blue-icon">person</mat-icon>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                &nbsp;
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <mat-error *ngIf="registerForm.controls['password'].invalid && registerForm.controls['password'].touched">
+                                <strong class="text-danger"><em>PASSWORD INVALID</em></strong>
+                            </mat-error>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Password</mat-label>
+                                <input matInput placeholder="Password" type="password" class="input" formControlName="password">
+                                <mat-icon matSuffix class="blue-icon">password</mat-icon>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!--  col-md-6   -->
+                </div>
+                <!--  row   -->
+                &nbsp;
+                <div class="alert alert-danger w3-animate-opacity" *ngIf="logError">
+                    <strong><em>USERNAME OU PASSWORD INCORRECT</em></strong>
+                </div>
+            </div>
+            &nbsp;
+            <div class="form-group">
+                &nbsp;
+                <button type="submit" id="login-button" [disabled]="registerForm.invalid" class="btn btn-success">
+                    login
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading" aria-hidden="true"></i>
+                </button>&nbsp;&nbsp;
+
+                &nbsp;
+            </div>
+            &nbsp;
+        </form>
+    </div>
+    &nbsp;
+</span>

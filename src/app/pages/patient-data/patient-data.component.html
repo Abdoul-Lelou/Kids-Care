@@ -1,0 +1,1199 @@
+<div class="col col-sm-8 position" id="containerPatient" *ngIf="mainContent">
+    <div class="container-fluid  border bg-light color">
+        &nbsp;
+        <nav class="navbar" aria-label=" navbar" style="justify-content: center;">
+            <div class="container-fluid">
+                <!-- Nav Header -->
+                <div class="navbar-header justify-content-center">
+                    <div class="row justify-content-md-center ">
+                        <span class="ml-auto"></span>
+                        <span>
+                            <a class="navbar-brand " *ngIf="roleUserLogin =='ROLE_SECRETAIRE'">
+                                <span class="fa fa-plus-circle fa-2x border-success" style="color:rgb(22, 167, 118);" title="Ajout non autorisé"></span>
+                            </a>
+                            <a class="navbar-brand " (click)="addPatientDataForm()" *ngIf="roleUserLogin !='ROLE_SECRETAIRE'">
+                                <span class="fa fa-plus-circle fa-2x border-success" style="color:rgb(22, 167, 118);" title="Add"></span>
+                            </a>
+                        </span>
+                        <div class="form-group has-search ml-auto">
+                            <span class=" form-control-static"></span>
+                            <a class="navbar-brand">
+                                <input type="search" class="form-control" placeholder="Search..." [(ngModel)]="term">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Nav Collapse -->
+            </div>
+        </nav>
+        <pagination-controls (pageChange)="p = $event" class="text-center"></pagination-controls>
+
+        <div class="row row-cols-2 row-cols-md-2 " *ngIf="roleUserLogin=='ROLE_SECRETAIRE' || roleUserLogin=='ROLE_ADMIN'">
+
+            <div class="col mb-2" *ngFor="let patients of patientAll | filter:term | paginate: { itemsPerPage:2, currentPage: p }">
+                <div class="card shadow card-size">
+
+                    <img src=" /assets/ordonnance.svg" class="card-img" alt="..." height="25">
+                    <div class="card-body">
+                        <div class="row">
+                            <span class="mb-0 text-truncated">
+
+                                <span class="data-icon">
+                                    <i class="fas fa fa-folder-o " aria-hidden="true"></i>
+                                </span>
+                                &nbsp;
+
+                                <span style="font-size: 0.9em; color: rgb(8, 8, 8);">
+                                    <strong>{{patients.prenom |titlecase}} {{patients.nom |titlecase}}</strong>
+                                </span>
+
+                            </span>
+
+                        </div>
+
+                        <button (click)="getPatientDataByPatientId(patients.id)" mat-raised-button class="btn-outline-info btn-block">Open</button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row row-cols-2 row-cols-md-2" *ngIf="roleUserLogin=='ROLE_MEDECIN'">
+            <div class="col mb-2" *ngFor=" let patient of patientMedecin | filter:term | paginate: { itemsPerPage:2, currentPage: p }">
+                <div class="card shadow card-size ">
+
+                    <img src="/assets/ordonnance.svg" class="card-img" alt="..." height="25">
+                    <div class="card-body">
+                        <div class="row">
+                            <span class="mb-0 text-truncated">
+                                <span class="data-icon">
+                                    <i class="fas fa fa-folder-o " aria-hidden="true"></i>
+                                </span>
+                                &nbsp;
+                                <span style="font-size: 0.9em; color: rgb(8, 8, 8);">
+                                    <strong>{{patient.prenom |titlecase}} {{patient.nom |titlecase}}</strong>
+                                </span>
+                            </span>
+
+                        </div>
+
+                        <button (click)="getPatientDataByPatientId(patient.id)" mat-raised-button class="btn-outline-info btn-block">Open</button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <br>
+
+</div>
+
+<div class="col col-sm-8 position " id="containerPatient" *ngIf="mainContentd">
+    <div class="container-fluid bg-light ">
+        &nbsp;
+
+        <nav class="navbar" aria-label=" navbar" style="justify-content: center;">
+            <div class="container-fluid">
+                <!-- Nav Header -->
+                <div class="navbar-header justify-content-center">
+                    <div class="row justify-content-md-center ">
+                        <span class="ml-auto"></span>
+                        <span>
+                            <a class="navbar-brand " *ngIf="roleUserLogin=='ROLE_SECRETAIRE'">
+                                <span class=" fa fa-plus-circle fa-2x border-success" style="color:rgb(22, 167, 118);" title="Add"></span>
+                            </a>
+                            <a class="navbar-brand" *ngIf="roleUserLogin !='ROLE_SECRETAIRE'" (click)="addPatientDataForm()">
+                                <span class="fa fa-plus-circle fa-2x border-success" style="color:rgb(22, 167, 118);" title="Add"></span>
+                            </a>
+                        </span>
+                        <div class="form-group has-search ml-auto">
+                            <span class=" form-control-static"></span>
+                            <a class="navbar-brand">
+                                <input type="search" class="form-control" placeholder="Search..." [(ngModel)]="term">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Nav Collapse -->
+            </div>
+        </nav>&nbsp;
+        <pagination-controls (pageChange)="p = $event" class="text-center"></pagination-controls>
+
+        <div class="row row-cols-2 row-cols-md-2 " *ngIf="roleUserLogin=='ROLE_SECRETAIRE' || roleUserLogin=='ROLE_ADMIN'">
+
+            <div class="col mb-2" *ngFor="let patients of patientAll | filter:term | paginate: { itemsPerPage:2, currentPage: p }">
+                <div class="card shadow card-size">
+
+                    <img src=" /assets/ordonnance.svg" class="card-img" alt="..." height="25">
+                    <div class="card-body">
+                        <div class="row">
+                            <span class="mb-0 text-truncated">
+
+                                <span class="data-icon">
+                                    <i class="fas fa fa-folder-o " aria-hidden="true"></i>
+                                </span>
+                                &nbsp;
+
+                                <span style=" font-size: 1.5em; color: Tomato;">
+                                    <strong>{{patients.prenom}} {{patients.nom}}</strong>
+                                </span>
+
+                            </span>
+
+                        </div>
+
+                        <button (click)="getPatientDataByPatientId(patients.id)" mat-raised-button class="btn-outline-info btn-block">Open</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class=" row row-cols-2 row-cols-md-2" *ngIf="roleUserLogin=='ROLE_MEDECIN'">
+            <div class="col mb-2">
+                <div class="card shadow card-size " *ngFor=" let patient of patientMedecin | filter:term | paginate: { itemsPerPage:2, currentPage: p }">
+
+                    <img src="/assets/ordonnance.svg" class="card-img" alt="..." height="25">
+                    <div class="card-body">
+                        <div class="row">
+                            <span class="mb-0 text-truncated">
+                                <span class="data-icon">
+                                    <i class="fas fa fa-folder-o " aria-hidden="true"></i>
+                                </span>
+                                &nbsp;
+                                <span style="font-size: 1.5em; color: Tomato;">
+                                    <strong>{{patient.patient.prenom}} {{patient.patient.nom}}</strong>
+                                </span>
+                            </span>
+
+                        </div>
+
+                        <button (click)="getPatientDataByPatientId(patient.id)" mat-raised-button class="btn-outline-info btn-block">Open</button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+<div class="col col-sm-8 position" id="containerPatientMainData" *ngIf="showMainData" [@inOutAnimation]>
+    <div class="container-fluid col-sm-12  color shadow bg-light">
+
+        &nbsp;&nbsp;&nbsp;
+        <pagination-controls (pageChange)=" p=$event" class="text-center"></pagination-controls>
+
+        <div class="row row-cols-1 row-cols-md-2 " *ngIf="roleUserLogin=='ROLE_SECRETAIRE' || roleUserLogin=='ROLE_ADMIN'">
+            <div class="col mb-2" *ngFor=" let patientData of patientData | filter:term | paginate: { itemsPerPage:2, currentPage: p }">
+                <div class="card card-color color">
+
+                    <img src="/assets/ordonnance.svg" class="card-img" alt="logo" height="20">
+                    <div class="card-body">
+
+                        <div class="row backColor">
+                            <div class="col-12 col-lg-8 col-md-6">
+                                <span class="mb-0 text-truncated" style="font-size: 2em; color: Tomato;"><i class="fas fa fa-folder-open-o fa-3x " aria-hidden="true"></i></span>
+                                <p class="lead">{{patientData.patient.prenom | titlecase }} {{patientData.patient.nom | titlecase }}</p>
+                                <p style="font-size: 1.3em;">
+                                    <span class="marge badge badge-info tags"><strong>{{patientData.groupe}}</strong></span>
+                                    <span class="marge badge badge-info tags"><strong>{{patientData.symptome}}</strong></span>
+                                </p>
+                            </div>
+                            <div class="col-12 col-lg-4 col-md-6 text-center">
+                                <svg class="heart-loader" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 90 90" version="1.1">
+                                    <g class="heart-loader__group">
+                                        <path class="heart-loader__square" stroke-width="1" fill="none" d="M0,30 0,90 60,90 60,30z" />
+                                        <path class="heart-loader__circle m--left" stroke-width="1" fill="none" d="M60,60 a30,30 0 0,1 -60,0 a30,30 0 0,1 60,0" />
+                                        <path class="heart-loader__circle m--right" stroke-width="1" fill="none" d="M60,60 a30,30 0 0,1 -60,0 a30,30 0 0,1 60,0" />
+                                        <path class="heart-loader__heartPath" stroke-width="1" d="M60,30 a30,30 0 0,1 0,60 L0,90 0,30 a30,30 0 0,1 60,0" />
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class="col-12 col-lg-4">
+                                <p class="text-center">
+                                    <button class="btn btn-block btn-outline-success" title="detail" (click)="patientDataDetaill(patientData.id)">
+                                        <span class="fa fa-info"></span>
+
+                                    </button>
+                                </p>
+                            </div>
+                            <div class="col-12 col-lg-4">
+                                <p class="text-center">
+                                    <button class="btn btn-outline-primary btn-block" title="donnée" (click)="getPatientDataId(patientData.id)">
+                                        <span class="fa fa-database"></span>
+                                    </button>
+
+                                </p>
+                            </div>
+                            <div class="col-12 col-lg-4  mb-2">
+                                <p class="text-center">
+                                    <button class="btn btn-outline-info btn-block" (click)=" cancelMainContent()" title="back">
+                                        <span class="fa fa-arrow-left"></span>
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 " *ngIf="roleUserLogin=='ROLE_MEDECIN'">
+            <div class="col mb-2" *ngFor=" let patientData of patientData | filter:term | paginate: { itemsPerPage:2, currentPage: p }">
+                <div class="card card-color color">
+
+                    <img src="/assets/ordonnance.svg" class="card-img" alt="logo" height="20">
+                    <div class="card-body">
+
+                        <div class="row backColor">
+                            <div class="col-12 col-lg-8 col-md-6">
+                                <span class="mb-0 text-truncated" style="font-size: 2em; color: Tomato;"><i class="fas fa fa-folder-open-o fa-3x " aria-hidden="true"></i></span>
+                                <p class="lead">{{patientData.patient.prenom | titlecase }} {{patientData.patient.nom | titlecase }}</p>
+                                <p style="font-size: 1.3em;">
+                                    <span class="marge badge badge-info tags"><strong>{{patientData.groupe}}</strong></span>
+                                    <span class="marge badge badge-info tags"><strong>{{patientData.symptome}}</strong></span>
+                                </p>
+                            </div>
+                            <div class="col-12 col-lg-4 col-md-6 text-center">
+                                <svg class="heart-loader" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 90 90" version="1.1">
+                                    <g class="heart-loader__group">
+                                        <path class="heart-loader__square" stroke-width="1" fill="none" d="M0,30 0,90 60,90 60,30z" />
+                                        <path class="heart-loader__circle m--left" stroke-width="1" fill="none" d="M60,60 a30,30 0 0,1 -60,0 a30,30 0 0,1 60,0" />
+                                        <path class="heart-loader__circle m--right" stroke-width="1" fill="none" d="M60,60 a30,30 0 0,1 -60,0 a30,30 0 0,1 60,0" />
+                                        <path class="heart-loader__heartPath" stroke-width="1" d="M60,30 a30,30 0 0,1 0,60 L0,90 0,30 a30,30 0 0,1 60,0" />
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class="col-12 col-lg-4">
+                                <p class="text-center">
+                                    <button class="btn btn-block btn-outline-success" title="detail" (click)="patientDataDetaill(patientData.id)">
+                                        <span class="fa fa-info"></span>
+
+                                    </button>
+                                </p>
+                            </div>
+                            <div class="col-12 col-lg-4">
+                                <p class="text-center">
+                                    <button class="btn btn-outline-primary btn-block" title="donnée" (click)="getPatientDataId(patientData.id)">
+                                        <span class="fa fa-database"></span>
+                                    </button>
+
+                                </p>
+                            </div>
+                            <div class="col-12 col-lg-4  mb-2">
+                                <p class="text-center">
+                                    <button class="btn btn-outline-info btn-block" (click)=" cancelMainContent()" title="back">
+                                        <span class="fa fa-arrow-left"></span>
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <br>
+</div>
+
+<p style="text-align:center;" *ngIf="showMainData">
+    <svg class="align-items-center" version=" 1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="98px" height="100px" viewBox="0 0 98 100" enable-background="new 0 0 98 100" xml:space="preserve">
+        <path fill="#FFFFFF" d="M85.715,26.547h-7.457c1.711-5.512,0.539-11.744-3.043-15.975c-3.587-4.236-9.158-6.766-14.896-6.766
+        c-4.109,0-7.852,1.29-10.733,3.6c-3.045-4.6-9.469-7.03-15.613-7.03c-7.055,0-14.166,3.225-16.001,10.323
+        c-1.147-0.196-2.492-0.347-3.91-0.347c-8.456,0-13.503,5.16-13.846,14.155c-0.185,4.844,1.047,8.677,3.662,11.394
+        c1.359,1.413,3.049,2.442,4.988,3.094v48.546c0,6.663,5.421,12.083,12.083,12.083h43.364c6.662,0,12.084-5.42,12.084-12.083v-9.373
+        c0,0,0,0.001,0.002,0.001c0.006,0,0.013-0.007,0.018-0.008l9.305,0.004c6.661,0,12.084-5.419,12.084-12.083V38.63
+        C97.799,31.968,92.378,26.547,85.715,26.547z" />
+        <path fill="none" d="M85.715,32.589H75.023v-0.178c-2.688,3-6.535,4.606-11.271,4.606c-4.216,0-8.304-1.251-10.778-2.189
+        c-2.216,2.709-6.748,6.943-13.577,7.167c-0.236,0.008-0.467,0.012-0.696,0.012c-6.706,0-10.612-3.162-12.737-5.904
+        c-2.943,2.091-7.034,3.49-11.06,3.669V87.54c0,3.321,2.719,6.041,6.042,6.041h43.366c3.322,0,6.041-2.72,6.041-6.041v-9.376
+        c0-3.322,2.723-6.041,6.043-6.041h9.318c3.322,0,6.043-2.719,6.043-6.042v-27.45C91.758,35.307,89.037,32.589,85.715,32.589z" />
+        <path fill="none" d="M75.042,32.605h10.69c1.653,0,3.156,0.674,4.25,1.759c-1.096-1.095-2.606-1.775-4.268-1.775H75.041
+        L75.042,32.605L75.042,32.605z" />
+        <path fill="none" d="M39.416,42.01c6.829-0.225,11.361-4.458,13.576-7.167c2.476,0.938,6.562,2.188,10.777,2.188
+        c4.727,0,8.567-1.6,11.254-4.588v-0.032c-2.688,3-6.535,4.606-11.271,4.606c-4.216,0-8.303-1.251-10.778-2.189
+        c-2.216,2.709-6.748,6.943-13.577,7.167c-0.236,0.008-0.467,0.012-0.696,0.012c-4.608,0-7.895-1.493-10.189-3.317
+        c2.295,1.831,5.586,3.332,10.207,3.332C38.949,42.022,39.18,42.018,39.416,42.01z" />
+        <path fill="none" d="M14.923,87.557V39.788c4.025-0.18,8.114-1.577,11.056-3.667c-0.004-0.006-0.01-0.012-0.014-0.018
+        c-2.943,2.091-7.034,3.49-11.06,3.669V87.54c0,1.669,0.688,3.186,1.792,4.281C15.603,90.727,14.923,89.217,14.923,87.557z" />
+        <polygon fill="#FF9C08" points="80.162,59.326 80.162,45.717 75.939,45.717 75.939,59.33 80.162,59.33 " />
+        <polygon fill="none" points="75.939,59.33 80.162,59.33 80.162,59.326 80.162,45.717 75.939,45.717 " />
+        <g>
+            <polygon fill="#FF9C08" points="75.939,59.33 80.162,59.33 80.162,59.326 80.162,45.717 75.939,45.717   " />
+            <path fill="#FF9C08" d="M89.982,34.364c-1.094-1.085-2.597-1.759-4.25-1.759h-10.69h-0.001v-0.016h-0.018v-0.146
+          c-2.687,2.988-6.527,4.588-11.254,4.588c-4.215,0-8.302-1.25-10.777-2.188c-2.215,2.709-6.747,6.942-13.576,7.167
+          c-0.236,0.008-0.467,0.012-0.696,0.012c-4.621,0-7.912-1.501-10.207-3.332c-1.038-0.825-1.872-1.717-2.534-2.569
+          c-2.942,2.09-7.031,3.487-11.056,3.667v47.769c0,1.66,0.68,3.17,1.774,4.265c1.094,1.086,2.597,1.76,4.25,1.76h43.366
+          c3.322,0,6.041-2.72,6.041-6.041v-9.376c0-3.322,2.723-6.041,6.043-6.041h9.318c3.322,0,6.043-2.719,6.043-6.042v-27.45
+          C91.758,36.97,91.078,35.459,89.982,34.364z M85.6,59.297c0.01,0.526-0.062,2.496-1.494,3.98c-0.656,0.681-1.832,1.492-3.692,1.492
+          h-7.19c-1.502,0-2.721-1.219-2.721-2.72V42.999c0-1.502,1.219-2.719,2.721-2.719h7.03c1.979,0,3.205,0.814,3.884,1.498
+          c1.405,1.417,1.467,3.22,1.463,3.567V59.297z" />
+        </g>
+
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new" d="M28.018,81.221c0,1.975-1.6,3.573-3.574,3.573l0,0
+        c-1.974,0-3.574-1.601-3.574-3.573l0,0c0-1.975,1.601-3.574,3.574-3.574l0,0C26.418,77.646,28.018,79.246,28.018,81.221
+        L28.018,81.221z">
+
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="2.8s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M39.018,51.221c0,1.975-1.6,3.573-3.574,3.573l0,0
+        c-1.974,0-3.574-1.601-3.574-3.573l0,0c0-1.975,1.601-3.575,3.574-3.575l0,0C37.418,47.646,39.018,49.246,39.018,51.221
+        L39.018,51.221z">
+
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="4s" repeatCount="indefinite" />
+
+        </path>
+
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M65.018,81.221c0,1.975-1.6,3.573-3.574,3.573l0,0
+        c-1.973,0-3.573-1.601-3.573-3.573l0,0c0-1.975,1.601-3.574,3.573-3.574l0,0C63.418,77.646,65.018,79.246,65.018,81.221
+        L65.018,81.221z">
+
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="2 50;2 -50;" dur="2.2s" repeatCount="indefinite" />
+
+        </path>
+
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M58.018,59.221c0,1.975-1.6,3.573-3.574,3.573l0,0
+        c-1.973,0-3.573-1.601-3.573-3.573l0,0c0-1.975,1.601-3.574,3.573-3.574l0,0C56.418,55.646,58.018,57.246,58.018,59.221
+        L58.018,59.221z">
+
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="2.5s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M23.165,61.221c0,0.949-0.771,1.719-1.721,1.719l0,0
+        c-0.949,0-1.72-0.77-1.72-1.719l0,0c0-0.951,0.771-1.721,1.72-1.721l0,0C22.394,59.5,23.165,60.27,23.165,61.221L23.165,61.221z">
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="3s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M45.165,71.221c0,2.055-1.667,3.719-3.721,3.719l0,0
+        c-2.053,0-3.719-1.664-3.719-3.719l0,0c0-2.056,1.667-3.72,3.719-3.72l0,0C43.498,67.501,45.165,69.165,45.165,71.221L45.165,71.221
+        z">
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="4s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M43.877,86.221c0,1.344-1.09,2.432-2.434,2.432l0,0
+        c-1.343,0-2.433-1.088-2.433-2.432l0,0c0-1.345,1.09-2.434,2.433-2.434l0,0C42.788,83.787,43.877,84.876,43.877,86.221
+        L43.877,86.221z">
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="3s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M63.999,42.22c0,1.411-1.146,2.554-2.556,2.554l0,0
+        c-1.408,0-2.553-1.143-2.553-2.554l0,0c0-1.411,1.145-2.554,2.553-2.554l0,0C62.854,39.666,63.999,40.809,63.999,42.22L63.999,42.22
+        z">
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="3s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M23.109,46.601c0,0.709-0.575,1.283-1.285,1.283l0,0
+        c-0.708,0-1.283-0.573-1.283-1.283l0,0c0-0.709,0.575-1.284,1.283-1.284l0,0C22.534,45.317,23.109,45.891,23.109,46.601
+        L23.109,46.601z">
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="2s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M53.075,49.444c0,0.709-0.574,1.283-1.284,1.283l0,0
+        c-0.708,0-1.283-0.573-1.283-1.283l0,0c0-0.709,0.575-1.283,1.283-1.283l0,0C52.5,48.161,53.075,48.734,53.075,49.444L53.075,49.444
+        z">
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="2.5s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M53.497,74.723c0,0.711-0.575,1.283-1.284,1.283l0,0
+        c-0.708,0-1.283-0.572-1.283-1.283l0,0c0-0.709,0.575-1.281,1.283-1.281l0,0C52.921,73.439,53.497,74.014,53.497,74.723
+        L53.497,74.723z">
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="2.2s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M26.061,70.771c0,0.709-0.575,1.283-1.284,1.283l0,0
+        c-0.708,0-1.283-0.574-1.283-1.283l0,0c0-0.709,0.575-1.283,1.283-1.283l0,0C25.486,69.486,26.061,70.062,26.061,70.771
+        L26.061,70.771z">
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="2s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M65.877,68.221c0,1.344-1.09,2.432-2.434,2.432l0,0
+        c-1.344,0-2.434-1.088-2.434-2.432l0,0c0-1.345,1.09-2.434,2.434-2.434l0,0C64.788,65.787,65.877,66.876,65.877,68.221
+        L65.877,68.221z">
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="-10 50;-10 -50;" dur="5s" repeatCount="indefinite" />
+
+        </path>
+    </svg>
+</p>
+
+<p style="text-align:center; margin-left:8%;" *ngIf=" mainContent">
+    <svg class="align-items-center" version=" 1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="98px" height="100px" viewBox="0 0 98 100" enable-background="new 0 0 98 100" xml:space="preserve">
+        <path fill="#FFFFFF" d="M85.715,26.547h-7.457c1.711-5.512,0.539-11.744-3.043-15.975c-3.587-4.236-9.158-6.766-14.896-6.766
+        c-4.109,0-7.852,1.29-10.733,3.6c-3.045-4.6-9.469-7.03-15.613-7.03c-7.055,0-14.166,3.225-16.001,10.323
+        c-1.147-0.196-2.492-0.347-3.91-0.347c-8.456,0-13.503,5.16-13.846,14.155c-0.185,4.844,1.047,8.677,3.662,11.394
+        c1.359,1.413,3.049,2.442,4.988,3.094v48.546c0,6.663,5.421,12.083,12.083,12.083h43.364c6.662,0,12.084-5.42,12.084-12.083v-9.373
+        c0,0,0,0.001,0.002,0.001c0.006,0,0.013-0.007,0.018-0.008l9.305,0.004c6.661,0,12.084-5.419,12.084-12.083V38.63
+        C97.799,31.968,92.378,26.547,85.715,26.547z" />
+        <path fill="none" d="M85.715,32.589H75.023v-0.178c-2.688,3-6.535,4.606-11.271,4.606c-4.216,0-8.304-1.251-10.778-2.189
+        c-2.216,2.709-6.748,6.943-13.577,7.167c-0.236,0.008-0.467,0.012-0.696,0.012c-6.706,0-10.612-3.162-12.737-5.904
+        c-2.943,2.091-7.034,3.49-11.06,3.669V87.54c0,3.321,2.719,6.041,6.042,6.041h43.366c3.322,0,6.041-2.72,6.041-6.041v-9.376
+        c0-3.322,2.723-6.041,6.043-6.041h9.318c3.322,0,6.043-2.719,6.043-6.042v-27.45C91.758,35.307,89.037,32.589,85.715,32.589z" />
+        <path fill="none" d="M75.042,32.605h10.69c1.653,0,3.156,0.674,4.25,1.759c-1.096-1.095-2.606-1.775-4.268-1.775H75.041
+        L75.042,32.605L75.042,32.605z" />
+        <path fill="none" d="M39.416,42.01c6.829-0.225,11.361-4.458,13.576-7.167c2.476,0.938,6.562,2.188,10.777,2.188
+        c4.727,0,8.567-1.6,11.254-4.588v-0.032c-2.688,3-6.535,4.606-11.271,4.606c-4.216,0-8.303-1.251-10.778-2.189
+        c-2.216,2.709-6.748,6.943-13.577,7.167c-0.236,0.008-0.467,0.012-0.696,0.012c-4.608,0-7.895-1.493-10.189-3.317
+        c2.295,1.831,5.586,3.332,10.207,3.332C38.949,42.022,39.18,42.018,39.416,42.01z" />
+        <path fill="none" d="M14.923,87.557V39.788c4.025-0.18,8.114-1.577,11.056-3.667c-0.004-0.006-0.01-0.012-0.014-0.018
+        c-2.943,2.091-7.034,3.49-11.06,3.669V87.54c0,1.669,0.688,3.186,1.792,4.281C15.603,90.727,14.923,89.217,14.923,87.557z" />
+        <polygon fill="#FF9C08" points="80.162,59.326 80.162,45.717 75.939,45.717 75.939,59.33 80.162,59.33 " />
+        <polygon fill="none" points="75.939,59.33 80.162,59.33 80.162,59.326 80.162,45.717 75.939,45.717 " />
+        <g>
+            <polygon fill="#FF9C08" points="75.939,59.33 80.162,59.33 80.162,59.326 80.162,45.717 75.939,45.717   " />
+            <path fill="#FF9C08" d="M89.982,34.364c-1.094-1.085-2.597-1.759-4.25-1.759h-10.69h-0.001v-0.016h-0.018v-0.146
+          c-2.687,2.988-6.527,4.588-11.254,4.588c-4.215,0-8.302-1.25-10.777-2.188c-2.215,2.709-6.747,6.942-13.576,7.167
+          c-0.236,0.008-0.467,0.012-0.696,0.012c-4.621,0-7.912-1.501-10.207-3.332c-1.038-0.825-1.872-1.717-2.534-2.569
+          c-2.942,2.09-7.031,3.487-11.056,3.667v47.769c0,1.66,0.68,3.17,1.774,4.265c1.094,1.086,2.597,1.76,4.25,1.76h43.366
+          c3.322,0,6.041-2.72,6.041-6.041v-9.376c0-3.322,2.723-6.041,6.043-6.041h9.318c3.322,0,6.043-2.719,6.043-6.042v-27.45
+          C91.758,36.97,91.078,35.459,89.982,34.364z M85.6,59.297c0.01,0.526-0.062,2.496-1.494,3.98c-0.656,0.681-1.832,1.492-3.692,1.492
+          h-7.19c-1.502,0-2.721-1.219-2.721-2.72V42.999c0-1.502,1.219-2.719,2.721-2.719h7.03c1.979,0,3.205,0.814,3.884,1.498
+          c1.405,1.417,1.467,3.22,1.463,3.567V59.297z" />
+        </g>
+
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new" d="M28.018,81.221c0,1.975-1.6,3.573-3.574,3.573l0,0
+        c-1.974,0-3.574-1.601-3.574-3.573l0,0c0-1.975,1.601-3.574,3.574-3.574l0,0C26.418,77.646,28.018,79.246,28.018,81.221
+        L28.018,81.221z">
+
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="2.8s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M39.018,51.221c0,1.975-1.6,3.573-3.574,3.573l0,0
+        c-1.974,0-3.574-1.601-3.574-3.573l0,0c0-1.975,1.601-3.575,3.574-3.575l0,0C37.418,47.646,39.018,49.246,39.018,51.221
+        L39.018,51.221z">
+
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="4s" repeatCount="indefinite" />
+
+        </path>
+
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M65.018,81.221c0,1.975-1.6,3.573-3.574,3.573l0,0
+        c-1.973,0-3.573-1.601-3.573-3.573l0,0c0-1.975,1.601-3.574,3.573-3.574l0,0C63.418,77.646,65.018,79.246,65.018,81.221
+        L65.018,81.221z">
+
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="2 50;2 -50;" dur="2.2s" repeatCount="indefinite" />
+
+        </path>
+
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M58.018,59.221c0,1.975-1.6,3.573-3.574,3.573l0,0
+        c-1.973,0-3.573-1.601-3.573-3.573l0,0c0-1.975,1.601-3.574,3.573-3.574l0,0C56.418,55.646,58.018,57.246,58.018,59.221
+        L58.018,59.221z">
+
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="2.5s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M23.165,61.221c0,0.949-0.771,1.719-1.721,1.719l0,0
+        c-0.949,0-1.72-0.77-1.72-1.719l0,0c0-0.951,0.771-1.721,1.72-1.721l0,0C22.394,59.5,23.165,60.27,23.165,61.221L23.165,61.221z">
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="3s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M45.165,71.221c0,2.055-1.667,3.719-3.721,3.719l0,0
+        c-2.053,0-3.719-1.664-3.719-3.719l0,0c0-2.056,1.667-3.72,3.719-3.72l0,0C43.498,67.501,45.165,69.165,45.165,71.221L45.165,71.221
+        z">
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="4s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M43.877,86.221c0,1.344-1.09,2.432-2.434,2.432l0,0
+        c-1.343,0-2.433-1.088-2.433-2.432l0,0c0-1.345,1.09-2.434,2.433-2.434l0,0C42.788,83.787,43.877,84.876,43.877,86.221
+        L43.877,86.221z">
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="3s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M63.999,42.22c0,1.411-1.146,2.554-2.556,2.554l0,0
+        c-1.408,0-2.553-1.143-2.553-2.554l0,0c0-1.411,1.145-2.554,2.553-2.554l0,0C62.854,39.666,63.999,40.809,63.999,42.22L63.999,42.22
+        z">
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="3s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M23.109,46.601c0,0.709-0.575,1.283-1.285,1.283l0,0
+        c-0.708,0-1.283-0.573-1.283-1.283l0,0c0-0.709,0.575-1.284,1.283-1.284l0,0C22.534,45.317,23.109,45.891,23.109,46.601
+        L23.109,46.601z">
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="2s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M53.075,49.444c0,0.709-0.574,1.283-1.284,1.283l0,0
+        c-0.708,0-1.283-0.573-1.283-1.283l0,0c0-0.709,0.575-1.283,1.283-1.283l0,0C52.5,48.161,53.075,48.734,53.075,49.444L53.075,49.444
+        z">
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="2.5s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M53.497,74.723c0,0.711-0.575,1.283-1.284,1.283l0,0
+        c-0.708,0-1.283-0.572-1.283-1.283l0,0c0-0.709,0.575-1.281,1.283-1.281l0,0C52.921,73.439,53.497,74.014,53.497,74.723
+        L53.497,74.723z">
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="2.2s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M26.061,70.771c0,0.709-0.575,1.283-1.284,1.283l0,0
+        c-0.708,0-1.283-0.574-1.283-1.283l0,0c0-0.709,0.575-1.283,1.283-1.283l0,0C25.486,69.486,26.061,70.062,26.061,70.771
+        L26.061,70.771z">
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="2s" repeatCount="indefinite" />
+
+        </path>
+        <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M65.877,68.221c0,1.344-1.09,2.432-2.434,2.432l0,0
+        c-1.344,0-2.434-1.088-2.434-2.432l0,0c0-1.345,1.09-2.434,2.434-2.434l0,0C64.788,65.787,65.877,66.876,65.877,68.221
+        L65.877,68.221z">
+            <animateTransform attributeName="transform" attributeType="XML" type="translate" values="-10 50;-10 -50;" dur="5s" repeatCount="indefinite" />
+
+        </path>
+    </svg>
+</p>
+
+<main class="col-8 position border shadow-none p-1 mainColor rounded " *ngIf="donnee" [@inOutAnimation]>
+    <div class="jumbotron">
+        <span class="des comment bg-dark">
+            <div class="col-sm-12 border-success   text-gray-dark border-primary" style="font-size:14px; justify-content:center; ">
+                <div class="row-1 border shadow-none ">
+                    <h6 hoverItem><strong>Symptôme:</strong>&nbsp;<em class="text-break">{{dataInfo?.symptome || async}}</em></h6>
+                </div>
+                <div class="row-1 border shadow-none">
+                    <h6><strong>Constat:</strong>&nbsp;<em class="text-break">{{dataInfo?.constat || async}}</em></h6>
+                </div>
+                <div class="row-1 border shadow-none">
+                    <h6><strong>Groupe_Sanguin:</strong>&nbsp;<em class="text-break">{{dataInfo?.groupe || async}}</em></h6>
+                </div>
+                <div class="row-1 border shadow-none">
+                    <h6><strong>Poids:</strong>&nbsp;<em>{{dataInfo?.poids || async}}</em></h6>
+                </div>
+                <div class="row-1 border shadow-none">
+                    <h6><strong>Taille:</strong>&nbsp;<em>{{dataInfo?.taille || async}}</em></h6>
+                </div>
+                <div class="row-1 border shadow-none">
+                    <h6><strong>Date:</strong>&nbsp;<em>{{dataInfo?.date || async}}</em></h6>
+                </div>
+                <div class="row-1 border shadow-none">
+                    <h6><strong>Heure:</strong>&nbsp;<em>{{dataInfo?.heure || async}}</em></h6>
+                </div>
+                &nbsp;
+            </div>
+            <span class="display-6" style="float:right">
+                <button disabled *ngIf="roleUserLogin =='ROLE_SECRETAIRE'" class="btn btn-warning fa fa-edit" (click)="editData(dataInfo)" title="edit"></button>
+                <button *ngIf="roleUserLogin !=='ROLE_SECRETAIRE'" class=" btn btn-danger fa fa-trash" (click)="deleteDataPatient(dataInfo?.id)" title="edit"> </button>
+                &nbsp;
+                <button *ngIf="roleUserLogin !=='ROLE_SECRETAIRE'" class=" btn btn-warning fa fa-edit" (click)="editData(dataInfo)" title="edit"> </button>
+
+                &nbsp;
+                <button class="btn btn-info fa fa-arrow-left " (click)="cancel()" title="back"></button>
+            </span>
+        </span>
+
+        <span class="btn btn-success btn-sm" title="ordonnance" (click)="getOrdonnance(dataInfo.id)" role="button">
+            <span><img src="/assets/data.svg" height="30" alt="Home"></span>
+        </span>
+
+        <hr class="my-2">
+        <p class="text-center" *ngIf="donnee">
+            <svg version=" 1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="90px" height="80px" viewBox="0 0 98 100" enable-background="new 0 0 98 100" xml:space="preserve">
+                <path fill="#FFFFFF" d="M85.715,26.547h-7.457c1.711-5.512,0.539-11.744-3.043-15.975c-3.587-4.236-9.158-6.766-14.896-6.766
+        c-4.109,0-7.852,1.29-10.733,3.6c-3.045-4.6-9.469-7.03-15.613-7.03c-7.055,0-14.166,3.225-16.001,10.323
+        c-1.147-0.196-2.492-0.347-3.91-0.347c-8.456,0-13.503,5.16-13.846,14.155c-0.185,4.844,1.047,8.677,3.662,11.394
+        c1.359,1.413,3.049,2.442,4.988,3.094v48.546c0,6.663,5.421,12.083,12.083,12.083h43.364c6.662,0,12.084-5.42,12.084-12.083v-9.373
+        c0,0,0,0.001,0.002,0.001c0.006,0,0.013-0.007,0.018-0.008l9.305,0.004c6.661,0,12.084-5.419,12.084-12.083V38.63
+        C97.799,31.968,92.378,26.547,85.715,26.547z" />
+                <path fill="none" d="M85.715,32.589H75.023v-0.178c-2.688,3-6.535,4.606-11.271,4.606c-4.216,0-8.304-1.251-10.778-2.189
+        c-2.216,2.709-6.748,6.943-13.577,7.167c-0.236,0.008-0.467,0.012-0.696,0.012c-6.706,0-10.612-3.162-12.737-5.904
+        c-2.943,2.091-7.034,3.49-11.06,3.669V87.54c0,3.321,2.719,6.041,6.042,6.041h43.366c3.322,0,6.041-2.72,6.041-6.041v-9.376
+        c0-3.322,2.723-6.041,6.043-6.041h9.318c3.322,0,6.043-2.719,6.043-6.042v-27.45C91.758,35.307,89.037,32.589,85.715,32.589z" />
+                <path fill="none" d="M75.042,32.605h10.69c1.653,0,3.156,0.674,4.25,1.759c-1.096-1.095-2.606-1.775-4.268-1.775H75.041
+        L75.042,32.605L75.042,32.605z" />
+                <path fill="none" d="M39.416,42.01c6.829-0.225,11.361-4.458,13.576-7.167c2.476,0.938,6.562,2.188,10.777,2.188
+        c4.727,0,8.567-1.6,11.254-4.588v-0.032c-2.688,3-6.535,4.606-11.271,4.606c-4.216,0-8.303-1.251-10.778-2.189
+        c-2.216,2.709-6.748,6.943-13.577,7.167c-0.236,0.008-0.467,0.012-0.696,0.012c-4.608,0-7.895-1.493-10.189-3.317
+        c2.295,1.831,5.586,3.332,10.207,3.332C38.949,42.022,39.18,42.018,39.416,42.01z" />
+                <path fill="none" d="M14.923,87.557V39.788c4.025-0.18,8.114-1.577,11.056-3.667c-0.004-0.006-0.01-0.012-0.014-0.018
+        c-2.943,2.091-7.034,3.49-11.06,3.669V87.54c0,1.669,0.688,3.186,1.792,4.281C15.603,90.727,14.923,89.217,14.923,87.557z" />
+                <polygon fill="#FF9C08" points="80.162,59.326 80.162,45.717 75.939,45.717 75.939,59.33 80.162,59.33 " />
+                <polygon fill="none" points="75.939,59.33 80.162,59.33 80.162,59.326 80.162,45.717 75.939,45.717 " />
+                <g>
+                    <polygon fill="#FF9C08" points="75.939,59.33 80.162,59.33 80.162,59.326 80.162,45.717 75.939,45.717   " />
+                    <path fill="#FF9C08" d="M89.982,34.364c-1.094-1.085-2.597-1.759-4.25-1.759h-10.69h-0.001v-0.016h-0.018v-0.146
+          c-2.687,2.988-6.527,4.588-11.254,4.588c-4.215,0-8.302-1.25-10.777-2.188c-2.215,2.709-6.747,6.942-13.576,7.167
+          c-0.236,0.008-0.467,0.012-0.696,0.012c-4.621,0-7.912-1.501-10.207-3.332c-1.038-0.825-1.872-1.717-2.534-2.569
+          c-2.942,2.09-7.031,3.487-11.056,3.667v47.769c0,1.66,0.68,3.17,1.774,4.265c1.094,1.086,2.597,1.76,4.25,1.76h43.366
+          c3.322,0,6.041-2.72,6.041-6.041v-9.376c0-3.322,2.723-6.041,6.043-6.041h9.318c3.322,0,6.043-2.719,6.043-6.042v-27.45
+          C91.758,36.97,91.078,35.459,89.982,34.364z M85.6,59.297c0.01,0.526-0.062,2.496-1.494,3.98c-0.656,0.681-1.832,1.492-3.692,1.492
+          h-7.19c-1.502,0-2.721-1.219-2.721-2.72V42.999c0-1.502,1.219-2.719,2.721-2.719h7.03c1.979,0,3.205,0.814,3.884,1.498
+          c1.405,1.417,1.467,3.22,1.463,3.567V59.297z" />
+                </g>
+
+                <path opacity="0.3" fill="#FFFFFF" enable-background="new" d="M28.018,81.221c0,1.975-1.6,3.573-3.574,3.573l0,0
+        c-1.974,0-3.574-1.601-3.574-3.573l0,0c0-1.975,1.601-3.574,3.574-3.574l0,0C26.418,77.646,28.018,79.246,28.018,81.221
+        L28.018,81.221z">
+
+                    <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="2.8s" repeatCount="indefinite" />
+
+                </path>
+                <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M39.018,51.221c0,1.975-1.6,3.573-3.574,3.573l0,0
+        c-1.974,0-3.574-1.601-3.574-3.573l0,0c0-1.975,1.601-3.575,3.574-3.575l0,0C37.418,47.646,39.018,49.246,39.018,51.221
+        L39.018,51.221z">
+
+                    <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="4s" repeatCount="indefinite" />
+
+                </path>
+
+                <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M65.018,81.221c0,1.975-1.6,3.573-3.574,3.573l0,0
+        c-1.973,0-3.573-1.601-3.573-3.573l0,0c0-1.975,1.601-3.574,3.573-3.574l0,0C63.418,77.646,65.018,79.246,65.018,81.221
+        L65.018,81.221z">
+
+                    <animateTransform attributeName="transform" attributeType="XML" type="translate" values="2 50;2 -50;" dur="2.2s" repeatCount="indefinite" />
+
+                </path>
+
+                <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M58.018,59.221c0,1.975-1.6,3.573-3.574,3.573l0,0
+        c-1.973,0-3.573-1.601-3.573-3.573l0,0c0-1.975,1.601-3.574,3.573-3.574l0,0C56.418,55.646,58.018,57.246,58.018,59.221
+        L58.018,59.221z">
+
+                    <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="2.5s" repeatCount="indefinite" />
+
+                </path>
+                <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M23.165,61.221c0,0.949-0.771,1.719-1.721,1.719l0,0
+        c-0.949,0-1.72-0.77-1.72-1.719l0,0c0-0.951,0.771-1.721,1.72-1.721l0,0C22.394,59.5,23.165,60.27,23.165,61.221L23.165,61.221z">
+                    <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="3s" repeatCount="indefinite" />
+
+                </path>
+                <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M45.165,71.221c0,2.055-1.667,3.719-3.721,3.719l0,0
+        c-2.053,0-3.719-1.664-3.719-3.719l0,0c0-2.056,1.667-3.72,3.719-3.72l0,0C43.498,67.501,45.165,69.165,45.165,71.221L45.165,71.221
+        z">
+                    <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="4s" repeatCount="indefinite" />
+
+                </path>
+                <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M43.877,86.221c0,1.344-1.09,2.432-2.434,2.432l0,0
+        c-1.343,0-2.433-1.088-2.433-2.432l0,0c0-1.345,1.09-2.434,2.433-2.434l0,0C42.788,83.787,43.877,84.876,43.877,86.221
+        L43.877,86.221z">
+                    <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="3s" repeatCount="indefinite" />
+
+                </path>
+                <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M63.999,42.22c0,1.411-1.146,2.554-2.556,2.554l0,0
+        c-1.408,0-2.553-1.143-2.553-2.554l0,0c0-1.411,1.145-2.554,2.553-2.554l0,0C62.854,39.666,63.999,40.809,63.999,42.22L63.999,42.22
+        z">
+                    <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="3s" repeatCount="indefinite" />
+
+                </path>
+                <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M23.109,46.601c0,0.709-0.575,1.283-1.285,1.283l0,0
+        c-0.708,0-1.283-0.573-1.283-1.283l0,0c0-0.709,0.575-1.284,1.283-1.284l0,0C22.534,45.317,23.109,45.891,23.109,46.601
+        L23.109,46.601z">
+                    <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="2s" repeatCount="indefinite" />
+
+                </path>
+                <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M53.075,49.444c0,0.709-0.574,1.283-1.284,1.283l0,0
+        c-0.708,0-1.283-0.573-1.283-1.283l0,0c0-0.709,0.575-1.283,1.283-1.283l0,0C52.5,48.161,53.075,48.734,53.075,49.444L53.075,49.444
+        z">
+                    <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="2.5s" repeatCount="indefinite" />
+
+                </path>
+                <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M53.497,74.723c0,0.711-0.575,1.283-1.284,1.283l0,0
+        c-0.708,0-1.283-0.572-1.283-1.283l0,0c0-0.709,0.575-1.281,1.283-1.281l0,0C52.921,73.439,53.497,74.014,53.497,74.723
+        L53.497,74.723z">
+                    <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="2.2s" repeatCount="indefinite" />
+
+                </path>
+                <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M26.061,70.771c0,0.709-0.575,1.283-1.284,1.283l0,0
+        c-0.708,0-1.283-0.574-1.283-1.283l0,0c0-0.709,0.575-1.283,1.283-1.283l0,0C25.486,69.486,26.061,70.062,26.061,70.771
+        L26.061,70.771z">
+                    <animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 50;0 -50;" dur="2s" repeatCount="indefinite" />
+
+                </path>
+                <path opacity="0.3" fill="#FFFFFF" enable-background="new    " d="M65.877,68.221c0,1.344-1.09,2.432-2.434,2.432l0,0
+        c-1.344,0-2.434-1.088-2.434-2.432l0,0c0-1.345,1.09-2.434,2.434-2.434l0,0C64.788,65.787,65.877,66.876,65.877,68.221
+        L65.877,68.221z">
+                    <animateTransform attributeName="transform" attributeType="XML" type="translate" values="-10 50;-10 -50;" dur="5s" repeatCount="indefinite" />
+
+                </path>
+            </svg>
+        </p>
+
+    </div>
+
+</main>
+
+<div *ngIf="showOrdonnance" [@slideInOut]>
+
+    <p class="text-center">
+        <button class="btn btn-success">
+            <i class="fa fa-print fa-1x" aria-hidden="true" (click)="prints()" title="print"></i>
+        </button>&nbsp;
+        <button *ngIf="roleUserLogin =='ROLE_MEDECIN' || roleUserLogin =='ROLE_ADMIN'" class="btn btn-warning fa fa-edit" (click)="updateMedoc( dataInfo.ordonnance.id, dataInfo.ordonnance.medicament, dataInfo.ordonnance.dosage, dataInfo.ordonnance.quantite)" title="edit"> </button>
+        <button disabled *ngIf="roleUserLogin =='ROLE_SECRETAIRE'" class="btn btn-warning fa fa-edit" title="edit"> </button>
+        &nbsp;
+        <button class="btn btn-info fa fa-arrow-left" (click)="cancelMain()" title="back"></button>
+    </p>
+    <div class="col col-sm-10 positionOrdonnance shadow-none p-3 bg-light rounded" id="pdf" #pdf *ngIf="showOrdonnance">
+        <div class="container-fluid">
+            <div class=" container-fluid">
+                <div class="row row-cols-1 row-cols-md ">
+                    <div class="col" align="center">
+                        <div class=" row bord">
+                            <div class="col "><img src="/assets/logo_ordo.png" height="49" alt="MIN.SANTE"> <br>
+                                <p>Ministere de la Sante</p>
+                            </div>
+
+                            <div class="col ">Ordonnance
+                                <p>Votre partenaire medicale <br>tel: 334332122
+                                    <br>
+                                    N° <mark>{{dataInfo.ordonnance?.numero}} </mark>
+
+                                </p>
+                            </div>
+
+                            <div class="col "><img src="/assets/logo_kidscare.svg" height="44" alt="">
+                                <p>KIDSCARE</p>
+                            </div>
+                            <div class="w-100"></div>
+                        </div>
+                    </div>
+                    &nbsp;
+                    <div class="container" align="center">
+                        <div class="row bord">
+                            <div class="col bord">
+                                <h6>
+                                    <strong>Coordonnées du Medecin</strong>
+                                </h6>
+                            </div>
+                            <div class="w-100"></div>
+                            <div class="col bord text-break">Nom</div>
+                            <div class="col bord">{{dataInfo?.patient.medecin.nom}}</div>
+                            <div class="w-100"></div>
+                            <div class="col bord text-break">Prenom</div>
+                            <div class="col bord">{{dataInfo?.patient.medecin.prenom}}</div>
+                            <div class="w-100"></div>
+                            <div class="col bord">Email</div>
+                            <div class="col bord">{{dataInfo?.patient.medecin.email}}</div>
+                            <div class="w-100"></div>
+                            <div class="col bord">Specialite</div>
+                            <div class="col bord">{{dataInfo?.patient.medecin.specialite}}</div>
+                            <div class="w-100"></div>
+                            <div class="col bord">Telephone</div>
+                            <div class="col bord">{{dataInfo?.patient.medecin.tel}}</div>
+                        </div>
+                        <br>
+                        <div class="row bord">
+                            <div class="col bord">
+                                <h6>
+                                    <strong>Données du Patient</strong>
+                                </h6>
+                            </div>
+                            <div class="w-100"></div>
+                            <div class="col bord">Nom</div>
+                            <div class="col bord text-break">{{dataInfo?.patient.nom}}</div>
+                            <div class="w-100"></div>
+                            <div class="col bord">Prenom</div>
+                            <div class="col bord text-break">{{dataInfo?.patient.prenom}}</div>
+                            <div class="w-100"></div>
+                            <div class="col bord">Adresse</div>
+                            <div class="col bord text-break">{{dataInfo?.patient.adresse}}</div>
+                            <div class="w-100"></div>
+                            <div class="col bord">Sexe</div>
+                            <div class="col bord">{{dataInfo?.patient.sexe}}</div>
+                            <div class="w-100"></div>
+                            <div class="col bord">Poids (kg)</div>
+                            <div class="col bord">{{dataInfo?.poids}} </div>
+                            <div class="w-100"></div>
+                            <div class="col bord">Symptome</div>
+                            <div class="col bord text-break">{{dataInfo?.symptome}}</div>
+                            <div class="w-100"></div>
+                            <div class="col bord">Taille (m)</div>
+                            <div class="col bord">{{dataInfo?.taille}} </div>
+                        </div>
+                        <br>
+                        <div class="row bord">
+                            <div class="col bord">
+                                <h6>
+                                    <strong>Médicaments</strong>
+                                </h6>
+                            </div>
+                            <div class="w-100"></div>
+                            <div class="col bord">Medicament</div>
+                            <div class="col bord">{{ dataInfo.ordonnance?.medicament}}</div>
+                            <div class="w-100"></div>
+                            <div class="col bord">Dosage (jour/repas)</div>
+                            <div class="col bord">{{ dataInfo.ordonnance?.dosage}}</div>
+                            <div class="w-100"></div>
+                            <div class="col bord">Quantite (nombre)</div>
+                            <div class="col bord">{{ dataInfo.ordonnance?.quantite}}</div>
+
+                        </div>
+                        <br>
+                        <div class="row bord">
+                            <div class="col bord">
+                                <h6>
+                                    <strong>Validité</strong>
+                                </h6>
+                            </div>
+                            <div class="w-100"></div>
+                            <div class="col bord">
+                                Validité de l'ordonnace
+                            </div>
+                            <div class="col bord">
+                                <div class="form-group">
+                                    <input class="form-check-input float-left" type="checkbox" name="flexRadioDefault">
+                                    <label class="form-check-label " for="flexCheckChecked">
+                                        Ordonnance ponctuelle
+                                    </label>
+                                    <br>
+                                    <input class="form-check-input float-left" type="checkbox" name="flexRadioDefault">
+                                    <label class="form-check-label " for="flexCheckChecked">
+                                        renouvelable <mark><span>____</span></mark>mois
+                                    </label>
+                                    <br>
+                                    <input class="form-check-input float-left" type="checkbox" name="flexRadioDefault">
+                                    <label class="form-check-label " for="flexCheckChecked">
+                                        renouvelable <mark><span>____</span></mark>fois
+                                    </label>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <br>
+                        <div class="row bord ">
+                            <div class="col"></div>
+                            <div class="w-100"></div>
+                            <div class="col ">
+                                <h3>
+                                    <strong>Important</strong>
+                                </h3>
+                            </div>
+                            <div class="col mb-4">
+
+                                <em>Cette ordonnance est delivré par <strong>{{dataInfo?.patient.medecin.prenom}}
+                                        {{dataInfo?.patient.medecin.nom}}</strong> specialiste en
+                                    <strong> {{dataInfo?.patient.medecin.specialite}}</strong>
+                                    officient au cabinet medicale <strong>KIDSCARE. </strong> Cette ordonnance est sous la responsabilité
+                                    du medecin chargé du patient
+                                    <br>
+                                    <strong class="cacher"><u>Signature</u></strong><strong class="float-right"><u>Cacher</u></strong>
+
+                                </em>
+
+                            </div>
+                            <div class="w-100"></div>
+                            <div class="col"></div>
+                            <div class="w-100"></div>
+                            <div class="col"><b>Date: {{today}}</b>
+                                <hr style="color: brown;" />
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    &nbsp; &nbsp; &nbsp;<br><br><br>
+</div>
+
+<div class="container formBloc border  shadow  bg-light" *ngIf="edit" [@slideInOut]>
+    <form [formGroup]="registerDataFormEdit" (ngSubmit)="updateDataPatient()" align="center">
+        <div *ngIf="bloc1">
+            <h2>Examiner Patient</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-error *ngIf="registerDataFormEdit.controls['symptome'].invalid && registerDataFormEdit.controls['symptome'].touched">
+                            <strong class="text-danger"><em>SYMPTOME REQUIS</em></strong>
+                        </mat-error>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Symptome</mat-label>
+                            <input matInput placeholder="symptome" class="input" formControlName="symptome">
+                            <mat-icon matSuffix class="blue-icon">art_track</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-error *ngIf="registerDataFormEdit.controls['poids'].invalid && registerDataFormEdit.controls['poids'].touched">
+                            <strong class="text-danger"><em>POIDS INVALID</em></strong>
+                        </mat-error>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Poids</mat-label>
+                            <input matInput placeholder="Poids" class="input" formControlName="poids">
+                            <mat-icon matSuffix class="blue-icon">airline_seat_recline_normal</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+            </div>
+
+            <div class="row  justify-content-center">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-error *ngIf="registerDataFormEdit.controls['taille'].invalid && registerDataFormEdit.controls['taille'].touched">
+                            <strong class="text-danger"><em>TAILLE INVALID</em></strong>
+                        </mat-error>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Taille</mat-label>
+                            <input matInput placeholder="Taille" class="input" formControlName="taille">
+                            <mat-icon matSuffix class="blue-icon">escalator_warning</mat-icon>
+                        </mat-form-field>
+                    </div>
+
+
+                </div>
+                <!--  col-md-6   -->
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <mat-error *ngIf="registerDataFormEdit.controls['groupe'].invalid && registerDataFormEdit.controls['groupe'].touched">
+                            <strong class="text-danger"><em>GROUPE SANGUIN REQUIS</em></strong>
+                        </mat-error>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Groupe</mat-label>
+                            <select matNativeControl formControlName="groupe" class="input">
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                            </select>
+                            <mat-icon matSuffix class="blue-icon">bloodtype</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+            </div>
+            <!--  row   -->
+
+
+            <div class="row  justify-content-center">
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <mat-error *ngIf="registerDataFormEdit.controls['constat'].invalid && registerDataFormEdit.controls['constat'].touched">
+                            <strong class="text-danger"><em>CONSTAT REQUIS</em></strong>
+                        </mat-error>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Constat</mat-label>
+                            <textarea matNativeControl placeholder="Constat" formControlName="constat" cols="2" rows="2"></textarea>
+
+                            <mat-icon matSuffix class="blue-icon">report</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+
+
+                <!--  col-md-6   -->
+            </div>
+
+            <!--  row   -->
+        </div>
+
+        <mat-error *ngIf="infoGroupeSanguin">
+            <strong class="text-danger"><em>LE GROUPE SANGUIN NE CHANGE PAS</em></strong>
+        </mat-error>
+
+        <mat-error *ngIf="infoTaille">
+            <strong class="text-danger"><em>LA TAILLE NE DOIT PAS ÊTRE INFERIEURE A CELLE PRECEDENTE</em></strong>
+        </mat-error>
+        &nbsp;
+        <div class="form-group" align="center">
+
+            <button type="submit" id="send-button" class="btn btn-primary" [disabled]="!registerDataFormEdit.controls['symptome'].valid || !registerDataFormEdit.controls['poids'].valid || !registerDataFormEdit.controls['taille'].valid || !registerDataFormEdit.controls['groupe'].valid || !registerDataFormEdit.controls['constat'].valid">
+                Modifier
+            </button>&nbsp;
+            <button type=" submit" id="cancel-button" (click)="cancel()" class="btn btn-danger">Annuler</button>
+
+        </div>
+
+    </form>
+</div>
+
+<div class="container formBloc  border  shadow  bg-light" *ngIf="add" [@slideInOut]>
+    <form [formGroup]="registerDataForm" align="center">
+        <div *ngIf="bloc1">
+            <h2>Examiner Patient</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-error *ngIf="registerDataForm.controls['symptome'].invalid && registerDataForm.controls['symptome'].touched">
+                            <strong class="text-danger"><em>SYMPTOME REQUIS</em></strong>
+                        </mat-error>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Symptome</mat-label>
+                            <!-- <input matInput placeholder="symptome" class="input" formControlName="symptome"> -->
+                            <input matInput placeholder="symptome" (keyup)="$event.target.value=removeCharactere($event.target.value)" class="input" formControlName="symptome">
+                            <mat-icon matSuffix class="blue-icon">art_track</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-error *ngIf="registerDataForm.controls['patient'].invalid && registerDataForm.controls['patient'].touched">
+                            <strong class="text-danger"><em>PATIENT REQUIS</em></strong>
+                        </mat-error>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Patient</mat-label>
+                            <select matNativeControl formControlName="patient" class="">
+                                <option *ngFor="let patient of patient" value="{{patient.id}}">{{patient.prenom}} {{patient.nom}}</option>
+                            </select>
+                            <mat-icon matSuffix class="blue-icon">person</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row  justify-content-center">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-error *ngIf="registerDataForm.controls['taille'].invalid && registerDataForm.controls['taille'].touched">
+                            <strong class="text-danger"><em>TAILLE INVALID</em></strong>
+                        </mat-error>
+                        <mat-error *ngIf="tailleError">
+                            <strong><em>TAILLE SAISI TROP ÉLEVÉE</em></strong>
+                        </mat-error>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Taille</mat-label>
+                            <!-- <input matInput placeholder="Taille" class="input" formControlName="taille"> -->
+                            <input matInput placeholder="Taille(m)" class="input" formControlName="taille" (keyup)="$event.target.value=removeLetterTaille($event.target.value);">
+                            <mat-icon matSuffix class="blue-icon">escalator_warning</mat-icon>
+                        </mat-form-field>
+                    </div>
+
+
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-error *ngIf="registerDataForm.controls['groupe'].invalid && registerDataForm.controls['groupe'].touched">
+                            <strong class="text-danger"><em>GROUPE SANGUIN REQUIS</em></strong>
+                        </mat-error>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Groupe</mat-label>
+                            <select matNativeControl formControlName="groupe" class="">
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                            </select>
+                            <mat-icon matSuffix class="blue-icon">bloodtype</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="row  justify-content-center">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-error *ngIf="registerDataForm.controls['constat'].invalid && registerDataForm.controls['constat'].touched">
+                            <strong class="text-danger"><em>CONSTAT REQUIS</em></strong>
+                        </mat-error>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Constat</mat-label>
+                            <!-- <textarea matNativeControl placeholder="Constat" class="" formControlName="constat" cols="2" rows="2"></textarea> -->
+                            <textarea matNativeControl placeholder="Constat" formControlName="constat" cols="2" rows="" (keyup)="$event.target.value=removeCharactere($event.target.value)"></textarea>
+                            <mat-icon matSuffix class="blue-icon">report</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+        &nbsp;
+        <div *ngIf="bloc2">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-error *ngIf="registerDataForm.controls['medicament'].invalid && registerDataForm.controls['medicament'].touched">
+                            <strong class="text-danger"><em>MEDICAMENT REQUIS</em></strong>
+                        </mat-error>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Medicament</mat-label>
+                            <!-- <input matInput placeholder="medicament" class="input" formControlName="medicament"> -->
+                            <input matInput placeholder="Medicament" class="input" formControlName="medicament" (keyup)="$event.target.value=removeCharactere($event.target.value)">
+                            <mat-icon matSuffix class="blue-icon">bubble_chart</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-error *ngIf="registerDataForm.controls['dosage'].invalid && registerDataForm.controls['dosage'].touched">
+                            <strong class="text-danger"><em>DOSAGE REQUIS</em></strong>
+                        </mat-error>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Dosage</mat-label>
+                            <!-- <input matInput placeholder="Dosage" class="input" formControlName="dosage"> -->
+                            <input matInput placeholder="Dosage" class="input" formControlName="dosage" (keyup)="$event.target.value=removeLetter($event.target.value)">
+                            <mat-icon matSuffix class="blue-icon">device_thermostat</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+            </div>
+
+            <div class="row  justify-content-center">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-error *ngIf="registerDataForm.controls['poids'].invalid && registerDataForm.controls['poids'].touched">
+                            <strong class="text-danger"><em>POIDS INVALID</em></strong>
+                        </mat-error>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Poids</mat-label>
+                            <!-- <input matInput placeholder="Poids" class="input" formControlName="poids"> -->
+                            <input matInput placeholder="Poids" class="input" formControlName="poids" (keyup)="$event.target.value=removeLetterPoids($event.target.value)">
+                            <mat-icon matSuffix class="blue-icon">airline_seat_recline_normal</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-error *ngIf="registerDataForm.controls['quantite'].invalid && registerDataForm.controls['quantite'].touched">
+                            <strong class="text-danger"><em>QUANTITE REQUIS</em></strong>
+                        </mat-error>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Quantite</mat-label>
+                            <!-- <input matInput placeholder="Quantite" class="input" formControlName="quantite"> -->
+                            <input matInput placeholder="Quantite" class="input" formControlName="quantite" (keyup)="$event.target.value=removeLetter($event.target.value)">
+                            <mat-icon matSuffix class="blue-icon">equalizer</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <mat-error *ngIf="infoGroupeSanguin">
+            <strong class="text-danger"><em>LE GROUPE SANGUIN NE CHANGE PAS</em></strong>
+        </mat-error>
+
+        <mat-error *ngIf="infoTaille">
+            <strong class="text-danger"><em>LA TAILLE NE DOIT PAS ÊTRE INFERIEURE A CELLE PRECEDENTE</em></strong>
+        </mat-error>
+        &nbsp;
+        <div class="form-group">
+
+            <button type="submit" *ngIf="bloc1" id="send-button" (click)="blocFormAdd()" class="btn btn-primary" [disabled]="!registerDataForm.controls['symptome'].valid || !registerDataForm.controls['patient'].valid || !registerDataForm.controls['taille'].valid || !registerDataForm.controls['groupe'].valid || !registerDataForm.controls['constat'].valid">
+                Next
+            </button>
+            <button *ngIf="bloc2" type="submit" id="send-button" (click)="examinePatient()" class="btn btn-primary" [disabled]="!registerDataForm.controls['poids'].valid  || !registerDataForm.controls['medicament'].valid || !registerDataForm.controls['dosage'].valid || !registerDataForm.controls['quantite'].valid">
+                Examine
+            </button>&nbsp;
+            <button type="submit" id="cancel-button" (click)="cancel()" class="btn btn-danger">Annuler</button>
+
+        </div>
+
+    </form>
+
+</div>

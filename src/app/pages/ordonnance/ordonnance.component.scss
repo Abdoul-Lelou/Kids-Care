@@ -1,0 +1,165 @@
+*:after,
+*:before {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+p {
+    font-size: 12px;
+}
+
+
+// .log {
+//     letter-spacing: normal;
+// }
+
+.bord {
+    border: 1px solid;
+    width: 80%;
+    font-style: oblique;
+}
+
+h6 {
+    // width: 100%;
+    background: rgb(2, 54, 66);
+    padding: 1px;
+    color: whitesmoke;
+    box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 5px 5px 0 0;
+}
+
+#containerPatient {
+    width: 60%;
+    margin-left: 24%;
+    background-color: coral;
+
+}
+
+
+@media screen and (max-width: 578px) {
+    .position {
+
+        left: 5%;
+    }
+
+    #containerPatient {
+        left: 2%;
+    }
+}
+
+.position {
+    margin: 0 auto;
+}
+
+#pdf {
+    background-color: #fff;
+}
+
+#colors {
+    background-color: whitesmoke;
+}
+
+img {
+    top: 6%;
+}
+
+::ng-deep .info-tooltip {
+    background-color: rgb(9, 101, 129);
+    font-size: 12px;
+    font-style: oblique;
+}
+
+.navbar {
+    border: 0;
+    border-radius: 0;
+    background: linear-gradient(to right, #686868, #D3D3D3);
+    margin-top: 1%;
+
+    .nav li>a,
+    .navbar-brand {
+        max-height: 10px;
+        width: auto;
+        background: transparent !important;
+        font-size: 15px;
+        // transition: 0.2s ease-in-out;
+
+        // &:hover {
+        //     background-color: rgba(255, 255, 255, 0.2);
+        //     // font-size: 10px;
+
+        //     .link {
+        //         width: 80%;
+        //         padding: 0 5px 0 5px;
+        //         visibility: visible;
+        //         font-size: 14px;
+        //     }
+        // }
+    }
+
+    .link {
+        width: 0;
+        font-family: 'Roboto', sans-serif;
+        transition: 0.2s ease-in-out;
+        visibility: hidden;
+        font-size: 0px;
+    }
+
+    span {
+        color: white;
+    }
+
+}
+
+nav {
+    width: 80%;
+    margin: 0 auto;
+}
+
+@media(max-width: 700px) {
+    nav {
+        width: 70%;
+    }
+}
+
+@media(max-width: 570px) {
+
+
+    .navbar {
+        .link {
+            padding-left: 30px;
+            visibility: visible;
+            width: 80%;
+            font-size: 14px;
+        }
+
+        .navbar-brand {
+            .link {
+                visibility: hidden;
+            }
+        }
+    }
+
+
+
+    nav {
+        width: 70%;
+
+    }
+}
+
+.color {
+    box-shadow: 2px 2px 2px hsl(170, 86%, 37%);
+}
+
+
+
+input[type=search] {
+    width: 70%;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+    background-color: rgb(240, 236, 236);
+}
+
+input[type=search]:focus {
+    width: 80%;
+}

@@ -1,0 +1,60 @@
+<div class="main ">
+
+    <div class="left">
+        <ul>
+            <main class="col bg-faded py-3 flex-column">
+
+                <a class="text-gray-dark side disabled">
+                    <img src="/assets/logo_kidscare.svg" height="55" alt="logo" class="imgTop" [@slideOut]>
+                </a>
+
+            </main>
+            <li class="menu-heading">
+                <strong>Kidscare</strong>
+            </li>
+            <li>
+                <a routerLink="home" class="nav-item nav-link" matTooltip="home">
+                    <img src="/assets/home.svg" height="38" alt="Home" [@slideOut]>
+                    <i data-toggle="collapse" data-target=".sidebar" aria-hidden="true">Home</i>
+                </a>
+            </li>
+
+            <li class="menu-heading">
+                <strong>Pages</strong>
+            </li>
+
+            <li>
+                <a routerLink="patient" class="nav-item nav-link" matTooltip="patient">
+                    <img src="/assets/man.svg" height="38" alt="" [@slideOut]>
+                    <i data-toggle="collapse" data-target=".sidebar" aria-hidden="true">Patient</i>
+                </a>
+            </li>
+            <li>
+                <a routerLink="folder" class="nav-item nav-link" matTooltip="data">
+                    <img src="/assets/folder.svg" height="38" alt="" [@slideOut]>
+                    <i data-toggle="collapse" data-target=".sidebar" aria-hidden="true">Folder</i>
+                </a>
+            </li>
+            <li>
+                <a routerLink="appoint" class="nav-item nav-link" matTooltip="appoint">
+                    <img src="/assets/appoint.svg" height="38" alt="" [@slideOut]>
+                    <i data-toggle="collapse" data-target=".sidebar" aria-hidden="true">Appoint</i>
+                </a>
+            </li>
+            <li *ngIf="show_admin">
+                <a routerLink="user" class="nav-item nav-link" matTooltip="medecin">
+                    <img src="/assets/docteur.png" height="38" alt="" [@slideOut]>
+                    <i data-toggle="collapse" data-target=".sidebar" aria-hidden="true">Medecin</i>
+                </a>
+            </li>
+            <li *ngIf="!show_secretaire">
+                <a routerLink="ordonnance" class="nav-item nav-link" matTooltip="ordonnance">
+                    <img src="/assets/ordon.svg" height="38" alt="" [@slideOut]>
+                    <i data-toggle="collapse" data-target=".sidebar" aria-hidden="true">Ordonnance</i>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+
+</div>

@@ -1,0 +1,120 @@
+&nbsp;
+<div class="position  shadow-none p-1" id="containerPatient">
+    <!-- <div class="container-fluid"> -->
+
+    <div class="container-fluid ">
+        <main class="main border">
+            <div class="main-header" *ngIf="role" [@slideOut]>
+                <div class="main-header__heading">
+                    <div class="photo">
+                        <img [src]="onGet()" alt="user image">
+                        <!-- <h4 *ngIf="role=='ROLE_ADMIN'">
+                            <img src="/assets/administrateur.png" class="" height="68" alt="medecin">
+                        </h4>
+                        <h4 *ngIf="sexe=='M' && role=='ROLE_MEDECIN'">
+                            <img src="/assets/docteur.png" height=" 68" alt="medecin">
+                        </h4>
+                        <h4 *ngIf="sexe=='F' && role=='ROLE_MEDECIN'">
+                            <img src="/assets/doctor.png" height=" 68" alt="medecin">
+                        </h4>
+                        <h4 *ngIf="sexe=='F' && role=='ROLE_SECRETAIRE'">
+                            <img src="/assets/secretaire.jpeg" height="75" alt="medecin">
+                        </h4>
+                        <h4 *ngIf="sexe=='M' && role=='ROLE_SECRETAIRE'">
+                            <img src="/assets/secretaires.png" height="75" alt="medecin">
+                        </h4>
+                        <h5><strong>{{prenom | titlecase}} {{nom | titlecase}}</strong></h5> -->
+
+                    </div>
+                </div>
+
+
+                <div class="main-header__updates">
+                    <h4>
+                        <img src=" /assets/ordonnance.svg" class="" height="72" alt="medecin" class="imgHigh">
+                        <h6><strong>KIDSCARE</strong></h6>
+                    </h4>
+
+                </div>
+            </div>
+
+            <div class="main-overview">
+
+                <div class="overviewcard" *ngIf="role=='ROLE_SECRETAIRE'">
+                    <div class="overviewcard__icon" [@slideOut]>
+
+                        <a [routerLink]="['/home']">
+                            <img src=" /assets/home.svg" class="" height="68" alt="HOME">
+                        </a>
+
+                    </div>
+                    <div class="overviewcard__info">
+                        <h4>Secretaire</h4>
+                    </div>
+                </div>
+
+                <div class="overviewcard" *ngIf="role">
+                    <div class="overviewcard__icon" [@slideOut]>
+                        <a [routerLink]="['/patient']" class=" nav-item nav-link">
+                            <img src="/assets/man.svg" class="" height="68" alt="PATIENT">
+                        </a>
+                    </div>
+                    <div class="overviewcard__info">
+                        <h4>{{nombrePatient}}</h4>
+                    </div>
+                </div>
+                <div class="overviewcard" *ngIf="role">
+                    <div class=" overviewcard__icon" [@slideOut]>
+                        <a [routerLink]="['/folder']">
+                            <img src=" /assets/folder.svg" class="" height="68" alt="FOLDER">
+                        </a>
+                    </div>
+                    <div class="overviewcard__info">
+                        <h4>{{nombrePatientData}}</h4>
+                    </div>
+                </div>
+
+                <div class="overviewcard" *ngIf="role">
+                    <div class=" overviewcard__icon" [@slideOut]>
+                        <a [routerLink]="['/appoint']">
+                            <img src=" /assets/appoint.svg" class="" height="68" alt="APPOINTEMENT">
+                        </a>
+                    </div>
+                    <div class="overviewcard__info">
+                        <h4>{{nombreAppoint}}</h4>
+                    </div>
+                </div>
+                <div class="overviewcard" *ngIf="role=='ROLE_MEDECIN'">
+                    <div class="overviewcard__icon" [@slideOut]>
+
+                        <a [routerLink]="['/ordonnance']">
+                            <img src=" /assets/ordon.svg" class="" height="68" alt="ORDONNANCE">
+                        </a>
+
+                    </div>
+                    <div class="overviewcard__info">
+                        <h4>{{nombreOrdonnance}}</h4>
+                    </div>
+                </div>
+                <div class="overviewcard" *ngIf="role=='ROLE_ADMIN'">
+                    <div class="overviewcard__icon" [@slideOut]>
+
+                        <a [routerLink]="['/user']">
+                            <img src=" /assets/docteur.png" class="" height="68" alt="MEDECIN">
+                        </a>
+
+                    </div>
+                    <div class="overviewcard__info">
+                        <h4>{{nombreMedecin}}</h4>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+    <!-- </div> -->
+</div>
+
+
+<router-outlet></router-outlet>
