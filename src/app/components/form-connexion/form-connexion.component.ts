@@ -66,7 +66,7 @@ export class FormConnexionComponent implements OnInit {
 
   }
     getUserConnect(){
-     this.auth.getUserConnect().subscribe(
+     this.auth.getUserLogin().subscribe(
         data=>{
             this.userConnect=data;
         })  

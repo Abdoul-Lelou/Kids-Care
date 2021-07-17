@@ -72,7 +72,6 @@ export class OrdonnanceComponent implements OnInit {
     this.auth.getOrdonnanceByMedecin().subscribe(
         data=>{
              this.ordonnanceMedecin=data;
-             console.log(data)
             }
         ); 
   }
@@ -81,7 +80,6 @@ export class OrdonnanceComponent implements OnInit {
     this.auth.getPatientData().subscribe(
         data=>{
              this.ordonnances=data;
-             console.log(data);
             }
         ); 
   } 

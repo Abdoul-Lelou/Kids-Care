@@ -29,6 +29,7 @@ declare var jquery: any;
     ])
   ]
 })
+
 export class PatientComponent implements OnInit {
 
   registerForm: FormGroup; examenFormGroupe: FormGroup; registerFormEdit; FormGroup; submitted = false; profile: boolean = false;
@@ -39,7 +40,7 @@ export class PatientComponent implements OnInit {
   inputSearch: boolean = false; medecin_id; medecin_prenom; medecin_nom;
   closeResult: string; bloc1: boolean = true; bloc2: boolean = false; bloc3: boolean = false; bloc4: boolean = false;
   roleUserLogin: string; patientMedecin; patientDataById;inputTel; patientData
-  blocExamen: boolean = false; nom;chechNumber:boolean;timeAppointExist:boolean;timeExist:boolean;isVisite:boolean;
+  blocExamen: boolean = false; nom;checkNumber:boolean;timeAppointExist:boolean;timeExist:boolean;isVisite:boolean;
   inputStart;inputEnd;errorTime: boolean;patientIdExamen;infoGroupeSanguin: boolean;infoTaille: boolean;
 
   constructor(private auth: AuthentificationService, private router: Router, private formBuilder: FormBuilder) { }
@@ -104,7 +105,7 @@ export class PatientComponent implements OnInit {
     this.bloc4 = false;
     this.profile = false;
     this.alertErrorMedecin = false;
-    this.chechNumber = false;
+    this.checkNumber = false;
     this.errorTime = false;
     this.timeAppointExist = false;
     this.timeExist = false;
@@ -263,10 +264,7 @@ export class PatientComponent implements OnInit {
 
   updatePatient() {
     this.submitted = true;
-    // stop here if form is invalid
-    // if (!this.registerForm.valid) {
-    //   return;
-    // }
+   
     if (this.submitted) {
       const user = {
         id: this.registerFormEdit.value.id,
@@ -492,17 +490,20 @@ export class PatientComponent implements OnInit {
   }
 
   examinePatient() {
+
+    let taille = this.examenFormGroupe.value.taille.toString().split(".");
+    taille= taille[0].replace(/[^0-9]+/g, '').replace(/\B(?=(\d{2})+(?!\d))/g, ".") + (taille[1] ? "." + taille[1] : "");
     
       const examen = {
         patient: this.examenFormGroupe.value.patient,
         symptome: this.examenFormGroupe.value.symptome.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ''),
         groupe: this.examenFormGroupe.value.groupe,
-        taille: this.examenFormGroupe.value.taille,
+        taille: taille,
         poids: this.examenFormGroupe.value.poids,
         constat: this.examenFormGroupe.value.constat.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ''),
         medicament: this.examenFormGroupe.value.medicament.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ''),
         dosage: this.examenFormGroupe.value.dosage,
-        quantite: this.examenFormGroupe.value.quantite,
+        quantite: this.examenFormGroupe.value.quantite.replace(/[^0-9]+/g, ''),
         date: this.date.getDate() + "/" + this.date.getMonth() + "/" + this.date.getFullYear(),
         heure: this.date.toLocaleTimeString('fr-FR', {
           hour12: false,
@@ -510,8 +511,7 @@ export class PatientComponent implements OnInit {
           minute: "numeric"
         })
       };
-      console.log(examen);
-
+  
       const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -697,8 +697,6 @@ export class PatientComponent implements OnInit {
   }
 
   
-
-  
   checkTel(){
     let tel,checkTel
     
@@ -709,11 +707,11 @@ export class PatientComponent implements OnInit {
           checkTel=this.inputTel;
          
           if(tel == checkTel){
-            this.chechNumber=true;
+            this.checkNumber=true;
             this.registerForm.get('tel').patchValue(null);
             this.registerFormEdit.get('tel').patchValue(null);
             setTimeout(() => {
-              this.chechNumber=false;
+              this.checkNumber=false;
             },3000);
             
           }
@@ -760,15 +758,19 @@ export class PatientComponent implements OnInit {
     let splitStr = string.replace(/[^0-9]+/g, '');
     splitStr= splitStr.split(' ').join('');
     splitStr = string.match(/^(?:[1-9]\d*|0)$/);
+    if(splitStr <= 0){
+      this.examenFormGroupe.get('poids').patchValue(null);
+    }
    return splitStr;
   }
  
-  removeLetterTaille(n){
-    var numFloat=n.toString().split(".");
+  removeLetterTaille(event){
+    var numFloat=event.toString().split(".");
     numFloat= numFloat[0].replace(/[^0-9]+/g, '').replace(/\B(?=(\d{2})+(?!\d))/g, ".") + (numFloat[1] ? "." + numFloat[1] : "");
     if(parseFloat(numFloat)<=0){
       return null
     }else{
+      console.log(numFloat)
       return numFloat;
     }
   }

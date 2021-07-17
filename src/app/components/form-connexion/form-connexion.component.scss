@@ -157,6 +157,7 @@ button {
     line-height: 0;
     background: none;
     cursor: pointer;
+    background-color: rgb(97, 149, 247);
 }
 
 :focus {
@@ -341,7 +342,6 @@ input::-webkit-input-placeholder {
     width: 80%;
     display: block;
     border: none;
-    // padding: 20px 0 10px;
     border-bottom: solid 1px $base;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 96%, $base 4%);
     background-position: -$width 0;
@@ -397,7 +397,6 @@ input::-webkit-input-placeholder {
     letter-spacing: 4px;
     -webkit-transition: -webkit-transform 0.3s;
     transition: transform 0.3s;
-    background-color: greenyellow;
 
 }
 

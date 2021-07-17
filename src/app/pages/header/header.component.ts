@@ -70,8 +70,7 @@ export class HeaderComponent implements OnInit {
   }
   
   getUserLogin(){
-  
-    this.auth.getUserConnect().subscribe(
+    this.auth.getUserLogin().subscribe(
         data=>{
            
             if (data.role=="ROLE_ADMIN") {        
@@ -87,8 +86,7 @@ export class HeaderComponent implements OnInit {
   getLogin() {
     this.auth.getUserLogin().subscribe(
         data=>{
-            this.roleUserLogin=data.role[0];
-            
+            this.roleUserLogin=data.role[0];  
             }
         ); 
   }

@@ -1015,8 +1015,8 @@
         </div>
 
 
-        <mat-error *ngIf="roleUserLogin =='ROLE_SECRETAIRE'  && patientHaveAppointEdit">
-            <strong><em>MÉDECIN HEURE ET DATE DÉJÀ RÉSERVÉES</em></strong>
+        <mat-error *ngIf=" roleUserLogin =='ROLE_ADMIN'  &&  patientHaveAppointEdit">
+            <strong><em>CE PATIENT A DÉJÀ UN RENDEZ-VOUS À CETTE DATE</em></strong>
         </mat-error>
         <mat-error *ngIf="roleUserLogin=='ROLE_MEDECIN' &&timeExist">
             <strong><em>HEURE ET DATE DÉJÀ RÉSERVÉES</em></strong>

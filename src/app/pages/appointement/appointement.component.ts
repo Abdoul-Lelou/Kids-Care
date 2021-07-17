@@ -38,7 +38,7 @@ export class AppointementComponent implements OnInit {
   patients; patientBySecretaire;  add:boolean=false; edit:boolean=false; list:boolean=true;patientHaveAppoint:boolean=false
   roleUserLogin;minDate; lastDate;bloc1:boolean=true;bloc2:boolean=false;medecin_id;medecin_nom;statusPatient:boolean;
   medecin_prenom;date: Date;inputStart;inputEnd;errorTime:boolean=false;timeExist:boolean; timeAppointExist:boolean;
-  patientHaveAppointEdit:boolean;
+  patientHaveAppointEdit:boolean;statusEditPatient: boolean;
  
 
   // @Output('cdkDropDropped')dropped: EventEmitter<CdkDragDrop<any>> =
@@ -91,6 +91,7 @@ export class AppointementComponent implements OnInit {
     this.patientHaveAppoint=false;
     this.patientHaveAppointEdit=false;
     this.statusPatient= false;
+    this.statusEditPatient= false;
     const day=new Date();
      this.date=new Date();
     this.lastDate=day.getFullYear();
@@ -202,53 +203,74 @@ export class AppointementComponent implements OnInit {
   updateAppointement() {
   
       let msg = 'Rendez-vous déjà réservé',infoApi;
-      const appoint = {
-        id: this.editFormAppointement.value.id,
-        date: this.editFormAppointement.value.date.split('-').join('/'),
-        heureDebut: this.editFormAppointement.value.heureDebut,
-        motif: this.editFormAppointement.value.motif.replace(/[^a-zA-Z0-9 ]/g, ""),
-        heureFin: this.editFormAppointement.value.heureFin,
-        patient: this.editFormAppointement.value.patient,
-        medecin: this.editFormAppointement.value.medecin,
-      };
+      let patient = this.editFormAppointement.value.patient;
+      let date = this.editFormAppointement.value.date.split('-').join('/');
       
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
+      for (const iterator of this.appoint) {  
+        
+        if (patient == iterator.patient.id  && date == iterator.date.split('-').join('/') && iterator.isEnabled){
+          this.statusEditPatient= true;
         }
-      })
+      } 
+      
 
-      this.auth.updateAppointement(appoint.id,appoint).subscribe(
-        data => {
-          
-          infoApi=data['message'];
-
-          if(msg == infoApi){
-            this.ngOnInit();
-            Toast.fire({
-              icon:"error",
-              title: ''+msg,
-            })
-
-          }else{
-            this.ngOnInit();
-            Toast.fire({
-              icon:  "success",
-              title: "Modifié avec succès",
-            })
+      if(this.statusEditPatient){
+        this.patientHaveAppointEdit=true;
+        this.editFormAppointement.get('patient').patchValue(null);
+        setTimeout(()=>{
+          this.patientHaveAppoint= false;
+          this.ngOnInit();
+        }, 5000);
+      }else if(!this.statusEditPatient){
+        const appoint = {
+          id: this.editFormAppointement.value.id,
+          date: this.editFormAppointement.value.date.split('-').join('/'),
+          heureDebut: this.editFormAppointement.value.heureDebut,
+          motif: this.editFormAppointement.value.motif.replace(/[^a-zA-Z0-9 ]/g, ""),
+          heureFin: this.editFormAppointement.value.heureFin,
+          patient: this.editFormAppointement.value.patient,
+          medecin: this.editFormAppointement.value.medecin,
+        };
+      console.log(appoint)
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
           }
-          
-        },
-        error => {
-                alert(error['message']);          
-        }
-      );
+        })
+  
+        this.auth.updateAppointement(appoint.id,appoint).subscribe(
+          data => {
+            
+            infoApi=data['message'];
+  
+            if(msg == infoApi){
+              this.ngOnInit();
+              Toast.fire({
+                icon:"error",
+                title: ''+msg,
+              })
+  
+            }else{
+              this.ngOnInit();
+              Toast.fire({
+                icon:  "success",
+                title: "Modifié avec succès",
+              })
+            }
+            
+          },
+          error => {
+                  alert(error['message']);          
+          }
+        );
+      }
+      
     
   }      
   
@@ -293,7 +315,7 @@ export class AppointementComponent implements OnInit {
         patient: [appoint.patient.id, [Validators.required]],
         medecin: [appoint.medecin.id, [Validators.required]],
         motif: [appoint.motif, [Validators.required, Validators.minLength(4)]],
-        date: [appoint.date, [ Validators.required]],
+        date: ["", [ Validators.required]],
         heureDebut: [appoint.heureDebut, [ Validators.required]]
       });
   } 

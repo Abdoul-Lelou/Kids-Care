@@ -22,6 +22,7 @@ export class AccueilComponent implements OnInit {
 
 nom; prenom; sexe; specialite; role; user; compteurFeminin=0; compteurMasculin=0;patients;nombrePatient;
 patient;nombreAppoint; appoint; appoints;nombrePatientData;dossier;dossiers;nombreMedecin;nombreOrdonnance; 
+images; idProfile;imageDefaut: boolean;
 
   constructor(private auth: AuthentificationService ,private domSanitizer: DomSanitizer) { }
     
@@ -30,150 +31,147 @@ patient;nombreAppoint; appoint; appoints;nombrePatientData;dossier;dossiers;nomb
     this.getLogin();
     this.getUser();
     this.getOrdonnance();
+    this.imageDefaut = false;
   }  
   
   
   
   getLogin() {
+    let profile;
     this.auth.getUserLogin().subscribe(
         data=>{
+          profile= data;
+       //   this.idProfile = profile.profil.id;
+         
             this.prenom =data.prenom;
             this.nom =data.nom;
             this.sexe=data.sexe;
             this.role=data.role[0];
             this.specialite=data.specialite;
-            if (this.role=='ROLE_ADMIN') {
+            this.imageDefaut = true;
+            if (this.role=='ROLE_ADMIN' || this.role=='ROLE_SECRETAIRE') {
               this.getPatients();
               this.getAppointement();
               this.getPatientData();
+              if(profile.profil !== null){
+                this.getProfile(profile.profil.id)
+                this.imageDefaut = false;
+              }
             }else if (this.role=='ROLE_MEDECIN'){
               this.getPatientByMedecin();
               this.getAppointementByMedecin();
               this.getPatientDataByMedecin();
               this.getPatientData();
-            }else if (this.role=='ROLE_SECRETAIRE'){
-              this.getPatients();
-              this.getAppointement();
-              this.getPatientData();
+              if(profile.profil !== null){
+                this.getProfile(profile.profil.id)
+                this.imageDefaut = false;
+              //  this.idProfile = profile.profil.id;
+              }
             }
-            }
+          }
         ); 
   }
 
 
-  getUser() { 
-    let users,compteur=0;
-    this.auth.getUsers().subscribe(
-      data =>{
-        users =data; 
-        this.user= data; 
-        for (const iterator of this.user) {if (iterator.role[0] != 'ROLE_ADMIN' ) {compteur+=+1;}}  
-        this.nombreMedecin=compteur;  
+      getUser() { 
+        let users,compteur=0;
+        this.auth.getUsers().subscribe(
+          data =>{
+            users =data; 
+            this.user= data; 
+            for (const iterator of this.user) {if (iterator.role[0] != 'ROLE_ADMIN' ) {compteur+=+1;}}  
+            this.nombreMedecin=compteur;  
+          }
+        )
       }
-    )
-  }
 
-  getPatientByMedecin() { 
-    let patient;
-   this.auth.getPatientByMedecin().subscribe(
-     data =>{
-       patient=data;
-       this.patients =patient;
-       this.nombrePatient= this.patients.length;     
+      getPatientByMedecin() { 
+        let patient;
+       this.auth.getPatientByMedecin().subscribe(
+         data =>{
+           patient=data;
+           this.patients =patient;
+           this.nombrePatient= this.patients.length;     
+         }
+       )
      }
-   )
- }
 
- getPatients() { 
-  let patient;
- this.auth.getPatient().subscribe(
-   data =>{
-     patient=data;
-     this.patient =patient;
-     this.nombrePatient= this.patient.length;
-     
-   }
- )
-}
-getAppointementByMedecin() { 
-  let appoint;
- this.auth.getAppointByMedecin().subscribe(
-   data =>{
-    appoint=data;
-     this.appoints =appoint;
-     this.nombreAppoint= this.appoints.length;
-   }
- )
-}
-
-getAppointement() { 
-let appoints;
-this.auth.getAppoint().subscribe(
- data =>{
-  appoints=data;
-   this.appoint =appoints;
-   this.nombreAppoint= this.appoint.length;
- }
-)
-}
-
-getPatientDataByMedecin() { 
-  let dossier;
- this.auth.getPatientDataByMedecin().subscribe(
-   data =>{
-    dossier=data;
-    console.log(data)
-     this.dossiers =dossier;
-     this.nombrePatientData= dossier.length;
-   }
- )
-}
-
-getPatientData() { 
-  let dossiers;
- this.auth.getPatientData().subscribe(
-   data =>{
-    dossiers=data;
-     this.dossier =dossiers;
-     this.nombrePatientData= dossiers.length;
-   }
- )
-}
-
-getOrdonnance() { 
- let ordon,compteur=0;
- this.auth.getPatientDataByMedecin().subscribe(
-   data =>{
-    ordon=data;
-    for (const iterator of ordon) {
-      compteur=compteur+1;
+     getPatients() { 
+      let patient;
+     this.auth.getPatient().subscribe(
+       data =>{
+         patient=data;
+         this.patient =patient;
+         this.nombrePatient= this.patient.length;
+         
+       }
+     )
     }
-    this.nombreOrdonnance = compteur;
-   }
- )
-}
-onGet():any{
-  // let mySrc: SafeUrl;
-  //  return this.auth.getImage().subscribe(
-  //    data =>{
+    getAppointementByMedecin() { 
+      let appoint;
+     this.auth.getAppointByMedecin().subscribe(
+       data =>{
+        appoint=data;
+         this.appoints =appoint;
+         this.nombreAppoint= this.appoints.length;
+       }
+     )
+    }
 
-  //     console.log(data)
-//        const reader = new FileReader();
-//        reader.readAsDataURL(data); 
-//        reader.onloadend = function() {
-//          // result includes identifier 'data:image/png;base64,' plus the base64 data
-//        mySrc = reader.result;  
-//       this.images= window.URL.createObjectURL(data);   
-// }
-//       this.thumbnail='data:image/png;base64'+this.images;
-//        this.ok= true;
-//        this.image=data;
-//       this.image= this.domSanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${this.zona?.fotografia}`)
-//        let objectURL = 'data:image/jpeg;base64,' + data.image;
-//         mySrc = this.domSanitizer.bypassSecurityTrustUrl(this.images);
-//        console.log(data);
-  //    }
-  //  )
-}
+    getAppointement() { 
+    let appoints;
+    this.auth.getAppoint().subscribe(
+     data =>{
+      appoints=data;
+       this.appoint =appoints;
+       this.nombreAppoint= this.appoint.length;
+     }
+    )
+    }
+
+    getPatientDataByMedecin() { 
+      let dossier;
+     this.auth.getPatientDataByMedecin().subscribe(
+       data =>{
+        dossier=data;
+         this.dossiers =dossier;
+         this.nombrePatientData= dossier.length;
+       }
+     )
+    }
+
+    getPatientData() { 
+      let dossiers;
+     this.auth.getPatientData().subscribe(
+       data =>{
+        dossiers=data;
+         this.dossier =dossiers;
+         this.nombrePatientData= dossiers.length;
+       }
+     )
+    }
+
+    getOrdonnance() { 
+     let ordon,compteur=0;
+     this.auth.getPatientDataByMedecin().subscribe(
+       data =>{
+        ordon=data;
+        for (const iterator of ordon) {
+          compteur=compteur+1;
+        }
+        this.nombreOrdonnance = compteur;
+       }
+     )
+    }
+    
+    getProfile(id){
+      let images;
+       return this.auth.getImage(id).subscribe(
+         data =>{
+           images= window.URL.createObjectURL(data);   
+           this.images = this.domSanitizer.bypassSecurityTrustUrl(images);
+         }
+       )
+    }
 
 }

@@ -6,33 +6,32 @@ import { Appointement } from '../models/appointement';
 import { Patient } from '../models/patient';
 import { Profile } from '../models/profile';
 import { Examen } from '../models/examen';
+import { Images } from '../models/images';
 
 
 import { Ordonnance } from '../models/ordonnance';
 import { PatientData } from '../models/patient-data';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, retry } from 'rxjs/operators';
-import { BehaviorSubject, Subject,Observable } from 'rxjs';
-import { DomSanitizer } from '@angular/platform-browser';
+import {  map } from 'rxjs/operators';
+import { BehaviorSubject,Observable } from 'rxjs';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthentificationService {
-  private currentUserSubject: BehaviorSubject<User>;
-  patientSubject = new Subject<any[]>();
-  public isUserLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private httpClient:HttpClient, private domSanitizer: DomSanitizer) {
+  private currentUserSubject: BehaviorSubject<User>;
+
+  constructor(private httpClient:HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
   }
 
-   public get currentUserValue(): User {
+  public get currentUserValue(): User {
     return this.currentUserSubject.value;
-   }
+  }
 
- getConnexion(user:User){
+  getConnexion(user:User){
   return this.httpClient.post<User>(`${environment.apiUrl}/api/login_check`,user).
       pipe(map(user => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -41,7 +40,7 @@ export class AuthentificationService {
         return user;
       }));
 
- }
+  }
 
   getRoles(){
     return this.httpClient.get<Role>(`${environment.apiUrl}/api/roles`);
@@ -55,9 +54,9 @@ export class AuthentificationService {
     return this.httpClient.get<User>(`${environment.apiUrl}/api/connect`);
   } 
 
-  getUserConnect() {
-    return this.httpClient.get<User>(`${environment.apiUrl}/api/connect`);
-  }
+  // getUserConnect() {
+  //   return this.httpClient.get<User>(`${environment.apiUrl}/api/connect`);
+  // }
 
   getProfile() {
     return this.httpClient.get<Profile>(`${environment.apiUrl}/api/profil`);
@@ -72,17 +71,16 @@ export class AuthentificationService {
     return this.httpClient.put<User>(`${environment.apiUrl}/api/update/login/${id}`, user);
   }
 
-  getImage() {
-  //  return this.httpClient.get(`${environment.apiUrl}/api/profil/${3}`,{responseType: "blob"})
-    // .pipe(map(result => {
-    //   let url = URL.createObjectURL(result);
-    //   this.domSanitizer.bypassSecurityTrustUrl(url);    
-    // }));
+  uploadImage(image) {
+   return this.httpClient.post<Images>(`${environment.apiUrl}/api/profil`, image ,{  
+      reportProgress: true,  
+      observe: 'events'  
+   })
   }
 
-  // getImage(): Observable<Blob> {
-  //   return this.httpClient.get(`${environment.apiUrl}/api/profil/${3}`, {responseType: "blob"});
-  // }
+  getImage(id): Observable<Blob> {
+    return this.httpClient.get(`${environment.apiUrl}/api/profil/${id}`, {responseType: "blob"});
+  }
 
   addProfile(profile: Profile) {
     return this.httpClient.post<Profile>(`${environment.apiUrl}/api/profil`,profile);

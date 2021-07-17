@@ -274,10 +274,23 @@ button {
 
 
 
-.btns {
+.btnEdit {
     border: 1px solid black;
     // height: 30px;
     width: 50px;
+    border-radius: 5px;
+    // margin: 5px 0;
+    cursor: pointer;
+
+    &:hover {
+        background: none;
+    }
+}
+
+.btnPass {
+    border: 1px solid black;
+    // height: 30px;
+    width: 80px;
     border-radius: 5px;
     // margin: 5px 0;
     cursor: pointer;
@@ -404,4 +417,28 @@ button {
 footer {
     color: whitesmoke;
     float: bottom;
+}
+
+.container-profilepic {
+    width: 100px;
+    height: 100px;
+}
+
+.photo-preview {
+    // background-image: url(https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80 );
+    background-size: cover;
+    background-position: center;
+}
+
+.middle-profilepic {
+    background-color: rgba(255, 255, 255, 0.69);
+}
+
+.container-profilepic:hover .middle-profilepic {
+    display: flex !important;
+    cursor: pointer;
+}
+
+.text-profilepic>input {
+    display: none;
 }

@@ -169,8 +169,9 @@ svg {
     img {
         border-radius: 50%;
         overflow: hidden;
-        width: 90px;
+        width: 100px;
         height: 100px;
+        background-color: honeydew;
     }
 
     &:hover {
@@ -185,4 +186,31 @@ svg {
             animation: circlespin 1s ease-in-out;
         }
     }
+}
+
+.container-profilepic {
+    width: 100px;
+    height: 10px;
+}
+
+.photo-preview {
+    // background-image: url(https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80 );
+    background-size: cover;
+    background-position: center;
+}
+
+.middle-profilepic {
+    background-color: rgba(255, 255, 255, 0.69);
+}
+
+.container-profilepic:hover .middle-profilepic {
+    display: flex !important;
+    cursor: pointer;
+}
+
+
+.disabledPhoto {
+    pointer-events: none;
+    cursor: default;
+
 }

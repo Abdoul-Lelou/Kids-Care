@@ -28,7 +28,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 export class UserComponent implements OnInit {
 
   registerForm: FormGroup; submitted = false; bloc1:boolean=true; bloc2:boolean=false;
-  inputSearch:boolean= false; user=[]; add; list; edit; role;username;checkUsername:boolean;
+  inputSearch:boolean= false;  add; list; edit; role;username;checkUsername:boolean;
   inputTel;chechNumber:boolean;users;email;chechEmail:boolean;
  
   
@@ -49,7 +49,7 @@ export class UserComponent implements OnInit {
     });
     
     this.getRole();  
-    this.getUser();
+    this.getUsers();
     this.add=false;
     this.list=true;
     this.add=false
@@ -176,7 +176,7 @@ export class UserComponent implements OnInit {
       sexe: this.registerForm.value.sexe,
      
     };
-    console.log(user);
+    
     const Toast = Swal.mixin({
       toast: true,
       position: 'top-end',
@@ -196,9 +196,6 @@ export class UserComponent implements OnInit {
           title: 'Ajouté avec succès',
         })
         this.ngOnInit(); 
-      },
-      error => {
-         // console.log(error['message']);      
       }
     );
    }
@@ -206,25 +203,13 @@ export class UserComponent implements OnInit {
     
   }   
   
-  getUser() { 
-    let users;
-    this.user.shift();
+  getUsers() { 
+ 
     this.auth.getUsers().subscribe(
       data =>{
-        users =data;
         this.users = data;
-        console.log( this.users);
-        this.user.shift();
-        for (const key in users) {
-          if (users[key].role[0] !='ROLE_ADMIN') {
-            this.user.push(users[key])
-          }
-          console.log(this.user);
-          }
-          
-        }
+      }
     )
-    this.user.shift();
   }
   
   getRole(){

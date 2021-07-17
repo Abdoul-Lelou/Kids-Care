@@ -439,7 +439,7 @@
                         <mat-error *ngIf="registerForm.controls['tel'].invalid && registerForm.controls['tel'].touched">
                             <strong class="text-danger"><em>TELEPHONE INVALID</em></strong>
                         </mat-error>
-                        <mat-error *ngIf="chechNumber">
+                        <mat-error *ngIf="checkNumber">
                             <strong class="text-danger"><em>NUMERO EXISTE DÉJÀ</em></strong>
                         </mat-error>
                         <mat-form-field appearance="outline">
@@ -470,7 +470,7 @@
                 <!--  col-md-6   -->
             </div>
             <!--  row   -->
-            <mat-error *ngIf="chechNumber">
+            <mat-error *ngIf="checkNumber">
                 <strong class="text-danger"><em>CE PATIENT EXISTE DÉJÀ</em></strong>
             </mat-error>
         </div>
@@ -549,7 +549,7 @@
                                 <ng-template #medecinRole>
                                     <option value="{{medecin_id}}">{{medecin_prenom}} {{medecin_nom}} </option>
                                 </ng-template>
-                                <ng-container *ngIf="roleUserLogin=='ROLE_ADMIN'">
+                                <ng-container *ngIf="roleUserLogin=='ROLE_MEDECIN'">
                                     <ng-container *ngFor=" let medecin of medecin">
                                         <option value="{{medecin.id}}" *ngIf="medecin.role=='ROLE_MEDECIN'">
                                             <em>{{medecin.prenom}} {{medecin.nom}}</em>
@@ -688,7 +688,7 @@
                         <mat-error *ngIf="registerFormEdit.controls['tel'].invalid && registerFormEdit.controls['tel'].touched">
                             <strong class="text-danger"><em>TELEPHONE INVALID</em></strong>
                         </mat-error>
-                        <mat-error *ngIf="chechNumber">
+                        <mat-error *ngIf="checkNumber">
                             <strong class="text-danger"><em>NUMERO EXISTE DÉJÀ</em></strong>
                         </mat-error>
                         <mat-form-field appearance="outline">
@@ -814,6 +814,7 @@
                         <mat-form-field appearance="outline">
                             <mat-label>Taille</mat-label>
                             <input matInput placeholder="Taille(m)" class="input" formControlName="taille" (keyup)="$event.target.value=removeLetterTaille($event.target.value);">
+                            <!-- <input matInput placeholder="Taille(m)" class="input" formControlName="taille" (keyup)="$event.target.value=removeLetterTaille($event.target.value);"> -->
                             <mat-icon matSuffix class="blue-icon">escalator_warning</mat-icon>
                         </mat-form-field>
                     </div>

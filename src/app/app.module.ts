@@ -13,7 +13,6 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { NgxChartsModule }from '@swimlane/ngx-charts';
-import { DragDropModule } from '@angular/cdk/drag-drop'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,7 +27,7 @@ import { PatientDataComponent } from './pages/patient-data/patient-data.componen
 import { AccueilComponent } from './pages/accueil/accueil.component';
 import { HeaderComponent } from './pages/header/header.component';
 import { OrdonnanceComponent } from './pages/ordonnance/ordonnance.component';
-
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
   declarations: [
@@ -46,6 +45,7 @@ import { OrdonnanceComponent } from './pages/ordonnance/ordonnance.component';
   
    
   ],
+  
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -69,9 +69,7 @@ import { OrdonnanceComponent } from './pages/ordonnance/ordonnance.component';
     NgxMaterialTimepickerModule,
     NgxChartsModule,
     RouterModule ,
-    DragDropModule
-
-
+    FileUploadModule
 
   ],
   exports: [

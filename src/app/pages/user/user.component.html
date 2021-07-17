@@ -42,7 +42,7 @@
                 </tr>
             </thead>
 
-            <tbody *ngFor=" let user of user | filter:term | paginate: { itemsPerPage:3, currentPage: p }" class="shadow" [@slideOut]>
+            <tbody *ngFor=" let user of users | filter:term | paginate: { itemsPerPage:3, currentPage: p }" class="shadow" [@slideOut]>
                 <tr *ngIf="user.role !='ROLE_ADMIN'">
                     <td data-title="Matricule">{{user.matricule}}</td>
                     <td data-title="Prenom">{{user.prenom | titlecase}}</td>

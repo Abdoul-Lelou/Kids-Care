@@ -6,32 +6,22 @@
         <main class="main border">
             <div class="main-header" *ngIf="role" [@slideOut]>
                 <div class="main-header__heading">
-                    <div class="photo">
-                        <img [src]="onGet()" alt="user image">
-                        <!-- <h4 *ngIf="role=='ROLE_ADMIN'">
-                            <img src="/assets/administrateur.png" class="" height="68" alt="medecin">
-                        </h4>
-                        <h4 *ngIf="sexe=='M' && role=='ROLE_MEDECIN'">
-                            <img src="/assets/docteur.png" height=" 68" alt="medecin">
-                        </h4>
-                        <h4 *ngIf="sexe=='F' && role=='ROLE_MEDECIN'">
-                            <img src="/assets/doctor.png" height=" 68" alt="medecin">
-                        </h4>
-                        <h4 *ngIf="sexe=='F' && role=='ROLE_SECRETAIRE'">
-                            <img src="/assets/secretaire.jpeg" height="75" alt="medecin">
-                        </h4>
-                        <h4 *ngIf="sexe=='M' && role=='ROLE_SECRETAIRE'">
-                            <img src="/assets/secretaires.png" height="75" alt="medecin">
-                        </h4>
-                        <h5><strong>{{prenom | titlecase}} {{nom | titlecase}}</strong></h5> -->
+                    <div class="photo disabledPhoto">
+                        <img [attr.src]="images" alt="user image" height="68">
+                        <!-- <img alt=" user photo" src="/assets/docteur.png" *ngIf="imageDefaut && sexe=='M' && role !='ROLE_ADMIN'">
+                        <img alt="user photo" src="/assets/doctor.png" *ngIf="imageDefaut && sexe=='F' && role !='ROLE_ADMIN'">
+                        <img src="/assets/administrateur.png" class="" height="68" alt="medecin" *ngIf="imageDefaut && role=='ROLE_ADMIN'"> -->
 
+                        <h5><strong>{{prenom | titlecase}} {{nom | titlecase}}</strong></h5>
                     </div>
                 </div>
 
 
                 <div class="main-header__updates">
+                    &nbsp;&nbsp;
                     <h4>
                         <img src=" /assets/ordonnance.svg" class="" height="72" alt="medecin" class="imgHigh">
+                        &nbsp;
                         <h6><strong>KIDSCARE</strong></h6>
                     </h4>
 

@@ -1,15 +1,12 @@
 import { AuthentificationService } from './services/authentification.service';
 import { NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Component, OnInit, EventEmitter, Output ,HostBinding } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
 import { trigger, animate, transition, style, query } from '@angular/animations';
-
-
 import Swal from 'sweetalert2';
 import 'sweetalert2/src/sweetalert2.scss';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 
@@ -49,16 +46,14 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
     ])
   ]
 })
-export class AppComponent {
 
+export class AppComponent {
+  fileToUpload: File | null = null;
   editPassForm: FormGroup; profil: boolean;registerForm: FormGroup;submitted = false;
-  showHead;show: boolean = true;roles; editPassword:boolean;
+  showHead;show: boolean = true;roles; editPassword:boolean; errorPassword:boolean;samePassword:boolean;
   userLogin;roleUserLogin: string;userLoginSexe; user_id; userSpecialite: string; userName: string; sexe: string; specialite: string;
-  errorPassword:boolean;samePassword:boolean;infoPassword;checkUsername;username;nombrePatient;nombreAppoinnt;
-  nombrePatientData;pp;
- 
-  patients;appoints;dossiers;patient;appoint;dossier
-  images: string;
+  infoPassword;checkUsername;username;nombrePatient;nombreAppoinnt;nombrePatientData;images;errorCurrentPassword: boolean;
+  imageDefaut: boolean;patients;appoints;dossiers;patient;appoint;dossier;selectedFile :File= null;
 
   constructor(private auth: AuthentificationService, private router: Router, private http: HttpClient,private formBuilder: FormBuilder, private domSanitizer: DomSanitizer) {
 
@@ -83,8 +78,9 @@ export class AppComponent {
     this.profil = false;
     this.editPassword=false;
     this.checkUsername=false;
-
-    //this.errorPassword=false;
+    this.imageDefaut = false;
+    this.errorCurrentPassword=false;
+    
 
     $(document).ready(() => {
       setInterval(() => {
@@ -96,7 +92,7 @@ export class AppComponent {
    
     this.getLogin();
     
-    this.onGet();
+    
 
     this.editPassForm=this.formBuilder.group({
       id: [],
@@ -107,33 +103,53 @@ export class AppComponent {
 
     })
   }
-  onGet():any{
-    //    let mySrc: SafeUrl;
-    //     return this.auth.getImage().subscribe(
-    //       data =>{
-    
-    
-    //         // const reader = new FileReader();
-    //         // reader.readAsDataURL(data); 
-    //         // reader.onloadend = function() {
-    //         //   // result includes identifier 'data:image/png;base64,' plus the base64 data
-    //         // mySrc = reader.result;  
-    //        // this.images= window.URL.createObjectURL(data);   
-    // // }
-    //        // this.thumbnail='data:image/png;base64'+this.images;
-    //         // this.ok= true;
-    //         // this.image=data;
-    //        // this.image= this.domSanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${this.zona?.fotografia}`)
-    //         // let objectURL = 'data:image/jpeg;base64,' + data.image;
-    //         //  mySrc = this.domSanitizer.bypassSecurityTrustUrl(this.images);
-    //         console.log(data);
-    //       }
-    //     )
+      
+
+  getProfile(id){
+    let images;
+     return this.auth.getImage(id).subscribe(
+       data =>{
+         images= window.URL.createObjectURL(data);   
+         this.images = this.domSanitizer.bypassSecurityTrustUrl(images);
+       }
+     )
   }
-  
-  get f() {
-    return this.editPassForm.controls;
+
+  editPhoto(){
+    $("#file").trigger('click');
   }
+
+  uploadFiles(event){
+    
+    this.selectedFile = <File>event.target.files[0];
+
+    const fd = new FormData(); let images;
+    fd.append('image', this.selectedFile,this.selectedFile.name);
+    images = fd;
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+    return this.auth.addProfile(images).subscribe(
+      res =>{
+        Toast.fire({
+          icon:"success",
+          title: ''+res['message'],
+        })
+        this.ngOnInit();
+      }
+    )
+
+  }
+
 
   profile() {
     this.editPassword=false;
@@ -142,7 +158,6 @@ export class AppComponent {
     } else {
       this.profil = false;
     }
-
   }
 
   logout() {
@@ -150,29 +165,46 @@ export class AppComponent {
   }
 
   getLogin() {
+    let profile;
     this.auth.getUserLogin().subscribe(
         data=>{
-         
+          profile= data;
               this.user_id=data.id;
               this.userName=data.prenom+" "+data.nom;
               this.sexe=data.sexe;
               this.roles=data.role[0];
               this.specialite=data.specialite;
               this.userSpecialite=data.specialite;
+              this.imageDefaut = true;
 
               if (this.roles=='ROLE_MEDECIN') {
+
                 this.getAppointementByMedecin()
                 this.getPatientDataByMedecin();
                 this.getPatient();
+                if(profile.profil !== null){
+                  this.getProfile(profile.profil.id)
+                }
               }else if(this.roles=='ROLE_ADMIN'){
+
                 this.getRole();
                 this.getPatients();
                 this.getAppointement()
                 this.getPatientData();
+
+                if(profile.profil !== null){
+                  this.getProfile(profile.profil.id)
+                  this.imageDefaut = false;
+                }
               }else if(this.roles=='ROLE_SECRETAIRE'){
+
                 this.getAppointement()
                 this.getPatientData();
                 this.getPatients();
+
+                if(profile.profil !== null){
+                  this.getProfile(profile.profil.id)
+                }
               }
             }
         ); 
@@ -218,36 +250,36 @@ export class AppComponent {
    )
   }
 
-getAppointement() { 
-  let appoints;
- this.auth.getAppoint().subscribe(
-   data =>{
-    appoints=data;
-     this.appoint =appoints;
-     this.nombreAppoinnt= this.appoint.length;
-   }
- )
-}
+  getAppointement() { 
+    let appoints;
+    this.auth.getAppoint().subscribe(
+      data =>{
+        appoints=data;
+        this.appoint =appoints;
+        this.nombreAppoinnt= this.appoint.length;
+      }
+    )
+  }
 
   getPatientDataByMedecin() { 
-  let dossier;
- this.auth.getPatientDataByMedecin().subscribe(
-   data =>{
-    dossier=data;
-     this.dossiers =dossier;
-   }
- )
+    let dossier;
+    this.auth.getPatientDataByMedecin().subscribe(
+      data =>{
+        dossier=data;
+        this.dossiers =dossier;
+      }
+    )
   }
 
   getPatientData() { 
-  let dossiers;
- this.auth.getPatient().subscribe(
-   data =>{
-    dossiers=data;
-     this.dossier =dossiers;
-     this.nombrePatientData= this.dossier.length;
-   }
- )
+    let dossiers;
+    this.auth.getPatient().subscribe(
+      data =>{
+        dossiers=data;
+        this.dossier =dossiers;
+        this.nombrePatientData= this.dossier.length;
+      }
+    )
   }
 
   check(){
@@ -273,8 +305,7 @@ getAppointement() {
 
   editProfile(){
     this.submitted = true;
-    console.log(this.checkUsername);
-    // stop here if form is invalid
+    
     if (this.editPassForm.value.newPassword != this.editPassForm.value.confirmPassword) {
        this.editPassForm.get('newPassword').patchValue('');
        this.editPassForm.get('confirmPassword').patchValue('');
@@ -290,11 +321,10 @@ getAppointement() {
         id: this.user_id,
         newPassword: this.editPassForm.value.newPassword,
         currentPassword: this.editPassForm.value.currentPassword,
-        confirmPassword: this.editPassForm.value.confirmPassword,
-        username: this.editPassForm.value.username,
+        confirmPassword: this.editPassForm.value.confirmPassword
       };
      
-    console.log(user);
+   
       const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -308,38 +338,45 @@ getAppointement() {
       })
       this.auth.editProfile(user.id,user).subscribe(
         data => {
-          console.log(data['message']);
+          
           if(data['message'] =='Password modifié'){ 
               Toast.fire({
                 icon:"success",
                 title: ''+data['message'],
-                //imageUrl: 'https://i.imgur.com/4NZ6uLY.jpg'
               })
+              
               this.profil=true;
               this.editPassword=false;
               setTimeout(()=>{
                 this.profile();
                 this.logout();
                 this.router.navigateByUrl('/');
-              },2000);
+              },3000);
           }else if(data['message'] =='Choisir un password diffrent'){
             this.samePassword=true;
-            $(document).ready(() => {
               setInterval(() => {
                 this.samePassword= false;
-              }, 7000);
-            });  
+              }, 5000);   
                
             this.infoPassword=data['message'];
+          }else if(data['message'] =='Password actuel incorrect'){
+            this.errorCurrentPassword=true;
+            this.editPassForm.get('currentPassword').patchValue('');
+           
+              setInterval(() => {
+                this.errorCurrentPassword= false;
+              }, 5000);
           }
-        },
-        error => {
-          this.editPassForm.get('currentPassword').patchValue(null);
         }
+        // ,
+        // error => {
+        //   this.editPassForm.get('currentPassword').patchValue(null);
+        // }
       );
     }
   }
 
+  
   editForm(){
     this.editPassForm=this.formBuilder.group({
       id: [''],

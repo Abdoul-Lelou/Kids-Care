@@ -6,21 +6,31 @@
         <div class="center bg-light ">
             <div class="container">
                 <div class="left">
-                    <div class="photo">
+                    <div class="photo" id="photo">
                         <div class="circle"></div>
                         <div class="circle2"></div>
+                        <!-- <img [attr.src]="images" alt="Aucune image"> -->
+                        <div class="container-profilepic card rounded-circle overflow-hidden" (click)="editPhoto()">
+                            <div class="photo-preview card-img w-100 h-100" matTooltip="Modifier">
+                                <img [attr.src]="images" alt="image">
+                            </div>
+                            <div class="middle-profilepic text-center card-img-overlay d-none flex-column justify-content-center">
+                                <div class="text-profilepic text-success">
+                                    <i class="fa fa-camera" aria-hidden="true"></i>
+                                    <div class="text-profilepic">
+                                        <input type="file" id="file" (change)="uploadFiles($event)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                        <img alt="user photo" src="/assets/doctor.png" *ngIf="sexe=='F' && roles =='ROLE_MEDECIN'">
-                        <img alt=" user photo" src="/assets/docteur.png" *ngIf="sexe=='M' && roles =='ROLE_MEDECIN'">
-                        <img alt="user photo" src="/assets/secretaire.jpeg" *ngIf="sexe=='F' && roles =='ROLE_SECRETAIRE'">
-                        <img alt=" user photo" src="/assets/secretaires.png" *ngIf="sexe=='M' && roles =='ROLE_SECRETAIRE'">
-                        <img alt="user photo" src="/assets/docteur.png" *ngIf="sexe=='F' && roles =='ROLE_ADMIN'">
-                        <img alt=" user photo" src="/assets/administrateur.png" *ngIf="sexe=='M' && roles =='ROLE_ADMIN'">
+
 
                     </div>
                     <div class="title__contain">
                         <div class="username">
-                            {{userName | titlecase}} <br> <em>{{userSpecialite | titlecase}}</em>
+                            {{userName | titlecase}}
+                            <!-- <br> <em>{{userSpecialite | titlecase}}</em> -->
                         </div>
 
                         <div class="title">
@@ -28,7 +38,9 @@
                         </div>
                     </div>
 
-                    <button class="message btns btn-block btn-primary" (click)="editPasswordForm(user_id)">Edit</button>
+                    <!-- <button class="message btnEdit btn-block btn-primary" (click)="onUpload()">Photo</button> -->
+                    <button class="message btnPass btn-block btn-primary" (click)="editPasswordForm(user_id)">Edit</button>
+
                 </div>
                 <div class="right" *ngIf="roles =='ROLE_MEDECIN'">
                     <div class="rightbox">
@@ -63,21 +75,11 @@
             </div>
             &nbsp;
             <button class="btn btn-danger fa fa-arrow-left " (click)="cancel()" title="back"></button>
-            &nbsp;
 
-        </div>
-    </body>
+            <div class=" justify-content-center">
 
-
-    &nbsp;&nbsp;
-    <main class="col-6 border shadow-none bg-light  rounded" *ngIf="editPassword">
-
-        <form [formGroup]="editPassForm" (ngSubmit)="editProfile()" class="form shadow" align="center">
-
-            <h2>Modifier Password</h2>
-            <div class="row justify-content-center">
-                <input type="text" id="id" formControlName="id" hidden>
-                <div class="col-md-4">
+                <!-- <input type="text" id="id" formControlName="id" hidden> -->
+                <!-- <div class="col-md-4">
                     <div class="form-group">
                         <mat-error *ngIf="checkUsername">
                             <strong class="text-danger"><em>USERNAME EXISTE DÉJÀ</em></strong>
@@ -88,9 +90,21 @@
                             <mat-icon matSuffix class="blue-icon">person</mat-icon>
                         </mat-form-field>
                     </div>
+                </div> -->
+                <!-- <div class="form-group border-primary">
+                    <label for="file">Modifier Photo</label><br /> <input type="file" id="file" (change)="uploadFiles($event.target.files)">
                 </div>
-            </div>
 
+                <button class="btn btn-primary" (click)="RequestUpload()">Ok</button> -->
+            </div>
+        </div>
+    </body>
+
+
+    &nbsp;&nbsp;
+    <main class="col-6 border shadow-none bg-light  rounded" *ngIf="editPassword">
+        <form [formGroup]="editPassForm" (ngSubmit)="editProfile()" class="form shadow" align="center">
+            <h2>Modifier Password</h2>
             <div class="row justify-content-center">
                 <input type="text" id="id" formControlName="id" hidden>
                 <div class="col-md-4">
@@ -149,6 +163,9 @@
             </div>
             <mat-error *ngIf="errorPassword">
                 <strong class="text-danger"><em>PASSWORD DIFFERENT</em></strong>
+            </mat-error>
+            <mat-error *ngIf="errorCurrentPassword">
+                <strong class="text-danger"><em>PASSWORD ACTUEL INCORRECT</em></strong>
             </mat-error>
             &nbsp;
 
