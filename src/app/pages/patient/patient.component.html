@@ -1,7 +1,7 @@
 <div class="col col-sm-8 position" id="containerPatient" *ngIf="list">
-    <div class="container-fluid bg-light shadow">
-        &nbsp;
+    <!-- <div class="container-fluid bg-light shadow"> -->
 
+    <div class="row border bg-light">
         <nav class="navbar" aria-label=" navbar" style="justify-content: center;">
             <div class="container-fluid">
 
@@ -9,7 +9,7 @@
                     <div class="row justify-content-md-center ">
                         <span class="ml-auto"></span>
                         <span>
-                            <a class="navbar-brand" (click)="addPatientForm()">
+                            <a class="navbar-brand" (click)="addPatientForm()" matTooltip="AJOUTER">
                                 <span class="fa fa-plus-circle fa-2x" style="color:rgb(22, 167, 118);"></span>
                             </a>
                         </span>
@@ -24,224 +24,661 @@
 
             </div>
         </nav>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
 
-        <pagination-controls (pageChange)="p = $event" align="center"></pagination-controls>
+        <div class="col-sm-12 border-primary">
+            <!-- Nav tabs -->
+            <ul class="nav nav-pills justify-content-center ">
+                <li class="">
+                    <!-- <button> -->
 
+                    <a class="active" data-toggle="tab" href="#home" mat-button (click)="patientVisite()" matTooltip="NON VISITE">
+                        <span class="fa fa-exclamation-circle icon_color"></span>
+                    </a>
+                    <!-- </button> -->
+                </li>
+                <li class="">
+                    <!-- <button mat-button> -->
+                    <a id=" profile-tab" class="" data-toggle="tab" href="#profile" mat-button (click)="notVisite()" matTooltip=" VISITE">
+                        <span class="fa fa-check-circle "></span>
+                    </a>
+                    <!-- </button> -->
 
-        <table class="responsive-table color shadow" *ngIf="roleUserLogin=='ROLE_SECRETAIRE'">
-            <caption></caption>
-            <thead>
-                <tr>
-                    <th scope=" col">Matricule</th>
-                    <th scope=" col">Prenom</th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Age</th>
-                    <th scope="col">Adresse</th>
-                    <th scope="col">sexe</th>
-                    <th scope="col">Tel</th>
-                    <th scope="col">Medecin</th>
-                    <th scope="col" colspan="3">Action</th>
-                </tr>
-            </thead>
+                </li>
+            </ul>
 
-            <tbody *ngFor=" let patients of patients | filter:term | paginate: { itemsPerPage:3, currentPage: p }" class="shadow " [@slideOut]>
-                <tr>
-                    <td data-title="Matricule">{{patients.matricule}}</td>
-                    <td data-title="Prenom" class="text-break">{{patients.prenom | titlecase}}</td>
-                    <td data-title="Nom">{{patients.nom | titlecase}}</td>
-                    <td data-title=" Age">{{patients.age}}</td>
-                    <td data-title="Adresse" class="text-break">{{patients.adresse | titlecase}}</td>
-                    <td data-title="Sexe">{{patients.sexe}}</td>
-                    <td data-title="Tel">{{patients.tel}}</td>
-                    <td data-title="Medecin">{{patients.medecin.prenom | titlecase}} {{patients.medecin.nom | titlecase}}</td>
-
-                    <td>
-                        <button *ngIf="patients.isVisit" disabled class="btn btn-outline-success btn-block disabled">
-                            <span class="fa fa-check-circle"></span>
-                        </button>
-                        <button *ngIf="!patients.isVisit" disabled class="btn btn-outline-danger btn-block disabled">
-                            <span class="fa fa-exclamation-circle"></span>
-                        </button>
-                    </td>
-                    <td *ngIf="roleUserLogin=='ROLE_MEDECIN'">
-                        <button *ngIf="!patients.patient.isVisit " class="btn btn-outline-info btn-block" (click)="examenForm(patients.id)" matTooltip="examiner">
-                            <span class="fa fa-medkit"></span>
-                        </button>
-
-                        <button *ngIf="patients.patient.isVisit" class="btn btn-outline-info btn-block" (click)="examenForm(patients.id)" matTooltip="examiner">
-                            <span class=" fa fa-medkit"></span>
-                        </button>
-                    </td>
-                    <td>
-
-                        <button *ngIf="patients.isVisit" disabled class=" btn btn-warning btn-block" ([value])="patients.patient" (click)="editForm(patients)" matTooltip="editer">
-                            <span class="fa fa-edit"></span>
-                        </button>
-                        <button *ngIf="!patients.isVisit" class=" btn btn-outline-warning btn-block" ([value])="patients.patient" (click)="editForm(patients)" matTooltip="editer">
-                            <span class="fa fa-edit"></span>
-                        </button>
-
-                    </td>
-                    <td>
-                        <button *ngIf="patients.isVisit" disabled type="button" class="btn btn-danger btn-block" ([value])="patients.id" (click)="deletePatient(patients.id)" matTooltip="Delete">
-                            <span class="fa fa-trash"></span>
-                        </button>
-                        <button *ngIf="!patients.isVisit" type="button" class="btn btn-outline-danger btn-block" ([value])="patients.id" (click)="deletePatient(patients.id)" matTooltip="Delete">
-                            <span class="fa fa-trash"></span>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-
-            <tfoot>
-                <tr>
-                    <td colspan="11">
-                        <em>
-                            <img src="/assets/logo_kidscare.svg" height="28" alt="KIDSCARE">KIDSCARE©
-                        </em>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+            <!-- Tab panes -->
+            <div class="tab-content clearfix ">
 
 
-        <table class=" responsive-table color bg-inverse" *ngIf="roleUserLogin=='ROLE_MEDECIN'">
-            <caption></caption>
-            <thead>
-                <tr>
-                    <th scope=" col">Matricule</th>
-                    <th scope=" col">Prenom</th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Age</th>
-                    <th scope="col">Adresse</th>
-                    <th scope="col">tel</th>
-                    <th scope="col">sexe</th>
-                    <th scope="col" colspan="4">Action</th>
-                </tr>
-            </thead>
 
-            <tbody *ngFor=" let patient of patientMedecin | filter:term | paginate: { itemsPerPage:3, currentPage: p }" class="shadow" [@slideOut]>
-                <tr>
-                    <td data-title="Matricule">{{patient.matricule}}</td>
-                    <td data-title="Prenom" class="text-break">{{patient.prenom}}</td>
-                    <td data-title="Nom">{{patient.nom}}</td>
-                    <td data-title="Age">{{patient.age}}</td>
-                    <td data-title="Adresse" class="text-break">{{patient.adresse}}</td>
-                    <td data-title="Tel">{{patient.tel}}</td>
-                    <td data-title="Sexe">{{patient.sexe}}</td>
-                    <td>
-                        <button *ngIf="patient.isVisit" disabled class="btn btn-outline-success btn-block disabled">
-                            <span class="fa fa-check-circle"></span>
-                        </button>
-                        <button *ngIf="!patient.isVisit" class="btn btn-outline-danger btn-block disabled">
-                            <span class=" fa fa-exclamation-circle"></span>
-                        </button>
-
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-info btn-block" (click)="examenForm(patient.id)" matTooltip="examiner">
-                            <span class=" fa fa-medkit"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button *ngIf="patient.isVisit" disabled class=" btn btn-warning btn-block" matTooltip="NON MODIFIABLE">
-                            <span class="fa fa-edit"></span>
-                        </button>
-                        <button *ngIf="!patient.isVisit" class=" btn btn-outline-warning btn-block" ([value])="patient.id" (click)="editForm(patient)" matTooltip="editer">
-                            <span class="fa fa-edit"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-outline-danger btn-block" ([value])="patient.id" (click)="deletePatient(patient.id)" matTooltip="Delete">
-                            <span class="fa fa-trash"></span>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-
-            <tfoot>
-                <tr>
-                    <td colspan="11">
-                        <em>
-                            <img src="/assets/logo_kidscare.svg" height="28" alt="KIDSCARE">KIDSCARE©
-                        </em>
-                    </td>
-                </tr>
-            </tfoot>
-
-        </table>
+                <div class="tab-pane active" id="home">
+                    <div class="row">
+                        <div class="col-sm-12  ">
+                            <!-- <div class="jumbotron"> -->
 
 
-        <table class="responsive-table color bg-inverse" *ngIf="roleUserLogin=='ROLE_ADMIN'">
-            <caption> PATIENTS</caption>
-            <thead>
-                <tr>
-                    <th scope=" col">Matricule</th>
-                    <th scope=" col">Prenom</th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Age</th>
-                    <th scope="col">Adresse</th>
-                    <th scope="col">Tel</th>
-                    <th scope="col">Sexe</th>
-                    <th scope="col" colspan="4">Action</th>
-                </tr>
-            </thead>
+                            <table class=" responsive-table " *ngIf="roleUserLogin=='ROLE_MEDECIN' && PatientVisite">
+                                <caption>Patients non traités <strong>{{patientNotVisiteLength}}</strong></caption>
+                                <thead>
+                                    <tr>
+                                        <th scope=" col">Matricule</th>
+                                        <th scope=" col">Prenom</th>
+                                        <th scope="col">Nom</th>
+                                        <th scope="col">Age</th>
+                                        <th scope="col">Adresse</th>
+                                        <th scope="col">tel</th>
+                                        <th scope="col">sexe</th>
+                                        <th scope="col" colspan="4">Action</th>
+                                    </tr>
+                                </thead>
 
-            <tbody *ngFor=" let patient of patients | filter:term | paginate: { itemsPerPage:3, currentPage: p }" class="shadow" [@slideOut]>
-                <tr>
-                    <td data-title="Matricule">{{patient.matricule}}</td>
-                    <td data-title="Prenom" class="text-break">{{patient.prenom | titlecase}}</td>
-                    <td data-title="Nom">{{patient.nom | titlecase}}</td>
-                    <td data-title="Age">{{patient.age}}</td>
-                    <td data-title="Adresse" class="text-break">{{patient.adresse | titlecase}}</td>
-                    <td data-title="Tel">{{patient.tel}}</td>
-                    <td data-title="Sexe">{{patient.sexe}}</td>
-                    <td>
-                        <button *ngIf="patient.isVisit" disabled class="btn btn-outline-success btn-block disabled" matTooltip="Visité">
-                            <span class="fa fa-check-circle"></span>
-                        </button>
-                        <button *ngIf="!patient.isVisit" class="btn btn-outline-danger btn-block disabled" matTooltip="Non visité">
-                            <span class=" fa fa-exclamation-circle"></span>
-                        </button>
+                                <tbody *ngFor=" let patient of  patientNotVisite | filter:term | paginate: { itemsPerPage:3, currentPage: p }" class="" [@slideOut]>
+                                    <tr>
+                                        <td data-title="Matricule">{{patient.matricule}}</td>
+                                        <td data-title="Prenom" class="text-break">{{patient.prenom}}</td>
+                                        <td data-title="Nom">{{patient.nom}}</td>
+                                        <td data-title="Age">{{patient.age}}</td>
+                                        <td data-title="Adresse" class="text-break">{{patient.adresse}}</td>
+                                        <td data-title="Tel">{{patient.tel}}</td>
+                                        <td data-title="Sexe">{{patient.sexe}}</td>
 
-                    </td>
-                    <td>
+                                        <td>
+                                            <button class="btn btn-outline-info btn-block" (click)="examenForm(patient.id)" matTooltip="examiner">
+                                                <span class=" fa fa-medkit"></span>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button *ngIf="patient.isVisit" disabled class=" btn btn-warning btn-block" matTooltip="NON MODIFIABLE">
+                                                <span class="fa fa-edit"></span>
+                                            </button>
+                                            <button *ngIf="!patient.isVisit" class=" btn btn-outline-warning btn-block" ([value])="patient.id" (click)="editForm(patient)" matTooltip="editer">
+                                                <span class="fa fa-edit"></span>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline-danger btn-block" ([value])="patient.id" (click)="deletePatient(patient.id)" matTooltip="Delete">
+                                                <span class="fa fa-trash"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
 
-                        <button class="btn btn-outline-info btn-block" (click)="examenForm(patient.id)" matTooltip="examiner">
-                            <span class=" fa fa-medkit"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button class=" btn btn-outline-warning btn-block" ([value])="patient.id" (click)="editForm(patient)" matTooltip="editer">
-                            <span class="fa fa-edit">{{infoDataPatient}}</span>
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-outline-danger btn-block" ([value])="patient.id" (click)="deletePatient(patient.id)" matTooltip="Delete">
-                            <span class="fa fa-trash"></span>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="11">
+                                            <em>
+                                                <img src="/assets/logo_kidscare.svg" height="28" alt="KIDSCARE">KIDSCARE©
+                                            </em>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
 
-            <tfoot>
-                <tr>
-                    <td colspan="12">
-                        <em>
-                            <img src="/assets/logo_kidscare.svg" height="28" alt="KIDSCARE">KIDSCARE©
-                        </em>
-                    </td>
-                </tr>
-            </tfoot>
 
-        </table>
 
+                            <table class="responsive-table color shadow" *ngIf="roleUserLogin=='ROLE_SECRETAIRE' && PatientVisite">
+
+                                <caption>Patients non traités <strong>{{patientNotVisiteLength}}</strong></caption>
+                                <thead>
+                                    <tr>
+                                        <th scope=" col">Matricule</th>
+                                        <th scope=" col">Prenom</th>
+                                        <th scope="col">Nom</th>
+                                        <th scope="col">Age</th>
+                                        <th scope="col">Adresse</th>
+                                        <th scope="col">sexe</th>
+                                        <th scope="col">Tel</th>
+                                        <th scope="col">Medecin</th>
+                                        <th scope="col" colspan="3">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody *ngFor=" let patients of patientNotVisite | filter:term | paginate: { itemsPerPage:3, currentPage: p }" class="shadow " [@slideOut]>
+                                    <tr>
+                                        <td data-title="Matricule">{{patients.matricule}}</td>
+                                        <td data-title="Prenom" class="text-break">{{patients.prenom | titlecase}}</td>
+                                        <td data-title="Nom">{{patients.nom | titlecase}}</td>
+                                        <td data-title=" Age">{{patients.age}}</td>
+                                        <td data-title="Adresse" class="text-break">{{patients.adresse | titlecase}}</td>
+                                        <td data-title="Sexe">{{patients.sexe}}</td>
+                                        <td data-title="Tel">{{patients.tel}}</td>
+                                        <td data-title="Medecin">{{patients.medecin.prenom | titlecase}} {{patients.medecin.nom | titlecase}}</td>
+
+
+
+                                        <td>
+
+                                            <button *ngIf="patients.isVisit" disabled class=" btn btn-warning btn-block" ([value])="patients.patient" (click)="editForm(patients)" matTooltip="editer">
+                                                <span class="fa fa-edit"></span>
+                                            </button>
+                                            <button *ngIf="!patients.isVisit" class=" btn btn-outline-warning btn-block" ([value])="patients.patient" (click)="editForm(patients)" matTooltip="editer">
+                                                <span class="fa fa-edit"></span>
+                                            </button>
+
+                                        </td>
+                                        <td>
+                                            <button *ngIf="patients.isVisit" disabled type="button" class="btn btn-danger btn-block" ([value])="patients.id" (click)="deletePatient(patients.id)" matTooltip="Delete">
+                                                <span class="fa fa-trash"></span>
+                                            </button>
+                                            <button *ngIf="!patients.isVisit" type="button" class="btn btn-outline-danger btn-block" ([value])="patients.id" (click)="deletePatient(patients.id)" matTooltip="Delete">
+                                                <span class="fa fa-trash"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="11">
+                                            <em>
+                                                <img src="/assets/logo_kidscare.svg" height="28" alt="KIDSCARE">KIDSCARE©
+                                            </em>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+
+
+
+
+
+                            <table class="responsive-table color bg-inverse" *ngIf="roleUserLogin=='ROLE_ADMIN' && PatientVisite">
+                                <caption> Patients non traités <strong>{{patientNotVisiteLength}}</strong></caption>
+                                <thead>
+                                    <tr>
+                                        <th scope=" col">Matricule</th>
+                                        <th scope=" col">Prenom</th>
+                                        <th scope="col">Nom</th>
+                                        <th scope="col">Age</th>
+                                        <th scope="col">Adresse</th>
+                                        <th scope="col">Tel</th>
+                                        <th scope="col">Sexe</th>
+                                        <th scope="col" colspan="4">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody *ngFor=" let patient of patientNotVisite | filter:term | paginate: { itemsPerPage:3, currentPage: p }" class="shadow" [@slideOut]>
+                                    <tr>
+                                        <td data-title="Matricule">{{patient.matricule}}</td>
+                                        <td data-title="Prenom" class="text-break">{{patient.prenom | titlecase}}</td>
+                                        <td data-title="Nom">{{patient.nom | titlecase}}</td>
+                                        <td data-title="Age">{{patient.age}}</td>
+                                        <td data-title="Adresse" class="text-break">{{patient.adresse | titlecase}}</td>
+                                        <td data-title="Tel">{{patient.tel}}</td>
+                                        <td data-title="Sexe">{{patient.sexe}}</td>
+
+                                        <td>
+
+                                            <button class="btn btn-outline-info btn-block" (click)="examenForm(patient.id)" matTooltip="examiner">
+                                                <span class=" fa fa-medkit"></span>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button class=" btn btn-outline-warning btn-block" ([value])="patient.id" (click)="editForm(patient)" matTooltip="editer">
+                                                <span class="fa fa-edit">{{infoDataPatient}}</span>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline-danger btn-block" ([value])="patient.id" (click)="deletePatient(patient.id)" matTooltip="Delete">
+                                                <span class="fa fa-trash"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="12">
+                                            <em>
+                                                <img src="/assets/logo_kidscare.svg" height="28" alt="KIDSCARE">KIDSCARE©
+                                            </em>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+
+                            </table>
+
+
+                            <!-- </div> -->
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <div class="tab-pane" id="profile">
+                    <div class="row">
+                        <div class="col-sm-12">
+
+
+                            <table class=" responsive-table  bg-inverse" *ngIf="roleUserLogin=='ROLE_MEDECIN' && !PatientVisite">
+                                <caption>Patients traités <strong>{{patientVisiteLength}}</strong></caption>
+                                <thead>
+                                    <tr>
+                                        <th scope=" col">Matricule</th>
+                                        <th scope=" col">Prenom</th>
+                                        <th scope="col">Nom</th>
+                                        <th scope="col">Age</th>
+                                        <th scope="col">Adresse</th>
+                                        <th scope="col">tel</th>
+                                        <th scope="col">sexe</th>
+                                        <th scope="col" colspan="4">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody *ngFor=" let patient of  patientMedecin | filter:term | paginate: { itemsPerPage:3, currentPage: p }" class="shadow" [@slideOut]>
+                                    <tr>
+                                        <td data-title="Matricule">{{patient.matricule}}</td>
+                                        <td data-title="Prenom" class="text-break">{{patient.prenom}}</td>
+                                        <td data-title="Nom">{{patient.nom}}</td>
+                                        <td data-title="Age">{{patient.age}}</td>
+                                        <td data-title="Adresse" class="text-break">{{patient.adresse}}</td>
+                                        <td data-title="Tel">{{patient.tel}}</td>
+                                        <td data-title="Sexe">{{patient.sexe}}</td>
+
+                                        <td>
+                                            <button class="btn btn-outline-info btn-block" (click)="examenForm(patient.id)" matTooltip="examiner">
+                                                <span class=" fa fa-medkit"></span>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button *ngIf="patient.isVisit" disabled class=" btn btn-warning btn-block" matTooltip="NON MODIFIABLE">
+                                                <span class="fa fa-edit"></span>
+                                            </button>
+                                            <button *ngIf="!patient.isVisit" class=" btn btn-outline-warning btn-block" ([value])="patient.id" (click)="editForm(patient)" matTooltip="editer">
+                                                <span class="fa fa-edit"></span>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline-danger btn-block" ([value])="patient.id" (click)="deletePatient(patient.id)" matTooltip="Delete">
+                                                <span class="fa fa-trash"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="11">
+                                            <em>
+                                                <img src="/assets/logo_kidscare.svg" height="28" alt="KIDSCARE">KIDSCARE©
+                                            </em>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+
+                            </table>
+
+
+                            <table class="responsive-table color shadow" *ngIf="roleUserLogin=='ROLE_SECRETAIRE' && !PatientVisite">
+
+                                <caption>Patients traités <strong>{{patientVisiteLength}}</strong></caption>
+                                <thead>
+                                    <tr>
+                                        <th scope=" col">Matricule</th>
+                                        <th scope=" col">Prenom</th>
+                                        <th scope="col">Nom</th>
+                                        <th scope="col">Age</th>
+                                        <th scope="col">Adresse</th>
+                                        <th scope="col">sexe</th>
+                                        <th scope="col">Tel</th>
+                                        <th scope="col">Medecin</th>
+                                        <th scope="col" colspan="3">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody *ngFor=" let patients of patients  | filter:term | paginate: { itemsPerPage:3, currentPage: p }" class="shadow " [@slideOut]>
+                                    <tr>
+                                        <td data-title="Matricule">{{patients.matricule}}</td>
+                                        <td data-title="Prenom" class="text-break">{{patients.prenom | titlecase}}</td>
+                                        <td data-title="Nom">{{patients.nom | titlecase}}</td>
+                                        <td data-title=" Age">{{patients.age}}</td>
+                                        <td data-title="Adresse" class="text-break">{{patients.adresse | titlecase}}</td>
+                                        <td data-title="Sexe">{{patients.sexe}}</td>
+                                        <td data-title="Tel">{{patients.tel}}</td>
+                                        <td data-title="Medecin">{{patients.medecin.prenom | titlecase}} {{patients.medecin.nom | titlecase}}</td>
+
+
+
+                                        <td>
+
+                                            <button *ngIf="patients.isVisit" disabled class=" btn btn-warning btn-block" ([value])="patients.patient" (click)="editForm(patients)" matTooltip="editer">
+                                                <span class="fa fa-edit"></span>
+                                            </button>
+                                            <button *ngIf="!patients.isVisit" class=" btn btn-outline-warning btn-block" ([value])="patients.patient" (click)="editForm(patients)" matTooltip="editer">
+                                                <span class="fa fa-edit"></span>
+                                            </button>
+
+                                        </td>
+                                        <td>
+                                            <button *ngIf="patients.isVisit" disabled type="button" class="btn btn-danger btn-block" ([value])="patients.id" (click)="deletePatient(patients.id)" matTooltip="Delete">
+                                                <span class="fa fa-trash"></span>
+                                            </button>
+                                            <button *ngIf="!patients.isVisit" type="button" class="btn btn-outline-danger btn-block" ([value])="patients.id" (click)="deletePatient(patients.id)" matTooltip="Delete">
+                                                <span class="fa fa-trash"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="11">
+                                            <em>
+                                                <img src="/assets/logo_kidscare.svg" height="28" alt="KIDSCARE">KIDSCARE©
+                                            </em>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+
+                            <table class="responsive-table color bg-inverse" *ngIf="roleUserLogin=='ROLE_ADMIN' && !PatientVisite">
+                                <caption> Patients traités <strong>{{patientVisiteLength}}</strong></caption>
+                                <thead>
+                                    <tr>
+                                        <th scope=" col">Matricule</th>
+                                        <th scope=" col">Prenom</th>
+                                        <th scope="col">Nom</th>
+                                        <th scope="col">Age</th>
+                                        <th scope="col">Adresse</th>
+                                        <th scope="col">Tel</th>
+                                        <th scope="col">Sexe</th>
+                                        <th scope="col" colspan="4">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody *ngFor=" let patient of patients | filter:term | paginate: { itemsPerPage:3, currentPage: p }" class="shadow" [@slideOut]>
+                                    <tr>
+                                        <td data-title="Matricule">{{patient.matricule}}</td>
+                                        <td data-title="Prenom" class="text-break">{{patient.prenom | titlecase}}</td>
+                                        <td data-title="Nom">{{patient.nom | titlecase}}</td>
+                                        <td data-title="Age">{{patient.age}}</td>
+                                        <td data-title="Adresse" class="text-break">{{patient.adresse | titlecase}}</td>
+                                        <td data-title="Tel">{{patient.tel}}</td>
+                                        <td data-title="Sexe">{{patient.sexe}}</td>
+
+                                        <td>
+
+                                            <button class="btn btn-outline-info btn-block" (click)="examenForm(patient.id)" matTooltip="examiner">
+                                                <span class=" fa fa-medkit"></span>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button class=" btn btn-outline-warning btn-block" ([value])="patient.id" (click)="editForm(patient)" matTooltip="editer">
+                                                <span class="fa fa-edit">{{infoDataPatient}}</span>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline-danger btn-block" ([value])="patient.id" (click)="deletePatient(patient.id)" matTooltip="Delete">
+                                                <span class="fa fa-trash"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="12">
+                                            <em>
+                                                <img src="/assets/logo_kidscare.svg" height="28" alt="KIDSCARE">KIDSCARE©
+                                            </em>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+        </div>
     </div>
+
+
+
+
+
+
+
+
+
+    <table class=" responsive-table color bg-inverse" *ngIf="roleUserLogin=='ROLE_MEkDECIN'">
+        <caption></caption>
+        <thead>
+            <tr>
+                <th scope=" col">Matricule</th>
+                <th scope=" col">Prenom</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Age</th>
+                <th scope="col">Adresse</th>
+                <th scope="col">tel</th>
+                <th scope="col">sexe</th>
+                <th scope="col" colspan="4">Action</th>
+            </tr>
+        </thead>
+
+        <tbody *ngFor=" let patient of patientMedecin | filter:term | paginate: { itemsPerPage:3, currentPage: p }" class="shadow" [@slideOut]>
+            <tr>
+                <td data-title="Matricule">{{patient.matricule}}</td>
+                <td data-title="Prenom" class="text-break">{{patient.prenom}}</td>
+                <td data-title="Nom">{{patient.nom}}</td>
+                <td data-title="Age">{{patient.age}}</td>
+                <td data-title="Adresse" class="text-break">{{patient.adresse}}</td>
+                <td data-title="Tel">{{patient.tel}}</td>
+                <td data-title="Sexe">{{patient.sexe}}</td>
+                <td>
+                    <button *ngIf="patient.isVisit" disabled class="btn btn-outline-success btn-block disabled">
+                        <span class="fa fa-check-circle"></span>
+                    </button>
+                    <button *ngIf="!patient.isVisit" class="btn btn-outline-danger btn-block disabled">
+                        <span class=" fa fa-exclamation-circle"></span>
+                    </button>
+
+                </td>
+                <td>
+                    <button class="btn btn-outline-info btn-block" (click)="examenForm(patient.id)" matTooltip="examiner">
+                        <span class=" fa fa-medkit"></span>
+                    </button>
+                </td>
+                <td>
+                    <button *ngIf="patient.isVisit" disabled class=" btn btn-warning btn-block" matTooltip="NON MODIFIABLE">
+                        <span class="fa fa-edit"></span>
+                    </button>
+                    <button *ngIf="!patient.isVisit" class=" btn btn-outline-warning btn-block" ([value])="patient.id" (click)="editForm(patient)" matTooltip="editer">
+                        <span class="fa fa-edit"></span>
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-outline-danger btn-block" ([value])="patient.id" (click)="deletePatient(patient.id)" matTooltip="Delete">
+                        <span class="fa fa-trash"></span>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <td colspan="11">
+                    <em>
+                        <img src="/assets/logo_kidscare.svg" height="28" alt="KIDSCARE">KIDSCARE©
+                    </em>
+                </td>
+            </tr>
+        </tfoot>
+
+    </table>
+
+
+    <table class="responsive-table color shadow" *ngIf="roleUserLogin=='ROLE_SEChRETAIRE'">
+
+        <caption>
+            <button class="btn btn-success" (click)="getAppointTime()">appoint</button>
+        </caption>
+        <thead>
+            <tr>
+                <th scope=" col">Matricule</th>
+                <th scope=" col">Prenom</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Age</th>
+                <th scope="col">Adresse</th>
+                <th scope="col">sexe</th>
+                <th scope="col">Tel</th>
+                <th scope="col">Medecin</th>
+                <th scope="col" colspan="3">Action</th>
+            </tr>
+        </thead>
+
+        <tbody *ngFor=" let patients of patients | filter:term | paginate: { itemsPerPage:3, currentPage: p }" class="shadow " [@slideOut]>
+            <tr>
+                <td data-title="Matricule">{{patients.matricule}}</td>
+                <td data-title="Prenom" class="text-break">{{patients.prenom | titlecase}}</td>
+                <td data-title="Nom">{{patients.nom | titlecase}}</td>
+                <td data-title=" Age">{{patients.age}}</td>
+                <td data-title="Adresse" class="text-break">{{patients.adresse | titlecase}}</td>
+                <td data-title="Sexe">{{patients.sexe}}</td>
+                <td data-title="Tel">{{patients.tel}}</td>
+                <td data-title="Medecin">{{patients.medecin.prenom | titlecase}} {{patients.medecin.nom | titlecase}}</td>
+
+                <td>
+                    <button *ngIf="patients.isVisit" disabled class="btn btn-outline-success btn-block disabled">
+                        <span class="fa fa-check-circle"></span>
+                    </button>
+                    <button *ngIf="!patients.isVisit" disabled class="btn btn-outline-danger btn-block disabled">
+                        <span class="fa fa-exclamation-circle"></span>
+                    </button>
+                </td>
+                <td *ngIf="roleUserLogin=='ROLE_MEDECIN'">
+                    <button *ngIf="!patients.patient.isVisit " class="btn btn-outline-info btn-block" (click)="examenForm(patients.id)" matTooltip="examiner">
+                        <span class="fa fa-medkit"></span>
+                    </button>
+
+                    <button *ngIf="patients.patient.isVisit" class="btn btn-outline-info btn-block" (click)="examenForm(patients.id)" matTooltip="examiner">
+                        <span class=" fa fa-medkit"></span>
+                    </button>
+                </td>
+                <td>
+
+                    <button *ngIf="patients.isVisit" disabled class=" btn btn-warning btn-block" ([value])="patients.patient" (click)="editForm(patients)" matTooltip="editer">
+                        <span class="fa fa-edit"></span>
+                    </button>
+                    <button *ngIf="!patients.isVisit" class=" btn btn-outline-warning btn-block" ([value])="patients.patient" (click)="editForm(patients)" matTooltip="editer">
+                        <span class="fa fa-edit"></span>
+                    </button>
+
+                </td>
+                <td>
+                    <button *ngIf="patients.isVisit" disabled type="button" class="btn btn-danger btn-block" ([value])="patients.id" (click)="deletePatient(patients.id)" matTooltip="Delete">
+                        <span class="fa fa-trash"></span>
+                    </button>
+                    <button *ngIf="!patients.isVisit" type="button" class="btn btn-outline-danger btn-block" ([value])="patients.id" (click)="deletePatient(patients.id)" matTooltip="Delete">
+                        <span class="fa fa-trash"></span>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <td colspan="11">
+                    <em>
+                        <img src="/assets/logo_kidscare.svg" height="28" alt="KIDSCARE">KIDSCARE©
+                    </em>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+
+
+
+
+
+    <table class="responsive-table color bg-inverse" *ngIf="roleUserLogin=='ROLE_ADMIkN'">
+        <caption> PATIENTS</caption>
+        <thead>
+            <tr>
+                <th scope=" col">Matricule</th>
+                <th scope=" col">Prenom</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Age</th>
+                <th scope="col">Adresse</th>
+                <th scope="col">Tel</th>
+                <th scope="col">Sexe</th>
+                <th scope="col" colspan="4">Action</th>
+            </tr>
+        </thead>
+
+        <tbody *ngFor=" let patient of patients | filter:term | paginate: { itemsPerPage:3, currentPage: p }" class="shadow" [@slideOut]>
+            <tr>
+                <td data-title="Matricule">{{patient.matricule}}</td>
+                <td data-title="Prenom" class="text-break">{{patient.prenom | titlecase}}</td>
+                <td data-title="Nom">{{patient.nom | titlecase}}</td>
+                <td data-title="Age">{{patient.age}}</td>
+                <td data-title="Adresse" class="text-break">{{patient.adresse | titlecase}}</td>
+                <td data-title="Tel">{{patient.tel}}</td>
+                <td data-title="Sexe">{{patient.sexe}}</td>
+                <td>
+                    <button *ngIf="patient.isVisit" disabled class="btn btn-outline-success btn-block disabled" matTooltip="Visité">
+                        <span class="fa fa-check-circle"></span>
+                    </button>
+                    <button *ngIf="!patient.isVisit" class="btn btn-outline-danger btn-block disabled" matTooltip="Non visité">
+                        <span class=" fa fa-exclamation-circle"></span>
+                    </button>
+
+                </td>
+                <td>
+
+                    <button class="btn btn-outline-info btn-block" (click)="examenForm(patient.id)" matTooltip="examiner">
+                        <span class=" fa fa-medkit"></span>
+                    </button>
+                </td>
+                <td>
+                    <button class=" btn btn-outline-warning btn-block" ([value])="patient.id" (click)="editForm(patient)" matTooltip="editer">
+                        <span class="fa fa-edit">{{infoDataPatient}}</span>
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-outline-danger btn-block" ([value])="patient.id" (click)="deletePatient(patient.id)" matTooltip="Delete">
+                        <span class="fa fa-trash"></span>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <td colspan="12">
+                    <em>
+                        <img src="/assets/logo_kidscare.svg" height="28" alt="KIDSCARE">KIDSCARE©
+                    </em>
+                </td>
+            </tr>
+        </tfoot>
+
+    </table>
+
+    <!-- </div> -->
     <hr>
 </div>
 
+
+
+
+
 <p style="text-align:center;margin-left:8%;" *ngIf="list">
-    <svg class="align-items-center" version=" 1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="98px" height="100px" viewBox="0 0 98 100" enable-background="new 0 0 98 100" xml:space="preserve">
+    <svg class="align-items-center" version=" 1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="98px" height="60px" viewBox="0 0 98 100" enable-background="new 0 0 98 100" xml:space="preserve">
         <path fill="#FFFFFF" d="M85.715,26.547h-7.457c1.711-5.512,0.539-11.744-3.043-15.975c-3.587-4.236-9.158-6.766-14.896-6.766
         c-4.109,0-7.852,1.29-10.733,3.6c-3.045-4.6-9.469-7.03-15.613-7.03c-7.055,0-14.166,3.225-16.001,10.323
         c-1.147-0.196-2.492-0.347-3.91-0.347c-8.456,0-13.503,5.16-13.846,14.155c-0.185,4.844,1.047,8.677,3.662,11.394
@@ -362,7 +799,8 @@
 
 
 
-<div class="container formBloc border shadow  bg-light" *ngIf="add" [@slideIn]>
+
+<div class="container formBloc border border-2 border-success shadow  bg-light" *ngIf="add" [@slideIn]>
 
     <form [formGroup]="registerForm" align="center">
         <div *ngIf="bloc1">
@@ -381,7 +819,7 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
 
                 <div class="col-md-6">
                     <div class="form-group">
@@ -395,7 +833,7 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
             </div>
 
             <div class="row  justify-content-center">
@@ -413,7 +851,7 @@
 
 
                 </div>
-                <!--  col-md-6   -->
+
 
                 <div class="col-md-6">
 
@@ -428,7 +866,7 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
             </div>
             <!--  row   -->
 
@@ -439,17 +877,17 @@
                         <mat-error *ngIf="registerForm.controls['tel'].invalid && registerForm.controls['tel'].touched">
                             <strong class="text-danger"><em>TELEPHONE INVALID</em></strong>
                         </mat-error>
-                        <mat-error *ngIf="checkNumber">
+                        <mat-error *ngIf="checkNumber ">
                             <strong class="text-danger"><em>NUMERO EXISTE DÉJÀ</em></strong>
                         </mat-error>
                         <mat-form-field appearance="outline">
                             <mat-label>Telephone</mat-label>
-                            <input matInput placeholder="Tel" class=" input" [(ngModel)]="tel" formControlName="tel" (keyup)=" $event.target.value=removeSpacesTel($event.target.value); checkTel();">
+                            <input matInput placeholder="77..." class=" input" [(ngModel)]="tel" formControlName="tel" (keyup)=" $event.target.value=removeSpacesTel($event.target.value); checkAddTel();">
                             <mat-icon matSuffix class="blue-icon">phone</mat-icon>
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
 
                 <div class="col-md-6 ">
                     <div class="form-group">
@@ -467,7 +905,7 @@
                     </div>
 
                 </div>
-                <!--  col-md-6   -->
+
             </div>
             <!--  row   -->
             <mat-error *ngIf="checkNumber">
@@ -490,7 +928,7 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
 
                 <div class="col-md-6">
                     <div class="form-group">
@@ -508,7 +946,7 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
             </div>
             &nbsp;
 
@@ -526,7 +964,7 @@
 
 
                 </div>
-                <!--  col-md-6   -->
+
 
 
                 <div class="col-md-6">
@@ -542,20 +980,22 @@
                                 <ng-container *ngIf="roleUserLogin=='ROLE_SECRETAIRE' || roleUserLogin=='ROLE_ADMIN'; else medecinRole">
                                     <ng-container *ngFor=" let medecin of medecin">
                                         <option value="{{medecin.id}}" *ngIf="medecin.role=='ROLE_MEDECIN'">
-                                            <em>{{medecin.prenom}} {{medecin.nom}}</em>
+                                            <strong> <em>{{medecin.prenom}} {{medecin.nom}} &nbsp; {{medecin.specialite}} </em></strong>
                                         </option>
                                     </ng-container>
                                 </ng-container>
                                 <ng-template #medecinRole>
-                                    <option value="{{medecin_id}}">{{medecin_prenom}} {{medecin_nom}} </option>
+                                    <option value="{{medecin_id}}">
+                                        <strong> <em> {{medecin_prenom}} {{medecin_nom}} &nbsp;{{medecin_specialite}}</em></strong>
+                                    </option>
                                 </ng-template>
-                                <ng-container *ngIf="roleUserLogin=='ROLE_MEDECIN'">
+                                <!-- <ng-container *ngIf="roleUserLogin=='ROLE_MEDECIN'">
                                     <ng-container *ngFor=" let medecin of medecin">
                                         <option value="{{medecin.id}}" *ngIf="medecin.role=='ROLE_MEDECIN'">
                                             <em>{{medecin.prenom}} {{medecin.nom}}</em>
                                         </option>
                                     </ng-container>
-                                </ng-container>
+                                </ng-container> -->
                             </select>
 
                             <mat-label>Medecin</mat-label>
@@ -564,7 +1004,7 @@
 
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
             </div>
             <!--  row   -->
             &nbsp;
@@ -584,10 +1024,10 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
 
 
-                <!--  col-md-6   -->
+
+
             </div>
         </div>
         <mat-error *ngIf="timeExist">
@@ -602,15 +1042,15 @@
             <button type="submit" id="send-button" (click)="addPatient()" *ngIf="bloc2" class="btn btn-primary" [disabled]="registerForm.invalid">
                 Ajouter
             </button>&nbsp;
-            <button type=" submit" id="cancel-button" (click)="cancel()">Annuler</button>
+            <button type=" submit" id="cancel-button" (click)="cancel()" class=" btn btn-danger">Annuler</button>
 
         </div>
-
+        &nbsp;
     </form>
 </div>
 
 
-<div class="container formBloc border shadow  bg-light" *ngIf="edit" [@slideIn]>
+<div class="container formBloc border border-2 border-success shadow  bg-light" *ngIf="edit" [@slideIn]>
     <form [formGroup]="registerFormEdit" (ngSubmit)="updatePatient()" class=" " align="center">
         <div *ngIf="bloc1">
             <h2>Modifier Patient</h2>
@@ -627,7 +1067,7 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
 
                 <div class="col-md-6">
                     <div class="form-group">
@@ -641,7 +1081,7 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
             </div>
 
             <div class="row  justify-content-center">
@@ -659,7 +1099,6 @@
 
 
                 </div>
-                <!--  col-md-6   -->
 
                 <div class="col-md-6">
 
@@ -674,9 +1113,7 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
             </div>
-            <!--  row   -->
 
         </div>
         <div *ngIf="bloc2">
@@ -693,13 +1130,12 @@
                         </mat-error>
                         <mat-form-field appearance="outline">
                             <mat-label>Telephone</mat-label>
-                            <!-- <input matInput placeholder="Tel" class="input" value="" formControlName="tel" (keyup)=" $event.target.value=removeSpacesTel($event.target.value); checkTel();"> -->
-                            <input matInput placeholder="Tel" class="input" formControlName="tel" (keyup)="$event.target.value=removeSpacesTel($event.target.value);checkTel();">
+                            <input matInput placeholder="77..." class="input" formControlName="tel" (keyup)="$event.target.value=removeSpacesTel($event.target.value);checkEditTel();">
                             <mat-icon matSuffix class="blue-icon">phone</mat-icon>
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
 
                 <div class="col-md-6 ">
                     <div class="form-group">
@@ -717,7 +1153,7 @@
                     </div>
 
                 </div>
-                <!--  col-md-6   -->
+
             </div>
             <!--  row   -->
             <div class="row  justify-content-center">
@@ -772,7 +1208,7 @@
 
 <div class="container formBloc border shadow  bg-light" *ngIf="consult" [@slideIn]>
 
-    <form [formGroup]="examenFormGroupe" (ngSubmit)="examinePatient()" class=" " align="center">
+    <form [formGroup]="examenFormGroupe" (ngSubmit)="examinePatient()" align="center">
         <div *ngIf="bloc1">
             <h2>Examiner Patient</h2>
             <div class="row justify-content-center">
@@ -788,7 +1224,7 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
 
                 <div class="col-md-6">
                     <div class="form-group">
@@ -802,7 +1238,7 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
             </div>
 
             <div class="row  justify-content-center">
@@ -821,7 +1257,7 @@
 
 
                 </div>
-                <!--  col-md-6   -->
+
 
                 <div class="col-md-6">
 
@@ -845,7 +1281,7 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
             </div>
             <!--  row   -->
 
@@ -879,12 +1315,12 @@
                         </mat-error>
                         <mat-form-field appearance="outline">
                             <mat-label>Medicament</mat-label>
-                            <input matInput placeholder="Medicament" class="input" formControlName="medicament" (keyup)="$event.target.value=removeCharactere($event.target.value)">
+                            <input matInput placeholder="Medicament" class="input" formControlName="medicament" (keyup)="$event.target.value=removeCharactereOrdon($event.target.value)">
                             <mat-icon matSuffix class="blue-icon">bubble_chart</mat-icon>
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
 
                 <div class="col-md-6">
                     <div class="form-group">
@@ -893,12 +1329,12 @@
                         </mat-error>
                         <mat-form-field appearance="outline">
                             <mat-label>Dosage</mat-label>
-                            <input matInput placeholder="Dosage" class="input" formControlName="dosage" (keyup)="$event.target.value=removeLetter($event.target.value)">
+                            <input matInput placeholder="Dosage" class="input" formControlName="dosage" (keyup)="$event.target.value=removeCharactereOrdon($event.target.value)">
                             <mat-icon matSuffix class="blue-icon">device_thermostat</mat-icon>
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
             </div>
 
             <div class="row  justify-content-center">
@@ -909,14 +1345,14 @@
                         </mat-error>
                         <mat-form-field appearance="outline">
                             <mat-label>Quantite</mat-label>
-                            <input matInput placeholder="Quantite" class="input" formControlName="quantite" (keyup)="$event.target.value=removeLetter($event.target.value)">
+                            <input matInput placeholder="Quantite" class="input" formControlName="quantite" (keyup)="$event.target.value=removeCharactereOrdon($event.target.value)">
                             <mat-icon matSuffix class="blue-icon">equalizer</mat-icon>
                         </mat-form-field>
                     </div>
 
 
                 </div>
-                <!--  col-md-6   -->
+
             </div>
 
 
@@ -935,7 +1371,7 @@
             <button type="submit" id="send-button" (click)="blockExamen()" *ngIf="bloc1" class="btn btn-primary" [disabled]="!examenFormGroupe.controls['symptome'].valid || !examenFormGroupe.controls['poids'].valid || !examenFormGroupe.controls['taille'].valid || !examenFormGroupe.controls['groupe'].valid || !examenFormGroupe.controls['constat'].valid">
                 Next
             </button>
-            <button type="submit" id="send-button" *ngIf="blocExamen" class="btn btn-primary">
+            <button type="submit" id="send-button" *ngIf="blocExamen" [disabled]="!examenFormGroupe.controls['medicament'].valid || !examenFormGroupe.controls['dosage'].valid || !examenFormGroupe.controls['quantite'].valid " class="btn btn-primary">
                 Examiner
             </button>&nbsp;
             <button type=" submit" id="cancel-button" (click)="cancel()" class="btn btn-danger">Annuler</button>

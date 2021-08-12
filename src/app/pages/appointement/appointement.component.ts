@@ -1,11 +1,12 @@
+import { filter, map } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { AuthentificationService } from 'src/app/services/authentification.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import 'sweetalert2/src/sweetalert2.scss'; 
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { pipe } from 'rxjs';
 
 
 
@@ -34,33 +35,25 @@ import { animate, style, transition, trigger } from '@angular/animations';
 
 export class AppointementComponent implements OnInit {
 
-  registerForm: FormGroup; editFormAppointement:FormGroup; userEditForm; submitted = false;patient; medecin; appoint; appointMedecin;
-  patients; patientBySecretaire;  add:boolean=false; edit:boolean=false; list:boolean=true;patientHaveAppoint:boolean=false
+  registerForm: FormGroup; editFormAppointement:FormGroup; patient; medecin; appoint; appointMedecin;
+  patients; patientBySecretaire;  add:boolean=false; edit:boolean=false; list:boolean=true; patientHaveAppoint:boolean;
   roleUserLogin;minDate; lastDate;bloc1:boolean=true;bloc2:boolean=false;medecin_id;medecin_nom;statusPatient:boolean;
   medecin_prenom;date: Date;inputStart;inputEnd;errorTime:boolean=false;timeExist:boolean; timeAppointExist:boolean;
-  patientHaveAppointEdit:boolean;statusEditPatient: boolean;
- 
-
-  // @Output('cdkDropDropped')dropped: EventEmitter<CdkDragDrop<any>> =
-  // new EventEmitter<CdkDragDrop<any>>();
-  todo = [
-    'Get to work',
-    'Pick up groceries',
-    'Go home',
-    'Fall asleep'
-  ];
-
-  done = [
-    'Get up',
-    'Brush teeth',
-    'Take a shower',
-    'Check e-mail',
-    'Walk dog'
-  ];
-  inputEndEdit: any;
-  inputStartEdit: any;
-  patientSelect: any;
-
+  patientHaveAppointEdit:boolean;statusEditPatient: boolean; inputEndEdit;inputStartEdit; patientSelect;
+  errorMedecin:boolean; invalidAppoint; validAppoint;appointNotValidLength;appointValidLength;
+  appointNotValid; appointValid;appointExpireStatus: boolean;patientSecretaireSelect
+   
+  Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
 
   constructor(private auth:AuthentificationService,private router:Router,private formBuilder: FormBuilder) { }
   ngOnInit() {
@@ -81,6 +74,7 @@ export class AppointementComponent implements OnInit {
     
     this.getUser();
     this.getLogin();
+    // this.getAppointByMedecin();
     this.add=false;
     this.edit=false;
     this.list=true;
@@ -92,6 +86,8 @@ export class AppointementComponent implements OnInit {
     this.patientHaveAppointEdit=false;
     this.statusPatient= false;
     this.statusEditPatient= false;
+    this.appointExpireStatus = true;
+    this.errorMedecin=false;
     const day=new Date();
      this.date=new Date();
     this.lastDate=day.getFullYear();
@@ -127,20 +123,10 @@ export class AppointementComponent implements OnInit {
       });
       
       });
-
   
   }
  
-  drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        event.currentIndex);
-    }
-  }
+ 
 
   
   
@@ -148,8 +134,7 @@ export class AppointementComponent implements OnInit {
     let patient = this.registerForm.value.patient;
     let date = this.registerForm.value.date.split('-').join('/');
     for (const iterator of this.appoint) {     
-      console.log(date+'     '+iterator.isEnabled+'    '+iterator.id+'    '+iterator.date.split('-').join('/')+' '+iterator.patient.id);
-      if (patient == iterator.patient.id  && date == iterator.date.split('-').join('/') && iterator.isEnabled == true){
+      if (patient == iterator.patient.id  && date == iterator.date.split('-').join('/') && iterator.isEnabled){
         this.statusPatient= true;
       }
     } 
@@ -162,38 +147,28 @@ export class AppointementComponent implements OnInit {
       }, 5000);
     }else if(!this.statusPatient){
       const appoint = {
-        date: this.registerForm.value.date,
+        date: date,
         heureDebut: this.registerForm.value.heureDebut,
         heureFin: this.registerForm.value.heureFin,
         motif: this.registerForm.value.motif.replace(/[^a-zA-Z0-9 ]/g, ""),
         medecin: this.registerForm.value.medecin,
         patient: this.registerForm.value.patient,
       };
-      
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-
-      })
 
       this.auth.addAppoint(appoint).subscribe(
         data => {
           this.ngOnInit();
-          Toast.fire({
+          this.Toast.fire({
             icon:"success",
             title: 'Ajouté avec succès',
           })
           
         },
         error => { 
-            console.log(error['message']);
+          this.Toast.fire({
+            icon:"error",
+            title: ''+error['message'],
+          })
         }
       );
     }
@@ -204,15 +179,21 @@ export class AppointementComponent implements OnInit {
   
       let msg = 'Rendez-vous déjà réservé',infoApi;
       let patient = this.editFormAppointement.value.patient;
+      let medecin = this.editFormAppointement.value.medecin;
       let date = this.editFormAppointement.value.date.split('-').join('/');
+      let compteur=0;
       
-      for (const iterator of this.appoint) {  
-        
-        if (patient == iterator.patient.id  && date == iterator.date.split('-').join('/') && iterator.isEnabled){
+      for (const iterator of this.appoint) { 
+
+        if(patient == iterator.patient.id){
+          compteur = compteur+1;
+        }
+       
+       
+        if (patient == iterator.patient.id && date == iterator.date.split('-').join('/') && iterator.isEnabled && compteur > 1){
           this.statusEditPatient= true;
         }
       } 
-      
 
       if(this.statusEditPatient){
         this.patientHaveAppointEdit=true;
@@ -231,19 +212,7 @@ export class AppointementComponent implements OnInit {
           patient: this.editFormAppointement.value.patient,
           medecin: this.editFormAppointement.value.medecin,
         };
-      console.log(appoint)
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-          }
-        })
-  
+
         this.auth.updateAppointement(appoint.id,appoint).subscribe(
           data => {
             
@@ -251,14 +220,14 @@ export class AppointementComponent implements OnInit {
   
             if(msg == infoApi){
               this.ngOnInit();
-              Toast.fire({
+              this.Toast.fire({
                 icon:"error",
                 title: ''+msg,
               })
   
             }else{
               this.ngOnInit();
-              Toast.fire({
+              this.Toast.fire({
                 icon:  "success",
                 title: "Modifié avec succès",
               })
@@ -269,9 +238,7 @@ export class AppointementComponent implements OnInit {
                   alert(error['message']);          
           }
         );
-      }
-      
-    
+        }
   }      
   
 
@@ -292,13 +259,11 @@ export class AppointementComponent implements OnInit {
 
   getStartTimeEdit(event){
     this.inputStartEdit = event.target.value.split(':').join('');
-    console.log(this.inputStartEdit)
   }
   
 
   getEndTimeEdit(event){ 
       this.inputEndEdit = event.target.value.split(':').join('');
-      console.log(this.inputStartEdit)
   }
 
 
@@ -315,7 +280,7 @@ export class AppointementComponent implements OnInit {
         patient: [appoint.patient.id, [Validators.required]],
         medecin: [appoint.medecin.id, [Validators.required]],
         motif: [appoint.motif, [Validators.required, Validators.minLength(4)]],
-        date: ["", [ Validators.required]],
+        date: [appoint.date, [ Validators.required]],
         heureDebut: [appoint.heureDebut, [ Validators.required]]
       });
   } 
@@ -358,19 +323,36 @@ export class AppointementComponent implements OnInit {
   }
   
   getAppoint() {
-   this.auth.getAppoint().subscribe(
-     data =>{  
-       this.appoint =data;  
+    let date = new Date(),todayDate,appoints;
+    todayDate = date.getFullYear()+''+("0"+(date.getMonth()+1)).slice(-2) +""+("0" + date.getDate()).slice(-2);
+
+    this.auth.getAppoint().subscribe(
+      data =>{  
+        this.appoint =data;
+        appoints =data;
+        this.appointNotValid=this.appoint.filter(x => !x.isEnabled);
+        this.appointValid=this.appoint.filter(x => x.isEnabled);
+        this.appointNotValidLength = this.appointNotValid.length;
+        this.appointValidLength = this.appointValid.length;
      }
    )
+   
   }
 
  getAppointByMedecin() {
-  this.auth.getAppointByMedecin().subscribe(
-    data =>{  
-      this.appointMedecin =data;    
-    }
-  )
+  
+    let date = new Date(),todayDate;
+    todayDate = date.getFullYear()+''+("0"+(date.getMonth()+1)).slice(-2) +""+("0" + date.getDate()).slice(-2);
+
+    this.auth.getAppointByMedecin().subscribe(
+      data =>{  
+        this.appoint =data;
+        this.appointNotValid=this.appoint.filter(x => !x.isEnabled);
+        this.appointValid=this.appoint.filter(x => x.isEnabled);
+        this.appointNotValidLength = this.appointNotValid.length;
+        this.appointValidLength = this.appointValid.length;
+     }
+   )
  }  
 
 
@@ -432,22 +414,18 @@ export class AppointementComponent implements OnInit {
  }
   
 
- statusAppointement(id){
+ statusAppointement(status){
 
-    let  errorMessage = 'rendez-vous déjà réservé',msg;
+    let  errorMessage = 'rendez-vous déjà réservé',msg,compteur= 0;
   
+    for (const iterator of this.appoint) { 
 
-    Swal.fire({
-      title: 'Voulez-vous supprimer ce patient',
-      showCancelButton: true,
-      confirmButtonText: `Supprimer`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        
-        Swal.fire('Ajoute!', '', 'success')
-       }
-    })
+      if(status.patient.id == iterator.patient.id && status.date == iterator.date.split('-').join('/') && !status.isEnabled && iterator.isEnabled){
+        compteur = compteur+1;
+      }
+    } 
+  
+     
     Swal.fire({
       title: 'Etez-vous sure?',
       text: "Vous allez editer ce rendez-vous",
@@ -455,13 +433,19 @@ export class AppointementComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Oui!'
+      confirmButtonText: 'Oui!',    
      
     }).then((result) => {
-      if (result.isConfirmed) {
-        this.auth.statusAppointement(id).subscribe(
+      if(compteur>1){
+        Swal.fire(
+          'ERREUR!',
+          'Ce patient a déjà un rendez-vous à cette date',
+          'error',
+          
+        )
+      } else if (result.isConfirmed ) {
+        this.auth.statusAppointement(status.id).subscribe(
           data =>{
-        //    console.log(data['message'])
               msg= data['message'];
               if(errorMessage == msg ){
                 Swal.fire(
@@ -476,6 +460,7 @@ export class AppointementComponent implements OnInit {
                   ''+data['message'],
                   'success'
                 )
+                 
                 this.ngOnInit(); 
               }   
       
@@ -483,10 +468,27 @@ export class AppointementComponent implements OnInit {
         )
         
       }
+      // else{
+      //   Swal.fire(
+      //     'ERREUR!',
+      //     'Ce patient a déjà un rendez-vous à cette date',
+      //     'error'
+      //   )
+      //   this.ngOnInit(); 
+      // }
     })
 
 
  }
+
+ appointVisite(){
+  this.appointExpireStatus= true
+}
+
+notVisiteAppoint(){
+  this.appointExpireStatus= false
+
+}
 
  addAppointForm(){
     this.list=false;
@@ -519,8 +521,8 @@ export class AppointementComponent implements OnInit {
      
     const date= this.registerForm.value.date.split('-').join('/');
     let heureDebut= this.registerForm.value.heureDebut;
-    console.log(this.appointMedecin);
-    for (const iterator of this.appointMedecin) {
+    
+    for (const iterator of this.appoint) {
       if (heureDebut == iterator.heureDebut && iterator.date == date ){
         this.timeAppointExist=true;
       }
@@ -534,23 +536,24 @@ export class AppointementComponent implements OnInit {
     const date= this.registerForm.value.date.split('-').join('/');
     let heureDebut= this.registerForm.value.heureDebut.split(':').join('');
     let medecin= this.registerForm.value.medecin;
-  
+    
+    
 
 
    if (this.roleUserLogin=='ROLE_MEDECIN') {
-    for (const iterator of this.appointMedecin) {
-      if (heureDebut == iterator.heureDebut.split(':').join('') && iterator.date.split('-').join('/') == date && iterator.isEnabled){
-      this.timeAppointExist=true;
-      console.log( "this.timeAppointExist")
+      for (const iterator of this.appoint) {
+        if (heureDebut == iterator.heureDebut.split(':').join('') && iterator.date.split('-').join('/') == date && iterator.isEnabled){
+        this.timeAppointExist=true;
+        }
       }
-    }
-    console.log(this.patientHaveAppoint);
-    if(endTime - startTime < 30 ){
-      this.errorTime=true;
-      this.registerForm.get('heureFin').patchValue(null);
-          setTimeout(() => {
-            this.errorTime=false;
-          },3000);
+      
+      if(endTime - startTime < 30 ){
+        this.errorTime=true;
+        this.registerForm.get('heureFin').patchValue(null);
+            setTimeout(() => {
+              this.errorTime=false;
+            },3000);
+
     }else{
       if (!!this.timeAppointExist) {
         this.registerForm.get('date').patchValue(null);
@@ -569,7 +572,6 @@ export class AppointementComponent implements OnInit {
         for (const iterator of this.appoint) {
           if (heureDebut == iterator.heureDebut.split(':').join('')  &&  iterator.date.split('-').join('/') == date  &&  parseInt(medecin) == parseInt(iterator.medecin.id) && iterator.isEnabled){
           this.timeAppointExist=true;
-          console.log( "this.timeAppointExist")
           }
         }
 
@@ -623,7 +625,19 @@ export class AppointementComponent implements OnInit {
   removeCharactere(string){
     let splitStr= string.replace(/[^a-zA-Z0-9 ]/g, "");
     splitStr= splitStr.split('/').join('');
-    return splitStr;
+    return splitStr.charAt(0).toUpperCase() + splitStr.slice(1);
+  }
+
+  getCurrentMedecin(){
+    this.patientSecretaireSelect= this.patientBySecretaire.filter(x => x.medecin.id == this.registerForm.value.medecin);
+
+    if(this.patientSecretaireSelect.length == 0){
+      this.errorMedecin = true;
+      setTimeout(()=>{
+        this.registerForm.get('medecin').patchValue('null');
+        this.errorMedecin= false;
+      }, 3000);
+    }
   }
 
 }

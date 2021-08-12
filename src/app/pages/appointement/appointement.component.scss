@@ -109,7 +109,7 @@
 }
 
 #containerPatient {
-    width: 55%;
+    width: 57%;
     margin-left: 20%;
     background-color: coral;
 }
@@ -119,7 +119,37 @@
 }
 
 
+.nav-pills {
+    border-bottom: 1px solid coral;
+}
 
+.nav-pills li {
+    color: #fff;
+    display: block;
+}
+
+.nav-pills li .icon_color {
+    color: rgb(233, 7, 7);
+}
+
+
+
+ul li {
+    text-decoration: none;
+}
+
+li {
+    background-color: rgb(163, 164, 165);
+    color: rgb(17, 17, 17);
+}
+
+a {
+    text-decoration: none;
+}
+
+li a.active {
+    background-color: rgb(25, 134, 107);
+}
 
 //Form
 
@@ -279,19 +309,6 @@ input[type=search]:focus {
         width: auto;
         background: transparent !important;
         font-size: 15px;
-        // transition: 0.2s ease-in-out;
-
-        // &:hover {
-        //     background-color: rgba(255, 255, 255, 0.2);
-        //     // font-size: 10px;
-
-        //     .link {
-        //         width: 80%;
-        //         padding: 0 5px 0 5px;
-        //         visibility: visible;
-        //         font-size: 14px;
-        //     }
-        // }
     }
 
     .link {
@@ -316,6 +333,10 @@ nav {
 @media(max-width: 700px) {
     nav {
         width: auto;
+    }
+
+    .hideSvg {
+        display: none;
     }
 }
 
@@ -356,15 +377,13 @@ nav {
 }
 
 .responsive-table {
-    width: 95%;
+    width: auto;
     margin-bottom: 1.5em;
-
 }
 
 .responsive-table thead {
     position: absolute;
     clip: rect(1px 1px 1px 1px);
-    /* IE6, IE7 */
     clip: rect(1px, 1px, 1px, 1px);
     padding: 0;
     border: 0;
@@ -415,7 +434,7 @@ nav {
 
 .responsive-table tbody tr {
     margin-bottom: 1em;
-    border: 2px solid #1d96b2;
+    // border: 2px solid #1d96b2;
 }
 
 .responsive-table tbody tr:last-of-type {
@@ -440,9 +459,14 @@ nav {
 
 .responsive-table tbody td {
     text-align: right;
-    border-bottom: 1px solid #1d96b2;
+    // border-bottom: 1px solid #1d96b2;
 }
 
+@media (max-width: 68em) {
+    .responsive-table {
+        width: 100%;
+    }
+}
 
 @media (min-width: 68em) {
     .responsive-table {
@@ -528,12 +552,7 @@ th {
     border: thin solid;
 }
 
-
 @media screen and (max-width: 580px) {
-    .positionTab {
-        right: 10%;
-        margin-left: 120px;
-    }
 
     #containerTab {
         left: 3%;
@@ -603,67 +622,15 @@ th {
     transform: translateX(-50%);
 }
 
-//**** DRAG-AND-DROP ****//
-.example-container {
-    width: 130px;
-    max-width: 100%;
-    margin: 0 5px 5px 0;
-    display: inline-block;
-    vertical-align: top;
-    top: 0;
-    margin-left: 0%;
-    color: whitesmoke;
-}
-
-
-
-.example-list {
-    border: solid 1px #ccc;
-    min-height: 30px;
-    background: white;
-    border-radius: 4px;
-    overflow: hidden;
-    display: block;
-}
-
-.example-box {
-    padding: 10px 10px;
-    border-bottom: solid 1px #ccc;
-    color: rgba(0, 0, 0, 0.87);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-    cursor: move;
-    background: white;
-    font-size: 14px;
-}
-
-.cdk-drag-preview {
-    box-sizing: border-box;
-    border-radius: 4px;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-        0 8px 10px 1px rgba(0, 0, 0, 0.14),
-        0 3px 14px 2px rgba(0, 0, 0, 0.12);
-}
-
-.cdk-drag-placeholder {
-    opacity: 0;
-}
-
-.cdk-drag-animating {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
-.example-box:last-child {
-    border: none;
-}
-
-.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
 .blockAppoint {
     display: block;
+}
+
+::ng-deep .mat-tooltip {
+    // font-size: 15px;
+    white-space: pre-wrap;
+    color: rgb(10, 10, 10) !important;
+    background-color: coral;
+    border: 1px solid gray;
+    max-width: unset !important;
 }

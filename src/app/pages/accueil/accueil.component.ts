@@ -1,3 +1,4 @@
+import { filter } from 'rxjs/operators';
 import { Component, OnInit, SecurityContext } from '@angular/core';
 import { AuthentificationService } from './../../services/authentification.service';
 import { DomSanitizer,SafeResourceUrl,SafeUrl } from '@angular/platform-browser';
@@ -74,13 +75,11 @@ images; idProfile;imageDefaut: boolean;
 
 
       getUser() { 
-        let users,compteur=0;
         this.auth.getUsers().subscribe(
           data =>{
-            users =data; 
-            this.user= data; 
-            for (const iterator of this.user) {if (iterator.role[0] != 'ROLE_ADMIN' ) {compteur+=+1;}}  
-            this.nombreMedecin=compteur;  
+            this.user= data;
+            this.nombreMedecin=this.user.filter(x => x.role !='ROLE_ADMIN');
+            this.nombreMedecin =this.nombreMedecin.length;
           }
         )
       }
@@ -98,14 +97,14 @@ images; idProfile;imageDefaut: boolean;
 
      getPatients() { 
       let patient;
-     this.auth.getPatient().subscribe(
-       data =>{
-         patient=data;
-         this.patient =patient;
-         this.nombrePatient= this.patient.length;
-         
-       }
-     )
+      this.auth.getPatient().subscribe(
+        data =>{
+          patient=data;
+          this.patient =patient;
+          this.nombrePatient= this.patient.length;
+          
+        }
+      )
     }
     getAppointementByMedecin() { 
       let appoint;
@@ -152,14 +151,11 @@ images; idProfile;imageDefaut: boolean;
     }
 
     getOrdonnance() { 
-     let ordon,compteur=0;
+     let ordon;
      this.auth.getPatientDataByMedecin().subscribe(
        data =>{
         ordon=data;
-        for (const iterator of ordon) {
-          compteur=compteur+1;
-        }
-        this.nombreOrdonnance = compteur;
+        this.nombreOrdonnance= ordon.length;
        }
      )
     }

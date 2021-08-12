@@ -1,3 +1,4 @@
+import { filter } from 'rxjs/operators';
 import { AuthentificationService } from 'src/app/services/authentification.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -5,9 +6,12 @@ import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
 import 'sweetalert2/src/sweetalert2.scss';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { MatTableDataSource } from '@angular/material/table';
 
-declare var jquery: any;
+
+
+
+
 
 
 @Component({
@@ -34,15 +38,30 @@ export class PatientComponent implements OnInit {
 
   registerForm: FormGroup; examenFormGroupe: FormGroup; registerFormEdit; FormGroup; submitted = false; profile: boolean = false;
   IsmodelShow: boolean = false; alertErrorMedecin: boolean = false; edit: boolean = false; supp: boolean = false;
-  patient; $: any; patients; patientProfile: string[] = []; profilerPatient;
+  patient; $: any; patients; patientProfile: string[] = []; profilerPatient;notPatientVisite:boolean; PatientVisite: boolean;
   user; display; role_medecin: boolean = true; roles; patientTraite;appointMedecin;appoint;
   login; add: boolean = false; list: boolean = true; medecin; date; consult: boolean = false; checkData: boolean;
-  inputSearch: boolean = false; medecin_id; medecin_prenom; medecin_nom;
+  inputSearch: boolean = false; medecin_id; medecin_prenom; medecin_nom; patientVisiteLength;patientNotVisiteLength; 
   closeResult: string; bloc1: boolean = true; bloc2: boolean = false; bloc3: boolean = false; bloc4: boolean = false;
-  roleUserLogin: string; patientMedecin; patientDataById;inputTel; patientData
+  roleUserLogin: string; patientMedecin; patientDataById;inputTel; patientData; patientNotVisite;
   blocExamen: boolean = false; nom;checkNumber:boolean;timeAppointExist:boolean;timeExist:boolean;isVisite:boolean;
   inputStart;inputEnd;errorTime: boolean;patientIdExamen;infoGroupeSanguin: boolean;infoTaille: boolean;
+  
 
+  listData: MatTableDataSource<any> = undefined; 
+
+   Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
+  medecin_specialite: string;
   constructor(private auth: AuthentificationService, private router: Router, private formBuilder: FormBuilder) { }
   
 
@@ -87,10 +106,10 @@ export class PatientComponent implements OnInit {
 
     });
 
+ 
 
 
-
-    this.getPatient();
+    // this.getPatient();
     this.getLogin();
     this.add = false;
     this.getUser();
@@ -112,6 +131,8 @@ export class PatientComponent implements OnInit {
     this.infoGroupeSanguin = false;
     this.infoTaille = false;
     this.isVisite = false;
+    this.PatientVisite= true;
+    this.notPatientVisite= false;
   }
 
 
@@ -121,7 +142,6 @@ export class PatientComponent implements OnInit {
     let startTime= this.registerForm.value.heureDebut.split(':').join('');
     let endTime = this.registerForm.value.heureFin.split(':').join('');
     const date= this.registerForm.value.date.split('-').join('/');
-    //let heureDebut= this.registerForm.value.heureDebut.split(':').join('');
     let medecin= this.registerForm.value.medecin;
     
     console.log(this.appoint)
@@ -168,24 +188,13 @@ export class PatientComponent implements OnInit {
           heureDebut: this.registerForm.value.heureDebut,
         };
         console.log(user);
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-          }
-        })
+        
   
         this.auth.addPatient(user).subscribe(
           data => {
-            Toast.fire({
+            this.Toast.fire({
               icon: 'success',
               title: 'Ajouté avec succès',
-              // imageUrl: '/assets/success.svg'
             })
             this.ngOnInit();
           },
@@ -229,33 +238,18 @@ export class PatientComponent implements OnInit {
         medecin: this.registerForm.value.medecin,
         // email: ['', [Validators.required, Validators.email]],
         motif: this.registerForm.value.motif.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ''),
-        date: this.registerForm.value.date,
+        date: this.registerForm.value.date.split('-').join('/'),
         heureDebut: this.registerForm.value.heureDebut,
       };
     
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-      })
 
       this.auth.addPatient(user).subscribe(
         data => {
-          Toast.fire({
+          this.Toast.fire({
             icon: 'success',
             title: 'Ajouté avec succès',
-            // imageUrl: '/assets/success.svg'
           })
           this.ngOnInit();
-        },
-        error => {
-          alert(error['message']);
         }
       );
 
@@ -278,21 +272,10 @@ export class PatientComponent implements OnInit {
       };
 
 
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-      })
       this.auth.updatePatient(user.id, user).subscribe(
         data => {
           this.ngOnInit();
-          Toast.fire({
+          this.Toast.fire({
             icon: "success",
             title: 'Modifié avec succès',
             //imageUrl: 'https://i.imgur.com/4NZ6uLY.jpg'
@@ -320,9 +303,10 @@ export class PatientComponent implements OnInit {
   }
  
   getAppointByMedecin() {
+
    this.auth.getAppointByMedecin().subscribe(
      data =>{  
-       this.appointMedecin =data;    
+      this.appointMedecin = data;
      }
    )
   }
@@ -331,18 +315,33 @@ export class PatientComponent implements OnInit {
     this.auth.getPatient().subscribe(
       data => {
         this.patients = data;
+        this.patientNotVisite = data;
+        this.patients =this.patients.filter(x => x.isVisit );
+        this.patientNotVisite =this.patientNotVisite.filter(x => !x.isVisit ); 
+        this.patientVisiteLength= this.patients.length;
+        this.patientNotVisiteLength= this.patientNotVisite.length;
+
       }
-    )
+      )
   }
-
+    
   getPatientByMedecin() {
-
-    this.auth.getPatientByMedecin().subscribe(
-      data => {
-        this.patientMedecin = data;
+      
+      this.auth.getPatientByMedecin().subscribe(
+        data => {
+          this.patientMedecin = data;
+          this.patientNotVisite = data
+          this.listData = this.patientMedecin;
+          this.patientMedecin =this.patientMedecin.filter(x => x.isVisit );
+          this.patientNotVisite =this.patientNotVisite.filter(x => !x.isVisit );
+          this.patientVisiteLength= this.patientMedecin.length;
+          this.patientNotVisiteLength= this.patientNotVisite.length; 
       }
     );
+  
+  
   }
+
 
   getLogin() {
     this.auth.getUserLogin().subscribe(
@@ -351,6 +350,7 @@ export class PatientComponent implements OnInit {
         this.medecin_id = data.id;
         this.medecin_prenom = data.prenom;
         this.medecin_nom = data.nom;
+        this.medecin_specialite = data.specialite;
         if (this.roleUserLogin == 'ROLE_MEDECIN') {
           this.getPatientByMedecin();
           this.getAppointByMedecin();
@@ -360,6 +360,7 @@ export class PatientComponent implements OnInit {
             }
           );
         }else{
+          this.getPatient();
           this.getAppoint();
           this.auth.getPatientData().subscribe(
             data =>{
@@ -502,7 +503,7 @@ export class PatientComponent implements OnInit {
         poids: this.examenFormGroupe.value.poids,
         constat: this.examenFormGroupe.value.constat.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ''),
         medicament: this.examenFormGroupe.value.medicament.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ''),
-        dosage: this.examenFormGroupe.value.dosage,
+        dosage: this.examenFormGroupe.value.dosage.replace(/[^0-9]+/g, ''),
         quantite: this.examenFormGroupe.value.quantite.replace(/[^0-9]+/g, ''),
         date: this.date.getDate() + "/" + this.date.getMonth() + "/" + this.date.getFullYear(),
         heure: this.date.toLocaleTimeString('fr-FR', {
@@ -511,30 +512,18 @@ export class PatientComponent implements OnInit {
           minute: "numeric"
         })
       };
-  
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-      })
+ 
 
       this.auth.examinePatient(examen).subscribe(
         data => {
 
-          Toast.fire({
+          this.Toast.fire({
             icon: 'success',
             title: 'Examiné avec succès'
-            // imageUrl: '/assets/success.svg'
           })
           this.ngOnInit();
         }, error => {
-          Toast.fire({
+          this.Toast.fire({
             icon: 'error',
             title: error['message'],
 
@@ -596,20 +585,98 @@ export class PatientComponent implements OnInit {
   }
 
   getPatientDataById(id) {
-
+    this.patientProfile=[];
     this.auth.getPatientDataById(id).subscribe(
       data => {
 
         this.list = false;
         this.profile = true;
-        this.patientProfile.shift();
+        // this.patientProfile.shift();
         this.profilerPatient = data;
         this.patientProfile.push(this.profilerPatient);
 
       }
     )
   }
+  
+  getAppointTime(){
+    let iterators;
+   return this.auth.getAppoint().subscribe(
+      data =>{
+        iterators= data;
+        console.log(iterators)
+        for (const iterator of iterators) {
+          
+          Swal.fire({
+            title: 'Rendez-vous',
+            position: 'top-end',
+            showClass: {
+              popup: `
+                animate__animated
+                animate__fadeInRight
+                animate__faster
+              `
+            },
+            html:'<div class="border bg-light col col-md-12">'+
+                    '<h2>Medecin</h2>'+
+                    // '<p>'+iterator.medecin.prenom+ console.log(iterator)+' '+iterator.medecin.nom+'<p>'+
+                    '<div class="">'+
+                        '<table class="table tables" align="center" *ngFor="let iterator of appoint">'+
+                          // '<caption>Appointements</caption>'+
+                          // '<thead>'+
+                          //     '<tr>'+
+                          //         '<th scope="">Date</th>'+
+                          //         '<th scope=" ">Debut</th>'+
+                          //         '<th scope="">Fin</th>'+
+                          //     '</tr>'+
+                          // '</thead>'+
+                          '<tbody>'+
+                              '<tr>'+
+                                  '<th scope="">Date</th>'+
+                                  '<td>'+ iterator.date +'<td>'+
+                              '</tr>'+
+                            '<tr>'+
+                            '<th scope=" ">Debut</th>'+
+                            '<td>'+ iterator.heureDebut +'<td>'+
 
+                            // '<th scope="">Fin</th>'+
+                            // '<td>'+ iterator.heureFin +'<td>'+
+
+                              
+                      
+                            '</tr>'+
+                            '<tr>'+
+                            '<th scope="">Fin</th>'+
+                            '<td>'+ iterator.heureFin +'<td>'+
+                              '</tr>'+
+                          '</tbody>'+
+                        '</table>'+
+                    '</div>'+
+                 '</div>',
+            background:'whitesmoke',
+    
+            hideClass: {
+              popup: `
+                animate__animated
+                animate__fadeOutLeft
+                animate__faster
+              `
+            },
+            grow: 'column',
+            width: '60%',
+            showConfirmButton: false,
+            showCloseButton: true
+          })
+
+        }
+      }
+   )
+    // for (let iterator of this.appoint) {
+     
+    // }
+    
+  }
+  
   addPatientForm() {
     this.list = false;
     this.add = true;
@@ -697,9 +764,9 @@ export class PatientComponent implements OnInit {
   }
 
   
-  checkTel(){
+  checkAddTel(){
     let tel,checkTel
-    
+   
     return this.auth.getPatient().subscribe(
       data =>{     
         for(var index in data){
@@ -709,15 +776,38 @@ export class PatientComponent implements OnInit {
           if(tel == checkTel){
             this.checkNumber=true;
             this.registerForm.get('tel').patchValue(null);
-            this.registerFormEdit.get('tel').patchValue(null);
-            setTimeout(() => {
-              this.checkNumber=false;
-            },3000);
-            
+           setTimeout(()=>{
+             this.checkNumber = false;
+           }, 2000)
           }
+
         }
       }
     )
+
+  }
+
+  checkEditTel(){
+    let tel,checkTel
+
+    return this.auth.getPatient().subscribe(
+      data =>{     
+        for(var index in data){
+          tel = data[index].tel;
+          checkTel=this.inputTel;
+         
+          if(tel == checkTel){
+            this.checkNumber=true;
+            this.registerFormEdit.get('tel').patchValue(null);
+           setTimeout(()=>{
+             this.checkNumber = false;
+           }, 2000)
+          }
+
+        }
+      }
+    )
+
   }
 
   chechAge(){
@@ -736,14 +826,14 @@ export class PatientComponent implements OnInit {
     let splitStr = string.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
     splitStr= splitStr.replace(/[^a-zA-Z]+/g, '');
     splitStr= splitStr.split(' ').join('');
-    return splitStr;
+    return splitStr.charAt(0).toUpperCase() + splitStr.slice(1);
   }
 
 
   removeLetter(string){
     let splitStr = string.replace(/[^0-9]+/g, '');
     splitStr= splitStr.split(' ').join('');
-    return splitStr;
+    return splitStr.charAt(0).toUpperCase() + splitStr.slice(1);
   }
 
 
@@ -785,12 +875,26 @@ export class PatientComponent implements OnInit {
   removeCharactere(string){
     let splitStr= string.replace(/[^a-zA-Z0-9 ]/g, "");
     splitStr= splitStr.split('/').join('');
-    return splitStr;
+    return splitStr.charAt(0).toUpperCase() + splitStr.slice(1);
+  }
+
+  removeCharactereOrdon(string){
+    let splitStr= string.replace(/[^a-zA-Z0-9, ]/g, "");
+    splitStr= splitStr.split('/').join('');
+    return splitStr.charAt(0).toUpperCase() + splitStr.slice(1);
   }
 
   removeCharAndNumber(string){
     let splitStr= string.replace(/[^a-zA-Z ]/g, "");
     splitStr= splitStr.split('/').join('');
-    return splitStr;
+    return splitStr.charAt(0).toUpperCase() + splitStr.slice(1);
+  }
+
+   patientVisite(){
+     this.PatientVisite= true;
+  }
+
+  notVisite(){
+    this.PatientVisite= false;
   }
 }

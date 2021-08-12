@@ -72,7 +72,7 @@ export class HeaderComponent implements OnInit {
   getUserLogin(){
     this.auth.getUserLogin().subscribe(
         data=>{
-           
+            this.roleUserLogin=data.role[0]; 
             if (data.role=="ROLE_ADMIN") {        
                this.show_admin= true;
              }else if(data.role=="ROLE_MEDECIN") {        
@@ -83,13 +83,13 @@ export class HeaderComponent implements OnInit {
             });    
   }
   
-  getLogin() {
-    this.auth.getUserLogin().subscribe(
-        data=>{
-            this.roleUserLogin=data.role[0];  
-            }
-        ); 
-  }
+  // getLogin() {
+  //   this.auth.getUserLogin().subscribe(
+  //       data=>{
+  //           this.roleUserLogin=data.role[0];  
+  //           }
+  //       ); 
+  // }
 
  
   

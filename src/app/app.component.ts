@@ -53,7 +53,7 @@ export class AppComponent {
   showHead;show: boolean = true;roles; editPassword:boolean; errorPassword:boolean;samePassword:boolean;
   userLogin;roleUserLogin: string;userLoginSexe; user_id; userSpecialite: string; userName: string; sexe: string; specialite: string;
   infoPassword;checkUsername;username;nombrePatient;nombreAppoinnt;nombrePatientData;images;errorCurrentPassword: boolean;
-  imageDefaut: boolean;patients;appoints;dossiers;patient;appoint;dossier;selectedFile :File= null;
+  imageDefaut: boolean;patients;appoints;dossiers;patient;appoint;dossier;selectedFile :File= null;imagesNull;
 
   constructor(private auth: AuthentificationService, private router: Router, private http: HttpClient,private formBuilder: FormBuilder, private domSanitizer: DomSanitizer) {
 
@@ -110,6 +110,7 @@ export class AppComponent {
      return this.auth.getImage(id).subscribe(
        data =>{
          images= window.URL.createObjectURL(data);   
+         this.imagesNull = images;
          this.images = this.domSanitizer.bypassSecurityTrustUrl(images);
        }
      )
@@ -153,10 +154,11 @@ export class AppComponent {
 
   profile() {
     this.editPassword=false;
-    if (this.profil == false) {
+    if (!this.profil) {
       this.profil = true;
     } else {
       this.profil = false;
+      this.ngOnInit();
     }
   }
 
@@ -229,7 +231,7 @@ export class AppComponent {
   }
 
   getPatients() { 
-    let patient;
+   let patient;
    this.auth.getPatient().subscribe(
      data =>{
        patient=data;
@@ -241,7 +243,7 @@ export class AppComponent {
   }
 
   getAppointementByMedecin() { 
-    let appoint;
+   let appoint;
    this.auth.getAppointByMedecin().subscribe(
      data =>{
       appoint=data;
@@ -273,7 +275,7 @@ export class AppComponent {
 
   getPatientData() { 
     let dossiers;
-    this.auth.getPatient().subscribe(
+    this.auth.getPatientData().subscribe(
       data =>{
         dossiers=data;
         this.dossier =dossiers;
@@ -347,6 +349,8 @@ export class AppComponent {
               
               this.profil=true;
               this.editPassword=false;
+              
+              this.editForm();
               setTimeout(()=>{
                 this.profile();
                 this.logout();
@@ -368,10 +372,7 @@ export class AppComponent {
               }, 5000);
           }
         }
-        // ,
-        // error => {
-        //   this.editPassForm.get('currentPassword').patchValue(null);
-        // }
+        
       );
     }
   }
@@ -382,8 +383,7 @@ export class AppComponent {
       id: [''],
       currentPassword:['',[Validators.required, Validators.minLength(4)]],
       newPassword:['',[Validators.required, Validators.minLength(4)]],
-      confirmPassword:['',[Validators.required, Validators.minLength(4)]],
-      username:['']
+      confirmPassword:['',[Validators.required, Validators.minLength(4)]]
     })
   }
 

@@ -14,6 +14,9 @@ import { PatientData } from '../models/patient-data';
 import { HttpClient } from '@angular/common/http';
 import {  map } from 'rxjs/operators';
 import { BehaviorSubject,Observable } from 'rxjs';
+import { JwtHelperService,JwtModule } from "@auth0/angular-jwt";
+
+
 
 
 @Injectable({
@@ -32,7 +35,7 @@ export class AuthentificationService {
   }
 
   getConnexion(user:User){
-  return this.httpClient.post<User>(`${environment.apiUrl}/api/login_check`,user).
+    return this.httpClient.post<User>(`${environment.apiUrl}/api/login_check`,user).
       pipe(map(user => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('currentUser', JSON.stringify(user));
@@ -205,9 +208,15 @@ export class AuthentificationService {
     return this.httpClient.put<Ordonnance>(`${environment.apiUrl}/api/ordonnance/${id}`, ordonnance);
   }
 
+  getLoggedIn(){
+
+    if(!this.currentUserValue) {
+      return false;
+    }
+    return true;
+  }
 
   logout() {
-        // remove user from local storage to log user out
         localStorage.removeItem('currentUser');
         this.currentUserSubject.next(null);
     }

@@ -62,7 +62,7 @@ export class OrdonnanceComponent implements OnInit {
       orientation: 'p', 
       unit: 'mm', 
       format: [330, 292]
-});
+    });
     pdf.addHTML(document.getElementById('pdf'),function() {
         pdf.save('ordonnance.pdf');
     });

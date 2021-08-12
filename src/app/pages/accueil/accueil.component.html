@@ -1,16 +1,13 @@
 &nbsp;
 <div class="position  shadow-none p-1" id="containerPatient">
-    <!-- <div class="container-fluid"> -->
 
     <div class="container-fluid ">
         <main class="main border">
             <div class="main-header" *ngIf="role" [@slideOut]>
                 <div class="main-header__heading">
                     <div class="photo disabledPhoto">
-                        <img [attr.src]="images" alt="user image" height="68">
-                        <!-- <img alt=" user photo" src="/assets/docteur.png" *ngIf="imageDefaut && sexe=='M' && role !='ROLE_ADMIN'">
-                        <img alt="user photo" src="/assets/doctor.png" *ngIf="imageDefaut && sexe=='F' && role !='ROLE_ADMIN'">
-                        <img src="/assets/administrateur.png" class="" height="68" alt="medecin" *ngIf="imageDefaut && role=='ROLE_ADMIN'"> -->
+
+                        <img mat-card-image [attr.src]="images" alt="user image" height="68">
 
                         <h5><strong>{{prenom | titlecase}} {{nom | titlecase}}</strong></h5>
                     </div>
@@ -28,10 +25,10 @@
                 </div>
             </div>
 
-            <div class="main-overview">
+            <div class="main-overview ">
 
-                <div class="overviewcard" *ngIf="role=='ROLE_SECRETAIRE'">
-                    <div class="overviewcard__icon" [@slideOut]>
+                <div class="overviewcard " *ngIf="role=='ROLE_SECRETAIRE'">
+                    <div class="overviewcard__icon overGrid" [@slideOut]>
 
                         <a [routerLink]="['/home']">
                             <img src=" /assets/home.svg" class="" height="68" alt="HOME">
@@ -43,8 +40,8 @@
                     </div>
                 </div>
 
-                <div class="overviewcard" *ngIf="role">
-                    <div class="overviewcard__icon" [@slideOut]>
+                <div class="overviewcard " *ngIf="role">
+                    <div class="overviewcard__icon overGrid" [@slideOut]>
                         <a [routerLink]="['/patient']" class=" nav-item nav-link">
                             <img src="/assets/man.svg" class="" height="68" alt="PATIENT">
                         </a>
@@ -53,8 +50,8 @@
                         <h4>{{nombrePatient}}</h4>
                     </div>
                 </div>
-                <div class="overviewcard" *ngIf="role">
-                    <div class=" overviewcard__icon" [@slideOut]>
+                <div class="overviewcard " *ngIf="role">
+                    <div class=" overviewcard__icon overGrid" [@slideOut]>
                         <a [routerLink]="['/folder']">
                             <img src=" /assets/folder.svg" class="" height="68" alt="FOLDER">
                         </a>
@@ -65,7 +62,7 @@
                 </div>
 
                 <div class="overviewcard" *ngIf="role">
-                    <div class=" overviewcard__icon" [@slideOut]>
+                    <div class=" overviewcard__icon overGrid" [@slideOut]>
                         <a [routerLink]="['/appoint']">
                             <img src=" /assets/appoint.svg" class="" height="68" alt="APPOINTEMENT">
                         </a>
@@ -75,7 +72,7 @@
                     </div>
                 </div>
                 <div class="overviewcard" *ngIf="role=='ROLE_MEDECIN'">
-                    <div class="overviewcard__icon" [@slideOut]>
+                    <div class="overviewcard__icon overGrid" [@slideOut]>
 
                         <a [routerLink]="['/ordonnance']">
                             <img src=" /assets/ordon.svg" class="" height="68" alt="ORDONNANCE">
@@ -87,7 +84,7 @@
                     </div>
                 </div>
                 <div class="overviewcard" *ngIf="role=='ROLE_ADMIN'">
-                    <div class="overviewcard__icon" [@slideOut]>
+                    <div class="overviewcard__icon overGrid" [@slideOut]>
 
                         <a [routerLink]="['/user']">
                             <img src=" /assets/docteur.png" class="" height="68" alt="MEDECIN">
@@ -103,8 +100,8 @@
 
         </main>
     </div>
-    <!-- </div> -->
+
 </div>
 
 
-<router-outlet></router-outlet>
+<!-- <router-outlet></router-outlet> -->

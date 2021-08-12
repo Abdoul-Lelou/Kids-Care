@@ -11,12 +11,12 @@ main {
 .wrapper {
     min-height: auto;
     max-height: auto;
-    border-radius: 10%;
+    border-radius: 40%;
 
 }
 
 .border {
-    background-color: coral;
+    background-color: whitesmoke //rgb(61, 60, 60);
 
 }
 
@@ -272,14 +272,15 @@ button {
     margin: 20px auto 20px;
 }
 
-
+.imgProfil {
+    border-radius: 25%;
+    width: 90%;
+}
 
 .btnEdit {
     border: 1px solid black;
-    // height: 30px;
     width: 50px;
     border-radius: 5px;
-    // margin: 5px 0;
     cursor: pointer;
 
     &:hover {
@@ -289,10 +290,8 @@ button {
 
 .btnPass {
     border: 1px solid black;
-    // height: 30px;
     width: 80px;
     border-radius: 5px;
-    // margin: 5px 0;
     cursor: pointer;
 
     &:hover {

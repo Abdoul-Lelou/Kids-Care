@@ -18,19 +18,37 @@
 }
 
 
-// #container {
-//     position: absolute;
-//     width: auto; //510px;
-//     height: 5em;
-//     left: 60%;
-//     top: 50%;
-//     margin-left: -355px;
-//     margin-top: -2.5em;
-//     display: flex;
-//     flex-wrap: wrap;
-//     justify-content: center;
-//     align-content: center;
-// }
+
+.nav-pills {
+    border-bottom: 1px solid coral;
+}
+
+.nav-pills li {
+    color: #fff;
+    display: block;
+}
+
+.nav-pills li .icon_color {
+    color: rgb(233, 7, 7);
+}
+
+ul li {
+    text-decoration: none;
+}
+
+li {
+    background-color: rgb(163, 164, 165);
+    color: rgb(17, 17, 17);
+
+}
+
+a {
+    text-decoration: none;
+}
+
+li a.active {
+    background-color: rgb(25, 134, 107);
+}
 
 .main {
     grid-area: main;
@@ -48,85 +66,12 @@
 }
 
 
-.main-header {
-    display: flex;
-    justify-content: space-between;
-    margin: 10px;
-    padding: 10px;
-    height: 10%;
-    // background-color: #fff;
-}
-
-.main {
-    width: 60%;
-    height: fit-content;
-    background: rgb(236, 240, 238);
-    z-index: -1;
-    margin-left: 20%;
-    box-shadow: burlywood;
-}
-
-
-#send-button {
-    width: 100px;
-    height: 30px;
-    color: #000;
-    border: 0;
-    font-weight: bold;
-    font-size: 70.25%;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    -webkit-transition: -webkit-transform 0.3s;
-    transition: transform 0.3s;
-}
-
-#cancel-button {
-    width: 100px;
-    height: 30px;
-
-    color: #000;
-    border: 0;
-    font-weight: bold;
-    font-size: 70.25%;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    -webkit-transition: -webkit-transform 0.3s;
-    transition: transform 0.3s;
-}
 
 .btn-space {
     margin-right: 5px;
 }
 
-// #send-button:hover,
-// #send-button:focus {
-//     outline: 0;
-//     background-color: #62b2fd;
-//     color: #000;
-//     -webkit-transition: -webkit-transform 0.3s;
-//     transition: transform 0.3s;
-// }
 
-// #cancel-button:hover,
-// #cancel-button:focus {
-//     outline: 0;
-//     background-color: #cc745e;
-//     color: rgb(85, 3, 3);
-//     -webkit-transition: -webkit-transform 0.3s;
-//     transition: transform 0.3s;
-// }
-
-
-
-.footer {
-    position: absolute;
-    color: grey;
-    font-family: Lato;
-    text-align: right;
-    font-size: 8px;
-    right: 30px;
-    bottom: 15px;
-}
 
 @media (max-width: 800px) {
 
@@ -151,9 +96,6 @@
         width: 70%;
     }
 
-    .position {
-        margin: 0 auto;
-    }
 
     .positionOrdonnance {
         margin: 0 auto;
@@ -163,11 +105,15 @@
 #containerPatient {
     width: 57%;
     margin-left: 20%;
-    background-color: coral;
+    // background-color: coral;
+}
+
+.jumbotronMainContent {
+    background-color: #16a085;
 }
 
 #containerPatientMainData {
-    width: 50%;
+    width: 55%;
     margin-left: 25%;
     background-color: coral;
 }
@@ -199,24 +145,10 @@
         width: 43%;
     }
 
-    // #send-button {
-    //     display: block;
-    //     margin: 0 auto;
-    //     padding: 0 auto;
-    // }
-
-    // #cancel-button {
-    //     display: block;
-    //     margin: 0 auto;
-    //     padding: 0 auto;
-    // }
 
 
 }
 
-.position {
-    //  left: 1%;
-}
 
 .positionOrdonnance {
     margin: 0 auto;
@@ -454,18 +386,6 @@ $circleW: 60px;
     }
 }
 
-// .other {
-//     position: absolute;
-//     left: 0;
-//     bottom: 0.5rem;
-//     width: 100%;
-//     text-align: right;
-
-//     &__link {
-//         font-size: 1.3rem;
-//         margin: 0 1rem;
-//     }
-// }
 
 @media (max-width: 2000px) {
     .heart-loader {
@@ -551,6 +471,9 @@ nav {
 
 }
 
+hr {
+    background-color: chocolate;
+}
 
 @media screen and (min-width: 300px) and (max-width: 799px) {
     .data-icon {
@@ -559,6 +482,19 @@ nav {
 
     .card-size {
         min-width: 100px;
+    }
+
+    .positionOrdonnance {
+        margin: 0 auto;
+        width: 74%;
+        left: 3%;
+    }
+
+}
+
+@media screen and (max-width: 400px) {
+    .card-size {
+        right: 15%;
     }
 }
 
@@ -650,6 +586,10 @@ main {
         padding-bottom: 100px;
     }
 
+    input[type=search] {
+        // width: 70%;
+        left: 5%;
+    }
 
 }
 
@@ -869,4 +809,8 @@ input[type=search]:focus {
 
 .mainColor {
     background-color: coral;
+}
+
+.comment h6 :hover {
+    padding: 2px;
 }

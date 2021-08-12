@@ -1,23 +1,24 @@
 <div class="position " id="containerPatient" *ngIf="roleUserLogin=='ROLE_MEDECIN' ">
-
+    &nbsp;
     <div class="container-fluid ">
         <nav class="navbar" aria-label=" navbar" style="justify-content: center;">
             <div class="container-fluid">
                 <!-- Nav Header -->
                 <div class="navbar-header justify-content-center">
                     <div class="row justify-content-md-center ">
-                        <span class="ml-auto"></span>
-                        <span>
-                            <a class=" navbar-brand " (click)=" prints()" title="imprimer">
-                                <button class="fa fa-print fa-2x btn-success"></button>
+                        <!-- <span class="ml-auto"></span> -->
+                        <span class="d-flex">
+                            <a class=" navbar-brand " (click)=" prints()" matTooltip="imprimer">
+                                <span class="fa fa-print fa-2x btn-success"></span>
                             </a>
+                            <div class="form-group has-search ml-auto">
+                                <!-- <span class=" form-control-static"></span> -->
+                                <a class="navbar-brand">
+                                    <input type="search" class="form-control" placeholder="Search...." [(ngModel)]="term">
+                                </a>
+                            </div>
                         </span>
-                        <div class="form-group has-search ml-auto">
-                            <span class=" form-control-static"></span>
-                            <a class="navbar-brand">
-                                <input type="search" class="form-control" placeholder="Search...." [(ngModel)]="term">
-                            </a>
-                        </div>
+
                     </div>
                 </div>
                 <!-- Nav Collapse -->
@@ -178,7 +179,7 @@
 
                     </div>
                     &nbsp;
-                    <!-- <hr style="color: brown;" /> -->
+                    <hr class="my-2" />
                 </div>
 
             </div>
@@ -198,7 +199,7 @@
                     <div class="row justify-content-md-center ">
                         <span class="ml-auto"></span>
                         <span>
-                            <a class="navbar-brand " (click)="prints()" title="imprimer">
+                            <a class="navbar-brand " (click)="prints()" matTooltip="imprimer">
                                 <button class="fa fa-print fa-2x btn-success"></button>
                             </a>
                         </span>

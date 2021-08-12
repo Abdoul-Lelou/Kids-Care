@@ -1,49 +1,52 @@
-<div class="col col-sm-8 position" id="containerPatient" *ngIf="mainContent">
-    <div class="container-fluid  border bg-light color">
-        &nbsp;
-        <nav class="navbar" aria-label=" navbar" style="justify-content: center;">
-            <div class="container-fluid">
-                <!-- Nav Header -->
-                <div class="navbar-header justify-content-center">
-                    <div class="row justify-content-md-center ">
-                        <span class="ml-auto"></span>
-                        <span>
-                            <a class="navbar-brand " *ngIf="roleUserLogin =='ROLE_SECRETAIRE'">
-                                <span class="fa fa-plus-circle fa-2x border-success" style="color:rgb(22, 167, 118);" title="Ajout non autorisé"></span>
-                            </a>
-                            <a class="navbar-brand " (click)="addPatientDataForm()" *ngIf="roleUserLogin !='ROLE_SECRETAIRE'">
-                                <span class="fa fa-plus-circle fa-2x border-success" style="color:rgb(22, 167, 118);" title="Add"></span>
-                            </a>
-                        </span>
-                        <div class="form-group has-search ml-auto">
-                            <span class=" form-control-static"></span>
-                            <a class="navbar-brand">
-                                <input type="search" class="form-control" placeholder="Search..." [(ngModel)]="term">
-                            </a>
-                        </div>
+<div class="col col-sm-8 position bg-light" id="containerPatient" *ngIf="mainContent">
+
+
+    <nav class="navbar" aria-label=" navbar" style="justify-content: center;">
+        <div class="container-fluid">
+
+            <div class="navbar-header justify-content-center">
+                <div class="row justify-content-md-center ">
+                    <span class="ml-auto"></span>
+                    <span>
+                        <a class="navbar-brand " *ngIf="roleUserLogin =='ROLE_SECRETAIRE'">
+                            <span class="fa fa-plus-circle fa-2x border-success" style="color:rgb(22, 167, 118);" matTooltip="Ajout non autorisé"></span>
+                        </a>
+                        <a class="navbar-brand " (click)="addPatientDataForm()" *ngIf="roleUserLogin !='ROLE_SECRETAIRE'">
+                            <span class="fa fa-plus-circle fa-2x border-success" style="color:rgb(22, 167, 118);" matTooltip="Add"></span>
+                        </a>
+                    </span>
+                    <div class="form-group has-search ml-auto">
+                        <span class=" form-control-static"></span>
+                        <a class="navbar-brand">
+                            <input type="search" class="form-control" placeholder="Search..." [(ngModel)]="term">
+                        </a>
                     </div>
                 </div>
-                <!-- Nav Collapse -->
             </div>
-        </nav>
-        <pagination-controls (pageChange)="p = $event" class="text-center"></pagination-controls>
+
+        </div>
+    </nav>
+
+    <pagination-controls (pageChange)="p = $event" (currentPage)="1"></pagination-controls>
+
+    <div class="jumbotron jumbotronMainContent border  shadow">
 
         <div class="row row-cols-2 row-cols-md-2 " *ngIf="roleUserLogin=='ROLE_SECRETAIRE' || roleUserLogin=='ROLE_ADMIN'">
 
-            <div class="col mb-2" *ngFor="let patients of patientAll | filter:term | paginate: { itemsPerPage:2, currentPage: p }">
+            <div class="col" *ngFor="let patients of patientAll | filter:term | paginate: { itemsPerPage:2, currentPage: p }">
                 <div class="card shadow card-size">
 
                     <img src=" /assets/ordonnance.svg" class="card-img" alt="..." height="25">
-                    <div class="card-body">
+                    <div class="card-body shadow">
                         <div class="row">
-                            <span class="mb-0 text-truncated">
+                            <span class="text-truncated">
 
                                 <span class="data-icon" [@inOutAnimation]>
                                     <i class="fas fa fa-folder-o " aria-hidden="true"></i>
                                 </span>
                                 &nbsp;
 
-                                <span style="font-size: 0.9em; color: rgb(8, 8, 8);" [@inOutAnimation]>
+                                <span class="" [@inOutAnimation]>
                                     <strong>{{patients.prenom |titlecase}} {{patients.nom |titlecase}}</strong>
                                 </span>
 
@@ -51,7 +54,7 @@
 
                         </div>
 
-                        <button (click)="getPatientDataByPatientId(patients.id)" mat-raised-button class="btn-outline-info btn-block">Open</button>
+                        <button (click)=" getPatientDataByPatientId(patients.id)" mat-raised-button class="btn-outline-info btn-block">Open</button>
 
                     </div>
                 </div>
@@ -59,19 +62,19 @@
 
         </div>
 
-        <div class="row row-cols-2 row-cols-md-2" *ngIf="roleUserLogin=='ROLE_MEDECIN'">
-            <div class="col mb-2" *ngFor=" let patient of patientMedecin | filter:term | paginate: { itemsPerPage:2, currentPage: p }">
+        <div class="row row-cols-2 " *ngIf="roleUserLogin=='ROLE_MEDECIN'">
+            <div class="col" *ngFor=" let patient of patientMedecin | filter:term | paginate: { itemsPerPage:2, currentPage: p }">
                 <div class="card shadow card-size ">
 
                     <img src="/assets/ordonnance.svg" class="card-img" alt="..." height="25">
-                    <div class="card-body">
+                    <div class="card-body shadow">
                         <div class="row">
                             <span class="mb-0 text-truncated">
-                                <span class="data-icon">
+                                <span class="data-icon" [@inOutAnimation]>
                                     <i class="fas fa fa-folder-o " aria-hidden="true"></i>
                                 </span>
                                 &nbsp;
-                                <span style="font-size: 0.9em; color: rgb(8, 8, 8);">
+                                <span class="" [@inOutAnimation]>
                                     <strong>{{patient.prenom |titlecase}} {{patient.nom |titlecase}}</strong>
                                 </span>
                             </span>
@@ -87,101 +90,13 @@
         </div>
 
     </div>
-    <br>
+
+    <hr style="height: 15px; background:coral;">
+    <!-- </div> -->
 
 </div>
 
-<div class="col col-sm-8 position " id="containerPatient" *ngIf="mainContentd">
-    <div class="container-fluid bg-light ">
-        &nbsp;
 
-        <nav class="navbar" aria-label=" navbar" style="justify-content: center;">
-            <div class="container-fluid">
-                <!-- Nav Header -->
-                <div class="navbar-header justify-content-center">
-                    <div class="row justify-content-md-center ">
-                        <span class="ml-auto"></span>
-                        <span>
-                            <a class="navbar-brand " *ngIf="roleUserLogin=='ROLE_SECRETAIRE'">
-                                <span class=" fa fa-plus-circle fa-2x border-success" style="color:rgb(22, 167, 118);" title="Add"></span>
-                            </a>
-                            <a class="navbar-brand" *ngIf="roleUserLogin !='ROLE_SECRETAIRE'" (click)="addPatientDataForm()">
-                                <span class="fa fa-plus-circle fa-2x border-success" style="color:rgb(22, 167, 118);" title="Add"></span>
-                            </a>
-                        </span>
-                        <div class="form-group has-search ml-auto">
-                            <span class=" form-control-static"></span>
-                            <a class="navbar-brand">
-                                <input type="search" class="form-control" placeholder="Search..." [(ngModel)]="term">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Nav Collapse -->
-            </div>
-        </nav>&nbsp;
-        <pagination-controls (pageChange)="p = $event" class="text-center"></pagination-controls>
-
-        <div class="row row-cols-2 row-cols-md-2 " *ngIf="roleUserLogin=='ROLE_SECRETAIRE' || roleUserLogin=='ROLE_ADMIN'">
-
-            <div class="col mb-2" *ngFor="let patients of patientAll | filter:term | paginate: { itemsPerPage:2, currentPage: p }">
-                <div class="card shadow card-size">
-
-                    <img src=" /assets/ordonnance.svg" class="card-img" alt="..." height="25">
-                    <div class="card-body">
-                        <div class="row">
-                            <span class="mb-0 text-truncated">
-
-                                <span class="data-icon">
-                                    <i class="fas fa fa-folder-o " aria-hidden="true"></i>
-                                </span>
-                                &nbsp;
-
-                                <span style=" font-size: 1.5em; color: Tomato;">
-                                    <strong>{{patients.prenom}} {{patients.nom}}</strong>
-                                </span>
-
-                            </span>
-
-                        </div>
-
-                        <button (click)="getPatientDataByPatientId(patients.id)" mat-raised-button class="btn-outline-info btn-block">Open</button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class=" row row-cols-2 row-cols-md-2" *ngIf="roleUserLogin=='ROLE_MEDECIN'">
-            <div class="col mb-2">
-                <div class="card shadow card-size " *ngFor=" let patient of patientMedecin | filter:term | paginate: { itemsPerPage:2, currentPage: p }">
-
-                    <img src="/assets/ordonnance.svg" class="card-img" alt="..." height="25">
-                    <div class="card-body">
-                        <div class="row">
-                            <span class="mb-0 text-truncated">
-                                <span class="data-icon">
-                                    <i class="fas fa fa-folder-o " aria-hidden="true"></i>
-                                </span>
-                                &nbsp;
-                                <span style="font-size: 1.5em; color: Tomato;">
-                                    <strong>{{patient.patient.prenom}} {{patient.patient.nom}}</strong>
-                                </span>
-                            </span>
-
-                        </div>
-
-                        <button (click)="getPatientDataByPatientId(patient.id)" mat-raised-button class="btn-outline-info btn-block">Open</button>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-
-    </div>
-</div>
 
 <div class="col col-sm-8 position" id="containerPatientMainData" *ngIf="showMainData" [@inOutAnimation]>
     <div class="container-fluid col-sm-12  color shadow bg-light">
@@ -196,13 +111,14 @@
                     <img src="/assets/ordonnance.svg" class="card-img" alt="logo" height="20">
                     <div class="card-body">
 
-                        <div class="row backColor">
+                        <div class="row backColor" [@inOutAnimation]>
                             <div class="col-12 col-lg-8 col-md-6">
                                 <span class="mb-0 text-truncated" style="font-size: 2em; color: Tomato;"><i class="fas fa fa-folder-open-o fa-3x " aria-hidden="true"></i></span>
                                 <p class="lead">{{patientData.patient.prenom | titlecase }} {{patientData.patient.nom | titlecase }}</p>
                                 <p style="font-size: 1.3em;">
                                     <span class="marge badge badge-info tags"><strong>{{patientData.groupe}}</strong></span>
                                     <span class="marge badge badge-info tags"><strong>{{patientData.symptome}}</strong></span>
+                                    <span class="marge badge badge-info tags"><strong>{{patientData.taille}} m</strong></span>
                                 </p>
                             </div>
                             <div class="col-12 col-lg-4 col-md-6 text-center">
@@ -217,7 +133,7 @@
                             </div>
                             <div class="col-12 col-lg-4">
                                 <p class="text-center">
-                                    <button class="btn btn-block btn-outline-success" title="detail" (click)="patientDataDetaill(patientData.id)">
+                                    <button class="btn btn-block btn-outline-success" matTooltip="detail" (click)="patientDataDetaill(patientData.id)">
                                         <span class="fa fa-info"></span>
 
                                     </button>
@@ -225,7 +141,7 @@
                             </div>
                             <div class="col-12 col-lg-4">
                                 <p class="text-center">
-                                    <button class="btn btn-outline-primary btn-block" title="donnée" (click)="getPatientDataId(patientData.id)">
+                                    <button class="btn btn-outline-primary btn-block" matTooltip="donnée" (click)="getPatientDataId(patientData.id)">
                                         <span class="fa fa-database"></span>
                                     </button>
 
@@ -233,7 +149,7 @@
                             </div>
                             <div class="col-12 col-lg-4  mb-2">
                                 <p class="text-center">
-                                    <button class="btn btn-outline-info btn-block" (click)=" cancelMainContent()" title="back">
+                                    <button class="btn btn-outline-info btn-block" (click)=" cancelMainContent()" matTooltip="back">
                                         <span class="fa fa-arrow-left"></span>
                                     </button>
                                 </p>
@@ -252,13 +168,14 @@
                     <img src="/assets/ordonnance.svg" class="card-img" alt="logo" height="20">
                     <div class="card-body">
 
-                        <div class="row backColor">
+                        <div class="row backColor" [@inOutAnimation]>
                             <div class="col-12 col-lg-8 col-md-6">
                                 <span class="mb-0 text-truncated" style="font-size: 2em; color: Tomato;"><i class="fas fa fa-folder-open-o fa-3x " aria-hidden="true"></i></span>
                                 <p class="lead">{{patientData.patient.prenom | titlecase }} {{patientData.patient.nom | titlecase }}</p>
                                 <p style="font-size: 1.3em;">
                                     <span class="marge badge badge-info tags"><strong>{{patientData.groupe}}</strong></span>
                                     <span class="marge badge badge-info tags"><strong>{{patientData.symptome}}</strong></span>
+                                    <span class="marge badge badge-info tags"><strong>{{patientData.taille}} m</strong></span>
                                 </p>
                             </div>
                             <div class="col-12 col-lg-4 col-md-6 text-center">
@@ -273,7 +190,7 @@
                             </div>
                             <div class="col-12 col-lg-4">
                                 <p class="text-center">
-                                    <button class="btn btn-block btn-outline-success" title="detail" (click)="patientDataDetaill(patientData.id)">
+                                    <button class="btn btn-block btn-outline-success" matTooltip="detail" (click)="patientDataDetaill(patientData.id)">
                                         <span class="fa fa-info"></span>
 
                                     </button>
@@ -281,7 +198,7 @@
                             </div>
                             <div class="col-12 col-lg-4">
                                 <p class="text-center">
-                                    <button class="btn btn-outline-primary btn-block" title="donnée" (click)="getPatientDataId(patientData.id)">
+                                    <button class="btn btn-outline-primary btn-block" matTooltip="donnée" (click)="getPatientDataId(patientData.id)">
                                         <span class="fa fa-database"></span>
                                     </button>
 
@@ -289,7 +206,7 @@
                             </div>
                             <div class="col-12 col-lg-4  mb-2">
                                 <p class="text-center">
-                                    <button class="btn btn-outline-info btn-block" (click)=" cancelMainContent()" title="back">
+                                    <button class="btn btn-outline-info btn-block" (click)=" cancelMainContent()" matTooltip="back">
                                         <span class="fa fa-arrow-left"></span>
                                     </button>
                                 </p>
@@ -305,8 +222,10 @@
     <br>
 </div>
 
-<p style="text-align:center;" *ngIf="showMainData">
-    <svg class="align-items-center" version=" 1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="98px" height="100px" viewBox="0 0 98 100" enable-background="new 0 0 98 100" xml:space="preserve">
+
+
+<p style="text-align:center; margin-left:8%;" *ngIf="mainContent">
+    <svg class="align-items-center" version=" 1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="98px" height="60px" viewBox="0 0 98 100" enable-background="new 0 0 98 100" xml:space="preserve">
         <path fill="#FFFFFF" d="M85.715,26.547h-7.457c1.711-5.512,0.539-11.744-3.043-15.975c-3.587-4.236-9.158-6.766-14.896-6.766
         c-4.109,0-7.852,1.29-10.733,3.6c-3.045-4.6-9.469-7.03-15.613-7.03c-7.055,0-14.166,3.225-16.001,10.323
         c-1.147-0.196-2.492-0.347-3.91-0.347c-8.456,0-13.503,5.16-13.846,14.155c-0.185,4.844,1.047,8.677,3.662,11.394
@@ -424,9 +343,8 @@
         </path>
     </svg>
 </p>
-
-<p style="text-align:center; margin-left:8%;" *ngIf=" mainContent">
-    <svg class="align-items-center" version=" 1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="98px" height="100px" viewBox="0 0 98 100" enable-background="new 0 0 98 100" xml:space="preserve">
+<p style="text-align:center; margin-left:3%;" *ngIf="showMainData">
+    <svg class="align-items-center" version=" 1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="98px" height="60px" viewBox="0 0 98 100" enable-background="new 0 0 98 100" xml:space="preserve">
         <path fill="#FFFFFF" d="M85.715,26.547h-7.457c1.711-5.512,0.539-11.744-3.043-15.975c-3.587-4.236-9.158-6.766-14.896-6.766
         c-4.109,0-7.852,1.29-10.733,3.6c-3.045-4.6-9.469-7.03-15.613-7.03c-7.055,0-14.166,3.225-16.001,10.323
         c-1.147-0.196-2.492-0.347-3.91-0.347c-8.456,0-13.503,5.16-13.846,14.155c-0.185,4.844,1.047,8.677,3.662,11.394
@@ -550,7 +468,7 @@
         <span class="des comment bg-dark">
             <div class="col-sm-12 border-success   text-gray-dark border-primary" style="font-size:14px; justify-content:center; ">
                 <div class="row-1 border shadow-none ">
-                    <h6 hoverItem><strong>Symptôme:</strong>&nbsp;<em class="text-break">{{dataInfo?.symptome || async}}</em></h6>
+                    <h6><strong>Symptôme:</strong>&nbsp;<em class="text-break">{{dataInfo?.symptome || async}}</em></h6>
                 </div>
                 <div class="row-1 border shadow-none">
                     <h6><strong>Constat:</strong>&nbsp;<em class="text-break">{{dataInfo?.constat || async}}</em></h6>
@@ -559,10 +477,10 @@
                     <h6><strong>Groupe_Sanguin:</strong>&nbsp;<em class="text-break">{{dataInfo?.groupe || async}}</em></h6>
                 </div>
                 <div class="row-1 border shadow-none">
-                    <h6><strong>Poids:</strong>&nbsp;<em>{{dataInfo?.poids || async}}</em></h6>
+                    <h6><strong>Poids:</strong>&nbsp;<em>{{dataInfo?.poids || async}} kg</em></h6>
                 </div>
                 <div class="row-1 border shadow-none">
-                    <h6><strong>Taille:</strong>&nbsp;<em>{{dataInfo?.taille || async}}</em></h6>
+                    <h6><strong>Taille:</strong>&nbsp;<em>{{dataInfo?.taille || async}} m</em></h6>
                 </div>
                 <div class="row-1 border shadow-none">
                     <h6><strong>Date:</strong>&nbsp;<em>{{dataInfo?.date || async}}</em></h6>
@@ -573,17 +491,17 @@
                 &nbsp;
             </div>
             <span class="display-6" style="float:right">
-                <button disabled *ngIf="roleUserLogin =='ROLE_SECRETAIRE'" class="btn btn-warning fa fa-edit" (click)="editData(dataInfo)" title="edit"></button>
-                <button *ngIf="roleUserLogin !=='ROLE_SECRETAIRE'" class=" btn btn-danger fa fa-trash" (click)="deleteDataPatient(dataInfo?.id)" title="edit"> </button>
+                <button disabled *ngIf="roleUserLogin =='ROLE_SECRETAIRE'" class="btn btn-warning fa fa-edit"></button>
+                <button *ngIf="roleUserLogin !=='ROLE_SECRETAIRE'" class=" btn btn-danger fa fa-trash" (click)="deleteDataPatient(dataInfo?.id)" matTooltip="delete"> </button>
                 &nbsp;
-                <button *ngIf="roleUserLogin !=='ROLE_SECRETAIRE'" class=" btn btn-warning fa fa-edit" (click)="editData(dataInfo)" title="edit"> </button>
+                <button *ngIf="roleUserLogin !=='ROLE_SECRETAIRE'" class=" btn btn-warning fa fa-edit" (click)="editData(dataInfo)" matTooltip="edit"> </button>
 
                 &nbsp;
-                <button class="btn btn-info fa fa-arrow-left " (click)="cancel()" title="back"></button>
+                <button class="btn btn-info fa fa-arrow-left " (click)="cancel()" matTooltip="back"></button>
             </span>
         </span>
 
-        <span class="btn btn-success btn-sm" title="ordonnance" (click)="getOrdonnance(dataInfo.id)" role="button">
+        <span class="btn btn-success btn-sm" matTooltip="ordonnance" (click)="getOrdonnance(dataInfo.id)" role="button">
             <span><img src="/assets/data.svg" height="30" alt="Home"></span>
         </span>
 
@@ -716,12 +634,12 @@
 
     <p class="text-center">
         <button class="btn btn-success">
-            <i class="fa fa-print fa-1x" aria-hidden="true" (click)="prints()" title="print"></i>
+            <i class="fa fa-print fa-1x" aria-hidden="true" (click)="prints()" matTooltip="print"></i>
         </button>&nbsp;
-        <button *ngIf="roleUserLogin =='ROLE_MEDECIN' || roleUserLogin =='ROLE_ADMIN'" class="btn btn-warning fa fa-edit" (click)="updateMedoc( dataInfo.ordonnance.id, dataInfo.ordonnance.medicament, dataInfo.ordonnance.dosage, dataInfo.ordonnance.quantite)" title="edit"> </button>
-        <button disabled *ngIf="roleUserLogin =='ROLE_SECRETAIRE'" class="btn btn-warning fa fa-edit" title="edit"> </button>
+        <button *ngIf="roleUserLogin =='ROLE_MEDECIN' || roleUserLogin =='ROLE_ADMIN'" class="btn btn-warning fa fa-edit" (click)="ordonnanceForm( dataInfo.ordonnance.id,dataInfo.ordonnance.medicament,dataInfo.ordonnance.dosage,dataInfo.ordonnance.quantite)" matTooltip="edit"> </button>
+        <button disabled *ngIf="roleUserLogin =='ROLE_SECRETAIRE'" class="btn btn-warning fa fa-edit" matTooltip="edit"> </button>
         &nbsp;
-        <button class="btn btn-info fa fa-arrow-left" (click)="cancelMain()" title="back"></button>
+        <button class="btn btn-info fa fa-arrow-left" (click)="cancelMain()" matTooltip="back"></button>
     </p>
     <div class="col col-sm-10 positionOrdonnance shadow-none p-3 bg-light rounded" id="pdf" #pdf *ngIf="showOrdonnance">
         <div class="container-fluid">
@@ -814,7 +732,7 @@
                             <div class="col bord">Dosage (jour/repas)</div>
                             <div class="col bord">{{ dataInfo.ordonnance?.dosage}}</div>
                             <div class="w-100"></div>
-                            <div class="col bord">Quantite (nombre)</div>
+                            <div class="col bord">Quantite (nombre boites)</div>
                             <div class="col bord">{{ dataInfo.ordonnance?.quantite}}</div>
 
                         </div>
@@ -876,7 +794,7 @@
                             <div class="w-100"></div>
                             <div class="col"></div>
                             <div class="w-100"></div>
-                            <div class="col"><b>Date: {{today}}</b>
+                            <div class="col"><strong>Date: {{today}}</strong>
                                 <hr style="color: brown;" />
                             </div>
                         </div>
@@ -908,7 +826,7 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
 
                 <div class="col-md-6">
                     <div class="form-group">
@@ -922,7 +840,7 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
             </div>
 
             <div class="row  justify-content-center">
@@ -940,7 +858,7 @@
 
 
                 </div>
-                <!--  col-md-6   -->
+
 
                 <div class="col-md-6">
 
@@ -964,7 +882,7 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
             </div>
             <!--  row   -->
 
@@ -984,10 +902,10 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
 
 
-                <!--  col-md-6   -->
+
+
             </div>
 
             <!--  row   -->
@@ -1119,7 +1037,7 @@
                         <mat-form-field appearance="outline">
                             <mat-label>Medicament</mat-label>
                             <!-- <input matInput placeholder="medicament" class="input" formControlName="medicament"> -->
-                            <input matInput placeholder="Medicament" class="input" formControlName="medicament" (keyup)="$event.target.value=removeCharactere($event.target.value)">
+                            <input matInput placeholder="Medicament" class="input" formControlName="medicament" (keyup)="$event.target.value=removeCharactereOrdonnance($event.target.value)">
                             <mat-icon matSuffix class="blue-icon">bubble_chart</mat-icon>
                         </mat-form-field>
                     </div>
@@ -1138,7 +1056,7 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <!--  col-md-6   -->
+
             </div>
 
             <div class="row  justify-content-center">
@@ -1196,4 +1114,80 @@
 
     </form>
 
+</div>
+
+<div class="container formBloc border  shadow  bg-light" *ngIf="editOrdonnance" [@slideInOut]>
+    <form [formGroup]="ordonnanceDataForm" (ngSubmit)="updateOrdonnance()" align="center">
+        <h2>Modifier Ordonnance</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <mat-error *ngIf="ordonnanceDataForm.get('medicament').invalid && ordonnanceDataForm.get('medicament').touched">
+                        <strong class="text-danger"><em>MEDICAMENT INVALID</em></strong>
+                    </mat-error>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Medicaments</mat-label>
+                        <input matInput placeholder="medicament" class="input" formControlName="medicament" (show)="$event.target.value=removeCharactereOrdonnance($event.target.value)">
+                        <mat-icon matSuffix class="blue-icon">bubble_chart</mat-icon>
+                    </mat-form-field>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <mat-error *ngIf="ordonnanceDataForm.get('dosage').invalid && ordonnanceDataForm.get('dosage').touched">
+                        <strong class="text-danger"><em>DOSAGE INVALID</em></strong>
+                    </mat-error>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Dosage</mat-label>
+                        <input matInput placeholder="Dosage" class="input" formControlName="dosage" (keyup)="$event.target.value=removeLetter($event.target.value)">
+                        <mat-icon matSuffix class="blue-icon">device_thermostat</mat-icon>
+                    </mat-form-field>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row  justify-content-center">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <mat-error *ngIf="ordonnanceDataForm.get('quantite').invalid && ordonnanceDataForm.get('quantite').touched">
+                        <strong class="text-danger"><em>QUANTITE INVALID</em></strong>
+                    </mat-error>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Quantite</mat-label>
+                        <input matInput placeholder="Quantite" class="input" formControlName="quantite" (keyup)="$event.target.value=removeLetter($event.target.value)">
+                        <mat-icon matSuffix class="blue-icon">equalizer</mat-icon>
+                    </mat-form-field>
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+        <!--  row   -->
+        <!--  row   -->
+        <!-- </div> -->
+
+        <mat-error *ngIf="infoGroupeSanguin">
+            <strong class="text-danger"><em>LE GROUPE SANGUIN NE CHANGE PAS</em></strong>
+        </mat-error>
+
+        <mat-error *ngIf="infoTaille">
+            <strong class="text-danger"><em>LA TAILLE NE DOIT PAS ÊTRE INFERIEURE A CELLE PRECEDENTE</em></strong>
+        </mat-error>
+        &nbsp;
+        <div class="form-group" align="center">
+
+            <button type="submit" id="send-button" class="btn btn-primary" [disabled]="!ordonnanceDataForm.controls['medicament'].valid || !ordonnanceDataForm.controls['dosage'].valid || !ordonnanceDataForm.controls['quantite'].valid">
+                Modifier
+            </button>&nbsp;
+            <button type=" submit" id="cancel-button" (click)="cancel()" class="btn btn-danger">Annuler</button>
+
+        </div>
+
+    </form>
 </div>

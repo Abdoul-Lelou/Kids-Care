@@ -26,7 +26,7 @@
     &nbsp; &nbsp; &nbsp;<br><br>&nbsp; &nbsp; &nbsp;<br><br>&nbsp; &nbsp; &nbsp;<br><br>
     <div class="container ">
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" align="center" class="formBloc border shadow  bg-light">
-            <div class="border-primary">
+            <div class="form-group shadow">
                 <h4 align="center"><strong><em>AUTHENTIFICATION</em></strong></h4>
                 <div class="row justify-content-center">
                     <div class="col-md-6">
@@ -60,6 +60,12 @@
                 </div>
                 <!--  row   -->
                 &nbsp;
+                <div class="alert alert-danger w3-animate-opacity" *ngIf="passwordError">
+                    <strong><em>USERNAME OU PASSWORD INCORRECT</em></strong>
+                </div>
+                <div class="alert alert-danger w3-animate-opacity" *ngIf="disableError">
+                    <strong><em>VOTRE COMPTE EST DESACTIVE</em></strong>
+                </div>
                 <div class="alert alert-danger w3-animate-opacity" *ngIf="logError">
                     <strong><em>USERNAME OU PASSWORD INCORRECT</em></strong>
                 </div>
@@ -68,7 +74,7 @@
             <div class="form-group">
                 &nbsp;
                 <button type="submit" id="login-button" [disabled]="registerForm.invalid" class="btn btn-primary">
-                    login
+                    <i aria-hidden="true" *ngIf="!loading">login</i>
                     <i class="fa fa-spinner fa-spin" *ngIf="loading" aria-hidden="true"></i>
                 </button>&nbsp;&nbsp;
 

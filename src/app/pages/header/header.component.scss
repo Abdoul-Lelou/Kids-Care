@@ -112,18 +112,15 @@ a.nav-item :hover {
     }
 
     .left {
-        //  width: 40;
         height: 100%;
         padding: auto;
         overflow-x: hidden;
         overflow-y: auto;
-        //background: lighten($black, 35%);
         background: $darkgray-blue;
         position: fixed;
         z-index: auto;
         transition: all .5s;
         border: coral 1px solid;
-        //  box-shadow: 3px 3px red, -1em 0 0.4em olive;
 
         ul {
             padding-left: 0;
@@ -143,9 +140,7 @@ a.nav-item :hover {
                 a {
                     display: flex;
                     align-items: left;
-                    // background: lighten($black, 35%);
                     background: $darkgray-blue;
-                    //color: $white;
                     padding: auto;
                     font-size: 13px;
                     width: 60px;
@@ -153,7 +148,6 @@ a.nav-item :hover {
                     border-bottom: 1px solid darken($darkgray-blue, 5%);
 
                     &:hover {
-                        // background: $black;
                         background: darken($darkgray-blue, 5%);
                         text-decoration: none;
 
@@ -180,54 +174,6 @@ a.nav-item :hover {
 
 }
 
-// figure {
-//     border: 1px solid white;
-//     padding: auto;
-//     margin: auto;
-//     //color: red;
-//     border-radius: 8px;
-// }
-
-
-// .navfix {
-//     top: 0;
-//     position: sticky;
-// }
-
-
-// .container-fluid {
-//     height: auto;
-// }
-
-// .wrapper {
-//     min-height: auto;
-//     max-height: auto;
-// }
-
-// .sidebar {
-//     height: auto;
-//     overflow-y: auto;
-//     overflow-x: visible;
-//     z-index: 1000;
-//     max-width: 68px;
-//     // background: #c0c0c0;
-// }
-
-// .sidebar::-webkit-scrollbar {
-//     width: auto;
-// }
-
-// .sidebar>.navbar {
-//     position: relative;
-//     height: auto;
-//     overflow: visible;
-// }
-
-// .sidebar-right {
-//     right: 0;
-//     left: initial;
-// }
-
 
 button {
     border-radius: 20px;
@@ -242,4 +188,13 @@ button {
 
 .imgTop {
     border-radius: 20px;
+}
+
+::ng-deep .mat-tooltip {
+    // font-size: 15px;
+    white-space: pre-wrap;
+    color: rgb(10, 10, 10) !important;
+    background-color: coral;
+    border: 1px solid gray;
+    max-width: unset !important;
 }

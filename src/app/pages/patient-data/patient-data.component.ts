@@ -4,12 +4,11 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import 'sweetalert2/src/sweetalert2.scss';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+// import pdfMake from 'pdfmake/build/pdfmake';
+// import pdfFonts from 'pdfmake/build/vfs_fonts';
+// pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { animate, style, transition, trigger } from '@angular/animations';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+
 
 declare var jsPDF: any;
 
@@ -32,7 +31,7 @@ declare var jsPDF: any;
         // transition(
         //   ':leave', 
         //   [
-        //     style({ height: 300, opacity: 1 }),
+        //     style({ height: 100, opacity: 1 }),
         //     animate('1s ease-in', 
         //             style({ height: 0, opacity: 0 }))
         //   ]
@@ -43,22 +42,22 @@ declare var jsPDF: any;
     trigger('slideInOut', [
       transition(':enter', [
         style({transform: 'translateY(-100%)'}),
-        animate('200ms ease-in', style({transform: 'translateY(0%)'}))
+        animate('700ms ease-in', style({transform: 'translateY(0%)'}))
       ])
     ])
   ]
 })
 export class PatientDataComponent implements OnInit {
 
-  registerDataForm: FormGroup;registerDataFormEdit:FormGroup; submitted = false; mainContent:boolean=false;
-  patientData; patientDatas:any[]= []; roleUserLogin; patient; user; info:boolean = false; inputSearch:boolean=false;donnee:boolean = false; 
-  patientOrdonnance ; ordonnance; today; myStyle: SafeHtml;showOrdonnance:boolean = false;
-  patientName;symptome;constat; @ViewChild('pdf', { static: false }) pdf: ElementRef;medoc;quantite;dosage;patientDataIdEdit;
-  idMedoc;idDataPatient;dataInfo; dataInfos:string[] = []; infoData;checkData;date;patientDataSecretaire;patientDataAll;patientDataMedecin;
-  edit: boolean; add: boolean; bloc1: boolean; bloc2: boolean; showMainData:boolean;tailleError:boolean;
-  verif;veri:number; patientAll= new Array();patientMedecin :any=new Array();infoGroupeSanguin:boolean; infoTaille: boolean;
+  registerDataForm: FormGroup;registerDataFormEdit:FormGroup;ordonnanceDataForm: FormGroup;editOrdonnance:boolean; 
+  submitted=false;mainContent:boolean=false;showOrdonnance:boolean=false;donnee:boolean=false;infoTaille:boolean;
+  patientData;roleUserLogin;patient;user;patientOrdonnance;ordonnance;today;patientName;symptome;constat;infoData;checkData;
+  @ViewChild('pdf', { static: false }) pdf: ElementRef;
+  quantite;dosage;patientDataIdEdit;idDataPatient;dataInfo;patientDataAll;patientDataMedecin;date;patientDataSecretaire;
+  dataInfos:string[]=[];patientAll= new Array();patientMedecin :any=new Array();
+  edit:boolean;add:boolean;bloc1:boolean;bloc2:boolean;showMainData:boolean;tailleError:boolean;infoGroupeSanguin:boolean; 
 
-  constructor(private auth:AuthentificationService,private router:Router,private formBuilder: FormBuilder, private _sanitizer: DomSanitizer) { }
+  constructor(private auth:AuthentificationService,private router:Router,private formBuilder: FormBuilder) { }
 
   ngOnInit()
   {
@@ -91,6 +90,11 @@ export class PatientDataComponent implements OnInit {
     this.tailleError=false;
     this.infoGroupeSanguin = false;
     this.infoTaille = false;
+    this.editOrdonnance = false;
+
+    
+   
+   
   }
 
   
@@ -181,8 +185,6 @@ export class PatientDataComponent implements OnInit {
       }
     }
 
-  
-    
 
   
     if(!!verifGroup && groupes > 1){
@@ -253,13 +255,12 @@ export class PatientDataComponent implements OnInit {
 
   getPatientByMedecin() { 
     let patientFolder;
-    this.patientMedecin.shift();
+    this.patientMedecin=[];
     this.auth.getPatientByMedecin().subscribe(
       data =>{
       
          patientFolder =data;
-         
-         this.patientMedecin.shift();
+         console.log(patientFolder.filter(x => x.patientData))
          for (const patient of patientFolder) {
            
           if(patient.patientData.length>0){
@@ -287,20 +288,19 @@ export class PatientDataComponent implements OnInit {
   }
 
   getPatientAll() {   
-   
-    let patient;this.patientAll.shift();
+  
+    let patient; this.patientAll=[];
     this.auth.getPatient().subscribe(
       data =>{       
        patient=data;
       
-       for (const iterator of patient) {
+        for (const iterator of patient) {
          if(iterator.patientData.length>0){
            this.patientAll.push(iterator)
          }
-       }
+        }
       }      
     );
-    this.patientAll.shift()
   } 
 
   getLogin() {
@@ -326,7 +326,6 @@ export class PatientDataComponent implements OnInit {
       data =>{
         if(!data){
           this.checkData=true;
-          return;
         }
       
       }
@@ -395,18 +394,19 @@ export class PatientDataComponent implements OnInit {
         }
         this.checkData=false;
 
-         Swal.fire({
-          // title: "<em class='fs-4'>DONNÉES</em>", 
+         Swal.fire({  
           html: 
             "<strong class='fs-5'>CONSTAT</strong>"+
             "<div class='col border shadow-none  p-3 mb-5 bg-light rounded flex'>"+
               "<div class='row'>"+
-                "<div class='col'><strong></strong> <em>"+data.constat+" kg</em>&nbsp;&nbsp;</div>"+
+                "<div class='col'><strong></strong> <em>"+data.constat+"</em>&nbsp;&nbsp;</div>"+
               "</div>"+
               
                 "</div>",  
-           confirmButtonText: "<b>Ok</b>",
-           width: '410px', 
+           width: '400px',
+           background: 'coral',
+           padding:'10px'
+          //  height: '100px' 
          });
       }
     )
@@ -515,23 +515,6 @@ export class PatientDataComponent implements OnInit {
     
   }
 
-  donneeInfo(){
-   
-    this.auth.getPatientDataById(this.idDataPatient).subscribe(
-      data =>{
-        console.log(data);
-        Swal.fire({
-          title: "<i>DONNÉES</i>", 
-          html: 
-          "<strong>Poids</strong>:"+data.poids+"&nbsp;,&nbsp;<strong>Groupe_Sanguin</strong>:"+data.groupe+"<br><br>"+
-          "<strong>Taille</strong>:"+data.taille+"&nbsp;,&nbsp;<strong>Symptôme</strong>:"+data.symptome,  
-          confirmButtonText: "<b>Ok</b>",
-          width: '410px', 
-        });
-      }
-    )
-  }
-
   getOrdonnance(id) {
     this.donnee=false;
     this.showOrdonnance=true;
@@ -553,6 +536,58 @@ export class PatientDataComponent implements OnInit {
     });
   }
 
+  updateOrdonnance(){
+    console.log(this.ordonnanceDataForm.value.id)
+    const id= this.ordonnanceDataForm.value.id;
+    const ordonnance = {
+      medicament: this.ordonnanceDataForm.value.medicament,
+      dosage: this.ordonnanceDataForm.value.dosage,
+      quantite: this.ordonnanceDataForm.value.quantite
+    }
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+
+    this.auth.updateMedicament(id,ordonnance).subscribe(
+      data =>{
+        console.log(data);
+        this.ngOnInit();
+        Toast.fire({
+          icon:"success",
+          title: 'Modifié avec succès',
+          //imageUrl: 'https://i.imgur.com/4NZ6uLY.jpg'
+  
+        })       
+      },error=>{
+        Toast.fire({
+          icon:"error",
+          title: "Une erreur s'est produit",
+          //imageUrl: 'https://i.imgur.com/4NZ6uLY.jpg'
+  
+        })       
+      }
+    );
+
+  }
+
+  ordonnanceForm(id,medicament,dosage,quantite){
+    this.ordonnanceDataForm = this.formBuilder.group({
+      id: [id, [Validators.required]],
+      medicament: [medicament, [Validators.required]],
+      dosage: [dosage, [Validators.required]],
+      quantite: [quantite, [Validators.required]]
+  });
+    this.showOrdonnance = false;
+    this.editOrdonnance = true;
+  }
   async updateMedoc(id,medical,quantity,dose){
     console.log(id);
     let medicament; let dosage; let quantite; let quantities=parseInt(quantity);
@@ -636,7 +671,7 @@ if (!medicament || !quantite || !dosage)
   }
 
   removeLetter(string){
-    let splitStr = string.replace(/[^0-9]+/g, '');
+    let splitStr = string.replace(/[^0-9,]+/g, '');
     splitStr= splitStr.split(' ').join('');
     return splitStr;
   }
@@ -661,6 +696,12 @@ if (!medicament || !quantite || !dosage)
 
   removeCharactere(string){
     let splitStr= string.replace(/[^a-zA-Z0-9 ]/g, "");
+    splitStr= splitStr.split('/').join('');
+    return splitStr;
+  }
+
+  removeCharactereOrdonnance(string){
+    let splitStr= string.replace(/[^a-zA-Z0-9,  ]/g, "");
     splitStr= splitStr.split('/').join('');
     return splitStr;
   }

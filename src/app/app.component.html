@@ -1,225 +1,209 @@
-<div>
-    <app-header *ngIf="showHead" class="index"></app-header>
-    <app-form-connexion *ngIf="!showHead"></app-form-connexion>
+<!-- <div> -->
+<app-header *ngIf="showHead" class="index"></app-header>
 
-    <body *ngIf="profil" [@slideIn]>
-        <div class="center bg-light ">
-            <div class="container">
-                <div class="left">
-                    <div class="photo" id="photo">
-                        <div class="circle"></div>
-                        <div class="circle2"></div>
-                        <!-- <img [attr.src]="images" alt="Aucune image"> -->
-                        <div class="container-profilepic card rounded-circle overflow-hidden" (click)="editPhoto()">
-                            <div class="photo-preview card-img w-100 h-100" matTooltip="Modifier">
-                                <img [attr.src]="images" alt="image">
-                            </div>
-                            <div class="middle-profilepic text-center card-img-overlay d-none flex-column justify-content-center">
-                                <div class="text-profilepic text-success">
-                                    <i class="fa fa-camera" aria-hidden="true"></i>
-                                    <div class="text-profilepic">
-                                        <input type="file" id="file" (change)="uploadFiles($event)">
-                                    </div>
+<app-form-connexion *ngIf="!showHead"></app-form-connexion>
+
+
+<body *ngIf="profil" [@slideIn]>
+    <div class="center bg-light ">
+        <div class="container">
+            <div class="left">
+                <div class="photo" id="photo" matTooltip="Modifier">
+
+                    <div class="circle"></div>
+                    <div class="circle2"></div>
+
+                    <div class="container-profilepic card rounded-circle overflow-hidden" (click)="editPhoto()">
+                        <div class="photo-preview card-img w-100 h-100" matTooltip="Modifier">
+                            <img [attr.src]="images" alt="image">
+                        </div>
+                        <div class="middle-profilepic text-center card-img-overlay d-none flex-column justify-content-center">
+                            <div class="text-profilepic text-success">
+                                <i class="fa fa-camera" aria-hidden="true"></i>
+                                <div class="text-profilepic">
+                                    <input type="file" id="file" (change)="uploadFiles($event)">
                                 </div>
                             </div>
                         </div>
-
-
-
-                    </div>
-                    <div class="title__contain">
-                        <div class="username">
-                            {{userName | titlecase}}
-                            <!-- <br> <em>{{userSpecialite | titlecase}}</em> -->
-                        </div>
-
-                        <div class="title">
-                            <strong><em></em></strong>
-                        </div>
                     </div>
 
-                    <!-- <button class="message btnEdit btn-block btn-primary" (click)="onUpload()">Photo</button> -->
-                    <button class="message btnPass btn-block btn-primary" (click)="editPasswordForm(user_id)">Edit</button>
+
 
                 </div>
-                <div class="right" *ngIf="roles =='ROLE_MEDECIN'">
-                    <div class="rightbox">
-                        <span class="large">{{patients.length}}</span>
-                        <span class="small">Patients</span>
+                <div class="title__contain">
+                    <div class="username">
+                        {{userName | titlecase}}
                     </div>
-                    <div class="rightbox">
-                        <span class="large">{{appoints.length}}</span>
-                        <span class="small">Appointements</span>
-                    </div>
-                    <div class="rightbox">
-                        <span class="large">{{dossiers.length}}</span>
-                        <span class="small">Dossiers</span>
 
+                    <div class="title">
+                        <strong><em></em></strong>
                     </div>
                 </div>
-                <div class="right" *ngIf="roles !='ROLE_MEDECIN'">
-                    <div class="rightbox">
-                        <span class="large">{{nombrePatient}}</span>
-                        <span class="small">Patients</span>
-                    </div>
-                    <div class="rightbox">
-                        <span class="large">{{nombreAppoinnt}}</span>
-                        <span class="small">Appointements</span>
-                    </div>
-                    <div class="rightbox">
-                        <span class="large">{{nombrePatientData}}</span>
-                        <span class="small">Dossiers</span>
 
-                    </div>
+                <button class="message btnPass btn-block btn-primary" (click)="editPasswordForm(user_id)">Edit</button>
+
+            </div>
+            <div class="right" *ngIf="roles =='ROLE_MEDECIN'">
+                <div class="rightbox">
+                    <span class="large">{{patients.length}}</span>
+                    <span class="small">Patients</span>
+                </div>
+                <div class="rightbox">
+                    <span class="large">{{appoints.length}}</span>
+                    <span class="small">Appointements</span>
+                </div>
+                <div class="rightbox">
+                    <span class="large">{{dossiers.length}}</span>
+                    <span class="small">Dossiers</span>
+
                 </div>
             </div>
-            &nbsp;
-            <button class="btn btn-danger fa fa-arrow-left " (click)="cancel()" title="back"></button>
-
-            <div class=" justify-content-center">
-
-                <!-- <input type="text" id="id" formControlName="id" hidden> -->
-                <!-- <div class="col-md-4">
-                    <div class="form-group">
-                        <mat-error *ngIf="checkUsername">
-                            <strong class="text-danger"><em>USERNAME EXISTE DÉJÀ</em></strong>
-                        </mat-error>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Username (facultatif)</mat-label>
-                            <input matInput type="text" [(ngModel)]="username" placeholder="Username" class="input" formControlName="username" (blur)="$event.target.value=removeSpaces($event.target.value);check()">
-                            <mat-icon matSuffix class="blue-icon">person</mat-icon>
-                        </mat-form-field>
-                    </div>
-                </div> -->
-                <!-- <div class="form-group border-primary">
-                    <label for="file">Modifier Photo</label><br /> <input type="file" id="file" (change)="uploadFiles($event.target.files)">
+            <div class="right" *ngIf="roles !='ROLE_MEDECIN'">
+                <div class="rightbox">
+                    <span class="large">{{nombrePatient}}</span>
+                    <span class="small">Patients</span>
                 </div>
+                <div class="rightbox">
+                    <span class="large">{{nombreAppoinnt}}</span>
+                    <span class="small">Appointements</span>
+                </div>
+                <div class="rightbox">
+                    <span class="large">{{nombrePatientData}}</span>
+                    <span class="small">Dossiers</span>
 
-                <button class="btn btn-primary" (click)="RequestUpload()">Ok</button> -->
+                </div>
             </div>
         </div>
-    </body>
+        &nbsp;
+        <button class="btn btn-danger fa fa-arrow-left " (click)="cancel()" title="back"></button>
 
 
-    &nbsp;&nbsp;
-    <main class="col-6 border shadow-none bg-light  rounded" *ngIf="editPassword">
-        <form [formGroup]="editPassForm" (ngSubmit)="editProfile()" class="form shadow" align="center">
-            <h2>Modifier Password</h2>
-            <div class="row justify-content-center">
-                <input type="text" id="id" formControlName="id" hidden>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <mat-error *ngIf="editPassForm.controls['currentPassword'].invalid && editPassForm.controls['currentPassword'].touched">
-                            <strong class="text-danger"><em>ACTUEL PASSWORD INCORRECT</em></strong>
-                        </mat-error>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Actuel mot de passe</mat-label>
-                            <input matInput type="password" placeholder="Current Password" class="input" formControlName="currentPassword" (blur)="$event.target.value=removeSpaces($event.target.value)">
-                            <mat-icon matSuffix class="blue-icon">password</mat-icon>
-                        </mat-form-field>
-                    </div>
+    </div>
+</body>
+
+
+&nbsp;&nbsp;
+<main class="col-6 border shadow-none bg-light  rounded" *ngIf="editPassword">
+    <form [formGroup]="editPassForm" (ngSubmit)="editProfile()" class="form shadow" align="center">
+        <h2>Modifier Password</h2>
+        <div class="row justify-content-center">
+            <input type="text" id="id" formControlName="id" hidden>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <mat-error *ngIf="editPassForm.controls['currentPassword'].invalid && editPassForm.controls['currentPassword'].touched">
+                        <strong class="text-danger"><em>ACTUEL PASSWORD INCORRECT</em></strong>
+                    </mat-error>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Actuel mot de passe</mat-label>
+                        <input matInput type="password" placeholder="Current Password" class="input" formControlName="currentPassword" (blur)="$event.target.value=removeSpaces($event.target.value)">
+                        <mat-icon matSuffix class="blue-icon">password</mat-icon>
+                    </mat-form-field>
                 </div>
             </div>
+        </div>
 
-            <div class="row  justify-content-center">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <mat-error *ngIf="editPassForm.controls['newPassword'].invalid && editPassForm.controls['newPassword'].touched">
-                            <strong class="text-danger"><em>PASSWORD INVALID</em></strong>
-                        </mat-error>
-                        <mat-error *ngIf="samePassword">
-                            <strong class="text-danger"><em>{{infoPassword}}</em></strong>
-                        </mat-error>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Nouveau mot de passe</mat-label>
-                            <input matInput type="password" placeholder="New Password" class="input" formControlName="newPassword" id="newPassword" (blur)="$event.target.value=removeSpaces($event.target.value)">
-                            <mat-icon matSuffix class="blue-icon">password</mat-icon>
-                        </mat-form-field>
-                    </div>
+        <div class="row  justify-content-center">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <mat-error *ngIf="editPassForm.controls['newPassword'].invalid && editPassForm.controls['newPassword'].touched">
+                        <strong class="text-danger"><em>PASSWORD INVALID</em></strong>
+                    </mat-error>
+                    <mat-error *ngIf="samePassword">
+                        <strong class="text-danger"><em>{{infoPassword}}</em></strong>
+                    </mat-error>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nouveau mot de passe</mat-label>
+                        <input matInput type="password" placeholder="New Password" class="input" formControlName="newPassword" id="newPassword" (blur)="$event.target.value=removeSpaces($event.target.value)">
+                        <mat-icon matSuffix class="blue-icon">password</mat-icon>
+                    </mat-form-field>
                 </div>
             </div>
+        </div>
 
-            <div class="row  justify-content-center">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <mat-error *ngIf="editPassForm.controls['confirmPassword'].invalid && editPassForm.controls['confirmPassword'].touched">
-                            <strong class="text-danger"><em>PASSWORD INVALID</em></strong>
-                        </mat-error>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Confirm mot de passe</mat-label>
-                            <input matInput placeholder="confirmPassword" type="password" class="input" formControlName="confirmPassword" id="confirmPassword" (blur)="$event.target.value=removeSpaces($event.target.value)">
-                            <mat-icon matSuffix class="blue-icon">password</mat-icon>
-                        </mat-form-field>
-                    </div>
+        <div class="row  justify-content-center">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <mat-error *ngIf="editPassForm.controls['confirmPassword'].invalid && editPassForm.controls['confirmPassword'].touched">
+                        <strong class="text-danger"><em>PASSWORD INVALID</em></strong>
+                    </mat-error>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Confirm mot de passe</mat-label>
+                        <input matInput placeholder="confirmPassword" type="password" class="input" formControlName="confirmPassword" id="confirmPassword" (blur)="$event.target.value=removeSpaces($event.target.value)">
+                        <mat-icon matSuffix class="blue-icon">password</mat-icon>
+                    </mat-form-field>
                 </div>
             </div>
+        </div>
 
-            &nbsp;
-            <!-- <div *ngIf="errorPassword">
+        &nbsp;
+        <!-- <div *ngIf="errorPassword">
                 <strong class="alert alert-danger w3-animate-opacity"><em>PASSWORD DIFFERENT</em></strong>
             </div> -->
-            <div *ngIf="samePassword">
-                <strong class="alert alert-danger w3-animate-opacity"><em>{{infoPassword}} de l'actuel</em></strong>
-            </div>
-            <mat-error *ngIf="errorPassword">
-                <strong class="text-danger"><em>PASSWORD DIFFERENT</em></strong>
-            </mat-error>
-            <mat-error *ngIf="errorCurrentPassword">
-                <strong class="text-danger"><em>PASSWORD ACTUEL INCORRECT</em></strong>
-            </mat-error>
-            &nbsp;
-
-            <div class="form-group">
-                &nbsp;
-                <button type="submit" class=" btn btn-success" [disabled]="!editPassForm.controls['confirmPassword'].valid || !editPassForm.controls['newPassword'].valid || !editPassForm.controls['currentPassword'].valid">
-                    Modifier
-                </button>
-                &nbsp;
-                <button type=" submit" class=" btn btn-danger" (click)="profile()">Annuler</button>
-
-            </div>
-            &nbsp;
-        </form>
-
-
-    </main>
-
-
-    <div class="web" [@routeAnimations]="prepareRoute(outlet)" *ngIf="!profil && !editPassword">
-        <router-outlet #outlet="outlet"></router-outlet>
-    </div>
-
-    <div class="container-fluid " *ngIf="showHead">
-        <div class="row wrapper">
-            <aside class="col-1 col-sm-1 p-0 bg-inverse collapse show sidebar sidebar-right fade fixed-top h-100">
-                <nav class="navbar navbar-toggleable-xl navbar-inverse bg-inverse flex-column align-items-start">
-                    <div class=" navbar-collapse sidebar">
-                        <ul class="flex-column navbar-nav border">
-                            <li class="nav-item border" [@slideOut]>
-                                <a class="nav-link pl-0" href="javascript:void(0);" (click)="profile()" *ngIf="show_user">
-                                    <img src="/assets/settingsM.png" height="38" alt="CoolBrand">
-                                </a>
-
-                                <a class="nav-link pl-0" href="javascript:void(0);" (click)="profile()" *ngIf="!add_patient">
-                                    <img src="/assets/settingsM.png" height="38" alt="CoolBrand">
-                                </a>
-                            </li>
-                            <li [@slideOut] class="border">
-                                <a href="" class="nav-item nav-link" (click)="logout()" title="logout">
-                                    <img src="/assets/logout.svg" height="38" alt="CoolBrand" class="">
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </aside>
+        <div *ngIf="samePassword">
+            <strong class="alert alert-danger w3-animate-opacity"><em>{{infoPassword}} de l'actuel</em></strong>
         </div>
-    </div>
+        <mat-error *ngIf="errorPassword">
+            <strong class="text-danger"><em>PASSWORD DIFFERENT</em></strong>
+        </mat-error>
+        <mat-error *ngIf="errorCurrentPassword">
+            <strong class="text-danger"><em>PASSWORD ACTUEL INCORRECT</em></strong>
+        </mat-error>
+        &nbsp;
 
-    <footer *ngIf="profil">
-        <p class="text-center">
-            Develloped by <strong>Abdourahmane Diallo</strong>
-        </p>
-    </footer>
+        <div class="form-group">
+            &nbsp;
+            <button type="submit" class=" btn btn-success" [disabled]="!editPassForm.controls['confirmPassword'].valid || !editPassForm.controls['newPassword'].valid || !editPassForm.controls['currentPassword'].valid">
+                Modifier
+            </button>
+            &nbsp;
+            <button type=" submit" class=" btn btn-danger" (click)="profile()">Annuler</button>
 
+        </div>
+        &nbsp;
+    </form>
+
+
+</main>
+
+
+<div class="web" [@routeAnimations]="prepareRoute(outlet)" *ngIf="!profil && !editPassword">
+    <router-outlet #outlet="outlet"></router-outlet>
 </div>
+
+<div class="container-fluid " *ngIf="showHead">
+    <div class="row wrapper">
+        <aside class="col-1 col-sm-1 p-0 bg-inverse collapse show sidebar sidebar-right fade fixed-top h-100">
+            <nav class="navbar navbar-toggleable-xl navbar-inverse bg-inverse flex-column align-items-start">
+                <div class=" navbar-collapse sidebar">
+                    <ul class="flex-column navbar-nav border">
+                        <li class="nav-item border" [@slideOut]>
+                            <a class="nav-link pl-0 bg-light" href="javascript:void(0);" (click)="profile()">
+                                <img src="/assets/settingsM.png" height="38" alt="CoolBrand" *ngIf="imagesNull ==null" matTooltip="profil">
+                                <img [attr.src]="images" class="imgProfil" alt="Aucune image" *ngIf="imagesNull !=null" height="38" matTooltip="profil">
+                            </a>
+
+
+                        </li>
+                        <li [@slideOut] class="border">
+                            <a href="" class="nav-item nav-link bg-light" (click)="logout()" matTooltip="logout">
+                                <img src="/assets/logout.svg" height="38" alt="CoolBrand" class="">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+    </div>
+</div>
+
+<footer *ngIf="profil">
+    <p class="text-center">
+        Develloped by <strong>Abdourahmane Diallo</strong>
+    </p>
+</footer>
+<!-- <p style="text-align:center;margin-left:7%; position:relative;">
+    <app-time-appoint></app-time-appoint>
+</p> -->
+
+
+<!-- </div> -->

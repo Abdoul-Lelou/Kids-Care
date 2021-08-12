@@ -13,7 +13,8 @@ import 'sweetalert2/src/sweetalert2.scss';
 export class FormConnexionComponent implements OnInit {
 
   formConnexion:FormGroup; show : boolean = true;userConnect; logError: boolean = false; erreur;
-  showModal: boolean;registerForm: FormGroup;submitted = false;loading: boolean;
+  showModal: boolean;registerForm: FormGroup;submitted = false;loading: boolean;passwordError:boolean
+  disableError:boolean;
 
   constructor(private formBuilder: FormBuilder,private auth: AuthentificationService, private router: Router) 
   {
@@ -27,9 +28,12 @@ export class FormConnexionComponent implements OnInit {
     });
     this.logError=false;
     this.loading= false;
+    this.passwordError= false;
+    this.disableError= false;
   }
 
-    get f() { return this.registerForm.controls; }
+    // get f() { return this.registerForm.controls; }
+
   onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
@@ -53,24 +57,32 @@ export class FormConnexionComponent implements OnInit {
           
         },
         error => {
-          this.logError=true;
-          setInterval(() => {
-            this.logError=false;
-           }, 5000);
-           
+         
+          if(error ==='Invalid credentials.'){
+            this.passwordError=true;
+            setInterval(() => {
+              this.passwordError=false;
+            }, 5000);
             this.loading= false;
             
+          }else if(error ==='Account is disabled.'){
+            this.disableError=true;
+            setInterval(() => {
+              this.disableError=false;
+            }, 5000);
+            this.loading= false;
+          }
         }
       );
     }
 
   }
-    getUserConnect(){
-     this.auth.getUserLogin().subscribe(
-        data=>{
-            this.userConnect=data;
-        })  
-  }  
+  //   getUserConnect(){
+  //    this.auth.getUserLogin().subscribe(
+  //       data=>{
+  //           this.userConnect=data;
+  //       })  
+  // }  
      
  }
   
